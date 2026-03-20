@@ -58,3 +58,97 @@ function rain() {
         `;
     }, 1000);
 }
+
+let seedcontainer;
+let watercontainer;
+
+const numberOfSeeds = 80;
+const numberOfDrops = 150;
+
+window.onload = function () {
+    seedcontainer = document.getElementById("seedcontainer");
+    watercontainer = document.getElementById("watercontainer");
+};
+
+function createSeed() {
+    const s = document.createElement("div");
+    s.className = "seed";
+
+    const left = Math.random() * 100;
+    const delay = Math.random();
+
+    s.style.left = left + "%";
+    s.style.animationDelay = delay + "s";
+
+    return s;
+}
+
+function seed() {
+    seedcontainer.innerHTML = "";
+
+    for (let i = 0; i < numberOfSeeds; i++) {
+        seedcontainer.appendChild(createSeed());
+    }
+}
+
+function createWater() {
+    const wd = document.createElement("div");
+    wd.className = "waterdrop";
+
+    const left = Math.random() * 100;
+    const duration = 1.5;
+    const delay = Math.random();
+
+    wd.style.left = left + "%";
+    wd.style.animationDuration = duration + "s";
+    wd.style.animationDelay = delay + "s";
+
+    return wd;
+}
+
+function water() {
+    watercontainer.innerHTML = "";
+
+    for (let i = 0; i < numberOfDrops; i++) {
+        watercontainer.appendChild(createWater());
+    }
+
+    setTimeout(() => {
+        watercontainer.innerHTML = "";
+        seedcontainer.innerHTML = "";
+
+        document.body.style.backgroundImage = "url('seeds.jpg')";
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
+
+        document.body.onclick = function () {
+            document.body.onclick = null;
+
+            document.body.innerHTML = `
+            <header class="headerl">
+                <h1>Gir National Park</h1>
+            </header>
+
+            <div style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(216,205,205,0.9);
+                padding: 120px 30px;
+                text-align: center;
+            ">
+                <h2>Forest Restoration</h2>
+                <p>
+                Planting seeds and watering them helps forests grow again.
+                Trees absorb carbon dioxide, give oxygen, and support wildlife.
+                Reforestation helps restore nature after fires.
+                </p>
+                <img src="planting.jpeg" style="width:400px; border-radius:10px;">
+            </div>
+            `;
+        };
+
+    }, 2000);
+}
