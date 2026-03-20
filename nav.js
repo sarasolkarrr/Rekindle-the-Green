@@ -9,7 +9,7 @@
         <li class="dropdown">
           <button class="dropbtn" type="button">Drives ▾</button>
           <div class="dropdown-content">
-            <a href="turtle/turtle.html">Velas Beach</a>
+            <a href="turtle.html">Velas Beach</a>
             <a href="tiger.html">Jim Corbett National Park</a>
           </div>
         </li>

@@ -19,16 +19,17 @@ html, body {
 }
 .headert
 {
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: relative;
+    top: auto;
+    left: auto;
     width: 100%;
     background: rgba(139, 69, 19, 0.95);
     color: white;
     text-align: center;
-    padding: 0.095px ;
+    padding: 0.7rem 0.5rem;
     font-size: 20px;
-    z-index: 1000;
+    z-index: 1;
+    margin-top: 66px; /* ensure title sits below navbar */
 }
 .rainbtn {
     position: fixed;

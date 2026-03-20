@@ -39,7 +39,7 @@ turtle.addEventListener('click', () => {
 
 closeOverlayBtn.addEventListener('click', () => {
     // Redirect to the project main index
-    window.location.href = '../index.html';
+    window.location.href = './index.html';
 });
 
 // Move turtle for the first time on page load without animation
