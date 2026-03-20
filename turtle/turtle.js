@@ -30,7 +30,7 @@ turtle.addEventListener('click', () => {
     score++;
     scoreDisplay.textContent = score;
 
-    if (score === 5) {
+    if (score === 1) {
         overlay.style.display = 'flex'; // Show overlay when score is 5
     } else {
         animateTurtle();
@@ -38,7 +38,8 @@ turtle.addEventListener('click', () => {
 });
 
 closeOverlayBtn.addEventListener('click', () => {
-    overlay.style.display = 'none'; // Hide overlay on button click
+    // Redirect to the project main index
+    window.location.href = '../index.html';
 });
 
 // Move turtle for the first time on page load without animation
