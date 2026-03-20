@@ -57,7 +57,7 @@ function rain() {
                 <h2>
             </div>
         `;
-    }, 1000);
+    }, 4000);
 }
 
 let seedcontainer;
