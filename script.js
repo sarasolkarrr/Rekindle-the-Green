@@ -129,7 +129,6 @@ function water() {
             <header class="headerl">
                 <h1>Gir National Park</h1>
             </header>
-
             <div style="
             position: fixed;
             top: 0;
@@ -143,13 +142,15 @@ function water() {
             box-sizing: border-box;
         ">
                 <h2>Forest Restoration</h2>
-                <p>
-                Deforestation in Gir, Gujarat means cutting down trees in the forest,
-                 which harms the natural habitat of animals like Asiatic lions. 
-                 As trees disappear, animals find it difficult to get enough food, water, and shelter. 
-                 This forces them to move closer to human areas, increasing conflicts between people and wildlife. 
-                 It also disturbs the balance of nature and makes the land drier and less healthy.
-                 Overall, deforestation puts both the environment and animals in danger.
+                <p style="font-size: 20px">
+                Afforestation in Gir National Park focuses on restoring degraded forest areas and strengthening habitats for wildlife, especially the endangered Asiatic lion. 
+                Planting native species like teak, acacia, and neem helps maintain the natural ecosystem and provides food and shelter for animals. 
+                These efforts also prevent soil erosion and improve water retention in the region’s dry climate. 
+                Local communities are actively involved through awareness programs and tree-planting drives, promoting sustainable practices. 
+                The government and forest department use scientific planning to ensure the right species are planted in suitable areas. 
+                Afforestation also helps reduce the impact of forest fires and climate change. 
+                Over time, increased green cover supports biodiversity, including birds, deer, and other wildlife. It also improves air quality and contributes to ecological balance. Continuous monitoring ensures young plants survive and grow into healthy forests. Overall, afforestation in Gir plays a vital role in conserving wildlife and maintaining environmental stability.
+
                 </p>
                 <img src="seeding.jpg" style="width:400px; border-radius:10px;">
             </div>
