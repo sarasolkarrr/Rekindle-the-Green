@@ -2,14 +2,14 @@
 (function () {
     const navTemplate = `
     <nav class="site-navbar">
-      <div class="nav-brand">Rekindle the Wild</div>
+      <div class="nav-brand">Rekindle the Green</div>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="profile.html">Profile</a></li>
         <li class="dropdown">
           <button class="dropbtn" type="button">Drives ▾</button>
           <div class="dropdown-content">
-            <a href="turtle/turtle.html">Velas Beach</a>
+            <a href="turtle.html">Velas Beach</a>
             <a href="tiger.html">Jim Corbett National Park</a>
           </div>
         </li>

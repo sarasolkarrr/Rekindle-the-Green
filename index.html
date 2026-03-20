@@ -17,10 +17,14 @@
     <style>
       #map {
         position: absolute;
-        top: 0;
+        top: 50px;
         bottom: 0;
         right: 0;
         left: 0;
+      }
+
+      .leaflet-control-container {
+        top: 50px;
       }
     </style>
     <meta charset="UTF-8" />
@@ -87,7 +91,7 @@
         .addTo(map)
         .bindPopup("Velas Beach");
       turtlemarker2.on("click", function () {
-        window.location.href = "turtle/turtle.html";
+        window.location.href = "turtle.html";
       });
 
 
