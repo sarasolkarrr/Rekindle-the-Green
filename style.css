@@ -34,7 +34,7 @@ html, body {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: rgb(156, 171, 170);
+    background-color: rgb(194, 209, 199);
     padding: 12px 18px;
     border: none;
     border-radius: 30px;
@@ -42,11 +42,6 @@ html, body {
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     z-index: 1000;
-}
-body {
-    height: 100vh;
-    background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
-    overflow: hidden;
 }
 
 .rain-container {
@@ -81,14 +76,14 @@ body {
 }
 .lion
 {
-    background-image: url(barren1.jpg);
+    background-image: url(barren.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     height: 100vh;
     width: 100%;
     margin: 0;
-    padding: 0;;
+    padding: 0;
     overflow: hidden;
 }
 
@@ -133,7 +128,7 @@ body {
     top: -50px;
     width: 8px;
     height: 8px;
-    background: rgb(176, 122, 61);
+    background: brown;
     border-radius: 50%;
     animation: seedFall 2s linear forwards;
 }
