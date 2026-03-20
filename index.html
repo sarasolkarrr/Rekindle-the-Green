@@ -72,6 +72,25 @@
         window.location.href = "lion.html";
       });
 
+      var turtleopt = {
+        iconUrl: "turtle.png",
+        iconSize: [70, 36],
+      };
+      var turtle = L.icon(turtleopt);
+      var turtlemarker = {
+        icon: turtle,
+        draggable: false,
+        title: "Velas Beach",
+      };
+
+      var turtlemarker2 = L.marker([17.5302, 73.4082], turtlemarker)
+        .addTo(map)
+        .bindPopup("Velas Beach");
+      turtlemarker2.on("click", function () {
+        window.location.href = "turtle/turtle.html";
+      });
+
+
       L.tileLayer(
         "https://api.maptiler.com/maps/hybrid-v4/{z}/{x}/{y}.jpg?key=hYPG3mJkV44SssjFGx1a",
         {

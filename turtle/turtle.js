@@ -30,7 +30,7 @@ turtle.addEventListener('click', () => {
     score++;
     scoreDisplay.textContent = score;
 
-    if (score === 1) {
+    if (score === 5) {
         overlay.style.display = 'flex'; // Show overlay when score is 5
     } else {
         animateTurtle();
