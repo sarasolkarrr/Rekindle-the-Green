@@ -1,0 +1,89 @@
+/* Shared navigation bar component styles */
+.site-navbar {
+    font-family: 'Inter', sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 1rem;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    color: #000;
+}
+.site-navbar .nav-brand {
+    font-weight: 700;
+    color: #000;
+    text-decoration: none;
+    font-size: 1.05rem;
+}
+.site-navbar .nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+.site-navbar .nav-links li {
+    position: relative;
+}
+.site-navbar .nav-links a,
+.site-navbar .dropbtn {
+    color: #000;
+    text-decoration: none;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    font-weight: 500;
+}
+.site-navbar .nav-links a:hover,
+.site-navbar .dropbtn:hover {
+    border-color: #999;
+    cursor: pointer;
+}
+.site-navbar .dropdown {
+    display: inline-block;
+}
+.site-navbar .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 4px;
+    background-color: rgba(255, 255, 255, 0.95);
+    min-width: 220px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.16);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 6px;
+    z-index: 1000;
+}
+.site-navbar .dropdown-content a {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    color: #000;
+    text-decoration: none;
+}
+.site-navbar .dropdown-content a:last-child {
+    border-bottom: none;
+}
+.site-navbar .dropdown-content a:hover {
+    background-color: rgba(0,0,0,0.04);
+    border-color: #999;
+    cursor: pointer;
+}
+.site-navbar .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* push page content below nav */
+body {
+    padding-top: 60px;
+}
