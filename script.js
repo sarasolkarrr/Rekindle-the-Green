@@ -32,7 +32,7 @@ function rain() {
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(228, 236, 230, 0.7);
+                background: rgba(216, 205, 205, 0.7);
                 padding: 120px 30px 40px;
                 box-sizing: border-box;
                 overflow-y: auto;
@@ -49,7 +49,7 @@ function rain() {
                 These efforts are important to protect wildlife, forests, and the overall ecosystem of the park.
                 </p>
                 <div>
-                <img src="forestfirer.jpeg">
+                <img src="forestfirer.jpeg" style="width:400px; height:380px;">
                 <p style="text-align:center">Helicopters being used to supress the forest fire</p>
                 </div>
                 
