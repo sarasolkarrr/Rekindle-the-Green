@@ -32,15 +32,17 @@ function rain() {
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(216, 205, 205, 0.7);
+                background: rgba(128, 128, 128, 0.7);
+                background: 
                 padding: 120px 30px 40px;
                 box-sizing: border-box;
                 overflow-y: auto;
                 border-radius: 10px;
                 text-align: center;
             ">
-                <h2 style="text-align: center">Forest Fire Impact</h2>
-                <p>
+                <div style="background-color : rgba(220, 231, 213, 0.51); margin-top: 200px;border-radius: 4px width: 80%">
+                <h2 style="text-align: center; margin-top : 55px">Forest Fire Impact</h2>
+                <p style="font-size: 20px;">
                 Forest fires in Jim Corbett National Park are a common problem, especially during the dry summer months when leaves and grass become highly flammable.
                 Many of these fires are caused by human activities like carelessness, burning waste, or illegal entry into forest areas, though natural causes can also occur. 
                 One exmaple of these forest fires is the 2016 Uttarakhand forest fire that spread to approximately 4,538 hectares (11,210 acres) of forest land and resulted in nine fatalities
@@ -48,15 +50,14 @@ function rain() {
                 Rain being a natural suppresant of these fires can only be available seasonally so in serious situations, help from the Indian Air Force is taken, where helicopters are used to drop water using Bambi buckets.
                 These efforts are important to protect wildlife, forests, and the overall ecosystem of the park.
                 </p>
-                <div>
-                <img src="forestfirer.jpeg" style="width:400px; height:380px;">
+                <img src="forestfirer.jpeg" style="width:500px; height:380px;">
                 <p style="text-align:center">Helicopters being used to supress the forest fire</p>
                 </div>
                 
                 <h2>
             </div>
         `;
-    }, 4000);
+    }, 1000);
 }
 
 let seedcontainer;
@@ -117,7 +118,7 @@ function water() {
         watercontainer.innerHTML = "";
         seedcontainer.innerHTML = "";
 
-        document.body.style.backgroundImage = "url('seeds.jpg')";
+        document.body.style.backgroundImage = "url('barren.jpg')";
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundPosition = "center";
 
@@ -130,22 +131,27 @@ function water() {
             </header>
 
             <div style="
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(216,205,205,0.9);
-                padding: 120px 30px;
-                text-align: center;
-            ">
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(216,205,205,0.9);
+            padding: 120px 30px;
+            text-align: center;
+            overflow-y: auto;
+            box-sizing: border-box;
+        ">
                 <h2>Forest Restoration</h2>
                 <p>
-                Planting seeds and watering them helps forests grow again.
-                Trees absorb carbon dioxide, give oxygen, and support wildlife.
-                Reforestation helps restore nature after fires.
+                Deforestation in Gir, Gujarat means cutting down trees in the forest,
+                 which harms the natural habitat of animals like Asiatic lions. 
+                 As trees disappear, animals find it difficult to get enough food, water, and shelter. 
+                 This forces them to move closer to human areas, increasing conflicts between people and wildlife. 
+                 It also disturbs the balance of nature and makes the land drier and less healthy.
+                 Overall, deforestation puts both the environment and animals in danger.
                 </p>
-                <img src="planting.jpeg" style="width:400px; border-radius:10px;">
+                <img src="seeding.jpg" style="width:400px; border-radius:10px;">
             </div>
             `;
         };
