@@ -95,7 +95,7 @@ body {
 
 .headerl {
     position: fixed;
-    top: 0;
+    top: 66px;
     left: 0;
     width: 100%;
     background: rgba(201, 151, 116, 0.95);

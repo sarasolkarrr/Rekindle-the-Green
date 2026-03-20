@@ -2,7 +2,7 @@
 (function () {
     const navTemplate = `
     <nav class="site-navbar">
-      <div class="nav-brand">Rekindle the Wild</div>
+      <div class="nav-brand">Rekindle the Green</div>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="profile.html">Profile</a></li>
