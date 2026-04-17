@@ -1,25 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="nav.css" />
-    <script src="nav.js" defer></script>
-    <title>Rekindle the Wild</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+<meta charset="UTF-8">
+<title>Plant the Seeds 🌱</title>
+<style>
+    body {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    background: #0b2f26;
+    color: #f5e6c8;
+    margin: 0;
+}
+
+h1 {
+    color: #d4af37;
+    margin-top: 30px;
+    font-size: 42px;
+}
+
+#score {
+    font-size: 22px;
+    margin: 15px 0 25px;
+    font-weight: 500;
+}
+
+#board {
+    width: 360px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+/* tiles */
+.tile {
+    width: 100px;
+    height: 100px;
+    background: #8d6e63;
+    border-radius: 18px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+
+    box-shadow: 
+        inset 0 4px 8px rgba(0,0,0,0.4),
+        0 6px 12px rgba(0,0,0,0.3);
+
+    transition: transform 0.15s ease, box-shadow 0.15s;
+}
+
+.tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        inset 0 4px 8px rgba(0,0,0,0.4),
+        0 10px 18px rgba(0,0,0,0.4);
+}
+
+/* filled tiles */
+.filled {
+    background: #2e7d32 !important;
+}
+
+/* seed */
+.seed {
+    position: absolute;
+    bottom: -80px;
+    width: 100%;
+    text-align: center;
+    font-size: 42px;
+    transition: bottom 0.25s ease;
+}
+
+.show {
+    bottom: 22px;
+}
+
+/* info page */
+#infoPage {
+    display: none;
+    padding: 40px;
+}
+
+/* banner */
+.success-banner {
+    background: rgba(0, 255, 100, 0.08);
+    border: 1px solid #4caf50;
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+/* stats */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(0,0,0,0.35);
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 35px;
+}
+
+.stats h2 {
+    color: #d4af37;
+    margin: 0;
+    font-size: 32px;
+}
+
+/* sections */
+.section-title {
+    margin-top: 25px;
+    border-bottom: 1px solid #d4af37;
+    padding-bottom: 6px;
+}
+
+/* list */
+.timeline {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    max-width: 700px;
+    margin: auto;
+}
+
+.timeline li {
+    margin: 18px 0;
+}
+
+/* CTA */
+.cta-box {
+    background: rgba(0,0,0,0.4);
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 25px;
+}
+
+.cta-box button {
+    margin-top: 12px;
+    padding: 12px 24px;
+    background: #d4af37;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+</style>
+
 </head>
 
-<body class="lion">
+<body>
 
-<div class="headert" style="position: fixed; top:47px; left: 0;">
-  <h3>Gir National Park</h3>
+<h1>🌱 Plant the Seeds</h1>
+<h2 id="score">Score: 0</h2>
+
+<div id="board"></div>
+
+<div id="infoPage">
+    <div class="success-banner">
+        ✅ Quest Complete! You've unlocked Gir's conservation story.
+    </div>
+
+    <div class="stats">
+        <div>
+            <h2>674</h2>
+            <p>Lions (2023 Census)</p>
+        </div>
+        <div>
+            <h2>1412</h2>
+            <p>Sq. Km Protected</p>
+        </div>
+        <div>
+            <h2>50+</h2>
+            <p>Years of Protection</p>
+        </div>
+    </div>
+
+    <h2 class="section-title">Past Conservation Efforts</h2>
+
+    <ul class="timeline">
+        <li><strong>Project Lion — 2020</strong><br>Govt initiative to protect Asiatic lions and improve habitats.</li>
+        <li><strong>Population Monitoring</strong><br>Growth from 177 lions (1968) to 674 (2023).</li>
+        <li><strong>Sanctuary Expansion</strong><br>Expanded protected zones and wildlife corridors.</li>
+        <li><strong>Anti-Poaching Units</strong><br>24/7 monitoring with near-zero incidents.</li>
+    </ul>
+
+    <h2 class="section-title">Get Involved</h2>
+
+    <div class="cta-box">
+        <h3>Be a Lion Guardian 🦁</h3>
+        <p>Support conservation efforts and protect wildlife.</p>
+        <button>Register for an Event</button>
+    </div>
 </div>
-    <div class="seed-container" id="seedcontainer"></div>
-    <div class="water-container" id="watercontainer"></div>
 
-    <button class="seedbtn" style="right: 20px;" onclick="seed()">🌱</button>
-    <button class="seedbtn" style="right: 90px;" onclick="water()">💧</button>
+<script>
+let score = 0;
+let plantedCount = 0;
+let currentTile = null;
+let gameOver = false;
+
+const board = document.getElementById("board");
+const scoreText = document.getElementById("score");
+
+let tiles = [];
+
+for (let i = 0; i < 9; i++) {
+    let tile = document.createElement("div");
+    tile.classList.add("tile");
+    tile.dataset.filled = "false";
+
+    let seed = document.createElement("div");
+    seed.classList.add("seed");
+    seed.innerText = "🌱";
+
+    tile.appendChild(seed);
+    board.appendChild(tile);
+
+    tiles.push(tile);
+
+    tile.addEventListener("click", () => {
+        if (gameOver) return;
+
+        if (
+            tile === currentTile &&
+            seed.classList.contains("show") &&
+            tile.dataset.filled === "false"
+        ) {
+            tile.dataset.filled = "true";
+            tile.classList.add("filled");
+
+            score += 10;
+            plantedCount++;
+
+            scoreText.innerText = `Score: ${score}`;
+
+            seed.classList.remove("show");
+
+            if (plantedCount === 9) {
+                gameOver = true;
+                setTimeout(() => {
+                    board.style.display = "none";
+                    scoreText.style.display = "none";
+                    document.getElementById("infoPage").style.display = "block";
+                }, 500);
+            }
+        }
+    });
+}
+
+function spawnSeed() {
+    if (gameOver) return;
+
+    tiles.forEach(tile => {
+        tile.querySelector(".seed").classList.remove("show");
+    });
+
+    let available = tiles.filter(tile => tile.dataset.filled === "false");
+
+    if (available.length === 0) return;
+
+    let randomTile = available[Math.floor(Math.random() * available.length)];
+    currentTile = randomTile;
+
+    randomTile.querySelector(".seed").classList.add("show");
+}
+
+setInterval(spawnSeed, 800);
+</script>
 
 </body>
 </html>
