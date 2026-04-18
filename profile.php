@@ -2,9 +2,6 @@
 include 'connection.php';
 session_start();
 
-
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'register') {
     $fname    = mysqli_real_escape_string($con, $_POST['fname']);
     $lname    = mysqli_real_escape_string($con, $_POST['lname']);
@@ -126,7 +123,7 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
       z-index: 0;
     }
 
-    /* ── NAV ── */
+
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -186,7 +183,7 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
     }
     .btn-logout:hover { background: rgba(220,100,100,0.1); color: #f99; }
 
-    /* ── PAGE ── */
+
     .page-wrap {
       position: relative; z-index: 1; flex: 1;
       display: flex; align-items: flex-start; justify-content: center;
@@ -194,7 +191,7 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
       gap: 1.2rem;
     }
 
-    /* ── PROFILE CARD ── */
+
     .profile-card {
       background: rgba(255,255,255,0.96);
       border-radius: 16px;
@@ -233,7 +230,7 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
 
     .profile-email { font-size: 0.8rem; color: #999; margin-bottom: 1.2rem; }
 
-    /* ── INFO ROWS ── */
+
     .info-row {
       display: flex; align-items: center; gap: 0.7rem;
       padding: 0.65rem 0;
@@ -245,7 +242,6 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
     .info-label { font-size: 0.68rem; color: #bbb; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 1px; }
     .info-val   { color: #333; font-weight: 500; }
 
-    /* ── DRIVE BADGE ── */
     .drive-badge {
       display: flex; align-items: center; gap: 0.75rem;
       padding: 0.9rem 1rem;
@@ -264,7 +260,7 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
     .drive-badge .d-sub  { font-size: 0.72rem; color: #777; margin-top: 1px; }
     .drive-badge .d-arrow { margin-left: auto; font-size: 0.9rem; color: #ccc; }
 
-    /* ── ACTIONS ── */
+
     .profile-actions { display: flex; gap: 0.6rem; margin-top: 0.3rem; }
 
     .action-btn {
@@ -285,7 +281,6 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
     }
     .action-danger:hover { background: #fee5e5; }
 
-    /* ── STATS CARD ── */
     .stats-card {
       background: rgba(255,255,255,0.96);
       border-radius: 16px;
@@ -316,7 +311,6 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
     .stat-label { font-size: 0.72rem; color: #aaa; margin-bottom: 2px; }
     .stat-val   { font-size: 0.9rem; font-weight: 700; color: #1a2e1a; }
 
-    /* quick links */
     .quick-links { margin-top: 1.2rem; }
     .quick-link {
       display: flex; align-items: center; gap: 0.65rem;

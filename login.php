@@ -1,10 +1,5 @@
 <?php
 session_start();
-// If already logged in, go to profile
-if (isset($_SESSION['user_id'])) {
-    header('Location: profile.php');
-    exit;
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +34,7 @@ if (isset($_SESSION['user_id'])) {
       z-index: 0;
     }
 
-    /* ── NAV ── */
+
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -114,7 +109,7 @@ if (isset($_SESSION['user_id'])) {
     }
     .btn-gold:hover { background: #e8c96a; border-color: #e8c96a; }
 
-    /* ── PAGE WRAP ── */
+
     .page-wrap {
       position: relative;
       z-index: 1;
@@ -125,7 +120,6 @@ if (isset($_SESSION['user_id'])) {
       padding: 80px 1rem 2rem;
     }
 
-    /* ── CARD ── */
     .card {
       background: rgba(255,255,255,0.96);
       border-radius: 14px;
@@ -159,14 +153,13 @@ if (isset($_SESSION['user_id'])) {
       color: #888;
     }
 
-    /* ── DIVIDER ── */
+
     .divider {
       height: 1px;
       background: #eee;
       margin: 0 0 1.5rem;
     }
 
-    /* ── FIELDS ── */
     .field { margin-bottom: 1rem; }
 
     .field label {
@@ -209,7 +202,7 @@ if (isset($_SESSION['user_id'])) {
     }
     .field.has-error .err { display: block; }
 
-    /* ── PASSWORD ── */
+
     .pwd-wrap { position: relative; }
     .pwd-wrap input { padding-right: 3.2rem; }
     .show-pwd {
@@ -225,12 +218,10 @@ if (isset($_SESSION['user_id'])) {
     }
     .show-pwd:hover { color: #3d6b2a; }
 
-    /* ── FORGOT ── */
     .forgot-row { text-align: right; margin: -0.4rem 0 1rem; }
     .forgot-row a { font-size: 0.73rem; color: #aaa; text-decoration: none; transition: color 0.18s; }
     .forgot-row a:hover { color: #3d6b2a; }
 
-    /* ── SUBMIT ── */
     .btn-submit {
       width: 100%;
       padding: 0.8rem;
@@ -268,7 +259,7 @@ if (isset($_SESSION['user_id'])) {
     .btn-submit.loading .spinner { display: block; }
     @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
 
-    /* ── FOOTER LINK ── */
+    
     .card-footer {
       text-align: center;
       font-size: 0.78rem;
@@ -282,7 +273,6 @@ if (isset($_SESSION['user_id'])) {
     }
     .card-footer a:hover { text-decoration: underline; }
 
-    /* ── ERROR MODAL ── */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -329,7 +319,7 @@ if (isset($_SESSION['user_id'])) {
     .modal-btn-secondary { background: #f0f0f0; color: #444; }
     .modal-btn-secondary:hover { background: #e5e5e5; }
 
-    /* ── SUCCESS STATE ── */
+
     .success-box { display: none; text-align: center; padding: 0.5rem 0 0.8rem; }
     .success-box.show { display: block; }
     .success-icon { font-size: 2.6rem; margin-bottom: 0.7rem; }

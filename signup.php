@@ -38,7 +38,6 @@ if (isset($_SESSION['user_id'])) {
       z-index: 0;
     }
 
-    /* ── NAV ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -85,7 +84,7 @@ if (isset($_SESSION['user_id'])) {
     }
     .btn-outline:hover { background: rgba(201,168,76,0.1); }
 
-    /* ── PAGE ── */
+
     .page-wrap {
       position: relative;
       z-index: 1;
@@ -96,7 +95,7 @@ if (isset($_SESSION['user_id'])) {
       padding: 76px 1rem 2rem;
     }
 
-    /* ── CARD ── */
+
     .card {
       background: rgba(255,255,255,0.96);
       border-radius: 14px;
@@ -119,7 +118,7 @@ if (isset($_SESSION['user_id'])) {
     }
     .card-header p { font-size: 0.8rem; color: #888; }
 
-    /* ── SECTION LABEL ── */
+
     .section-label {
       font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em;
       text-transform: uppercase; color: #bbb;
@@ -128,7 +127,6 @@ if (isset($_SESSION['user_id'])) {
       border-bottom: 1px solid #f0f0f0;
     }
 
-    /* ── FIELDS ── */
     .field { margin-bottom: 0.85rem; }
 
     .field label {
@@ -154,7 +152,7 @@ if (isset($_SESSION['user_id'])) {
     .field .err { font-size: 0.7rem; color: #c0392b; margin-top: 0.25rem; display: none; }
     .field.has-error .err { display: block; }
 
-    /* select arrow */
+
     .select-wrap { position: relative; }
     .select-wrap::after {
       content: '▾'; position: absolute;
@@ -163,16 +161,15 @@ if (isset($_SESSION['user_id'])) {
     }
     .field select { padding-right: 2.2rem; cursor: pointer; }
 
-    /* name row */
+
     .field-row { display: flex; gap: 0.65rem; }
     .field-row .field { flex: 1; }
 
-    /* phone */
+
     .phone-row { display: flex; gap: 0.5rem; }
     .phone-row .code-wrap { width: 94px; flex-shrink: 0; }
     .phone-row .num-wrap { flex: 1; }
 
-    /* password */
     .pwd-wrap { position: relative; }
     .pwd-wrap input { padding-right: 3.2rem; }
     .show-pwd {
@@ -183,13 +180,13 @@ if (isset($_SESSION['user_id'])) {
     }
     .show-pwd:hover { color: #3d6b2a; }
 
-    /* strength */
+
     .strength { display: none; margin-top: 0.42rem; }
     .s-bars { display: flex; gap: 3px; margin-bottom: 3px; }
     .sbar { flex: 1; height: 3px; border-radius: 2px; background: #e8e8e8; transition: background 0.25s; }
     .s-label { font-size: 0.69rem; color: #aaa; }
 
-    /* ── SUBMIT ── */
+
     .btn-submit {
       width: 100%; padding: 0.8rem;
       background: #3d6b2a; color: #fff; border: none;
@@ -226,7 +223,7 @@ if (isset($_SESSION['user_id'])) {
     .card-footer a { color: #3d6b2a; font-weight: 600; text-decoration: none; }
     .card-footer a:hover { text-decoration: underline; }
 
-    /* ── SUCCESS ── */
+
     .success-box { display: none; text-align: center; padding: 0.5rem 0 0.8rem; }
     .success-box.show { display: block; }
     .success-icon { font-size: 2.6rem; margin-bottom: 0.7rem; }
@@ -236,7 +233,6 @@ if (isset($_SESSION['user_id'])) {
     .progress-fill { height: 100%; background: #3d6b2a; width: 0%; transition: width 2.5s linear; }
     .redirect-note { font-size: 0.7rem; color: #bbb; }
 
-    /* ── DRIVE CARDS ── */
     .drive-cards { display: flex; flex-direction: column; gap: 0.5rem; }
 
     .drive-card {
