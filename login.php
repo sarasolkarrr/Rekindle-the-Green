@@ -259,7 +259,7 @@ session_start();
     .btn-submit.loading .spinner { display: block; }
     @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
 
-    
+
     .card-footer {
       text-align: center;
       font-size: 0.78rem;
@@ -355,7 +355,6 @@ session_start();
 
   <div class="modal-overlay" id="errorModal">
     <div class="modal-box">
-      <div class="modal-icon">⚠️</div>
       <h3 id="modalTitle">Login Error</h3>
       <p id="modalMessage">An error occurred. Please try again.</p>
       <div class="modal-actions">
@@ -379,7 +378,6 @@ session_start();
 
 
       <div class="success-box" id="successBox">
-        <div class="success-icon">🌿</div>
         <h3>Signed in!</h3>
         <p>Welcome back. Taking you to the map...</p>
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>

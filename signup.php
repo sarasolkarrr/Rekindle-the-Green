@@ -403,10 +403,6 @@ if (isset($_SESSION['user_id'])) {
             <span class="spinner"></span>
           </button>
 
-          <p class="terms-text">
-            By registering you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
-          </p>
-
         </form>
 
         <p class="card-footer">

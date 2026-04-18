@@ -21,9 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
 
     // Insert user
-    $query = "INSERT INTO users (first_name, last_name, email, phone, password, conservation_drive, registration_date) 
+    $query = "INSERT INTO users (first_name, last_name, email, phone, password, conservation_drive, registration_date)
               VALUES ('$fname', '$lname', '$email', '$phone', '$password', '$drive', NOW())";
-    
+
     if (mysqli_query($con, $query)) {
         $_SESSION['user_id'] = mysqli_insert_id($con);
         $_SESSION['user_email'] = $email;
@@ -452,7 +452,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 <!-- ERROR MODAL -->
 <div class="modal-overlay" id="errorModal">
   <div class="modal-content">
-    <div class="modal-icon">⚠️</div>
+    <div class="modal-icon">Alert</div>
     <h3 id="modalTitle">Login Error</h3>
     <p id="modalMessage">An error occurred. Please try again.</p>
     <button class="modal-btn modal-btn-primary" onclick="closeErrorModal()">Try Again</button>
@@ -471,7 +471,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
     <!-- SUCCESS -->
     <div class="success-box" id="successBox">
-      <div class="success-icon">🌿</div>
+      <div class="success-icon">OK</div>
       <h3 id="successTitle">You\'re registered!</h3>
       <p id="successMsg">Welcome. Taking you to the map...</p>
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -483,7 +483,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
       <div class="choice-btns">
 
         <button class="choice-btn secondary" onclick="goTo('screenLogin')">
-          <span class="btn-icon">🙋</span>
+          <span class="btn-icon">In</span>
           <span class="btn-label">
             I already have an account
             <span>Sign in to continue</span>
@@ -492,7 +492,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         </button>
 
         <button class="choice-btn primary" onclick="goTo('screenRegister')">
-          <span class="btn-icon">🌱</span>
+          <span class="btn-icon">New</span>
           <span class="btn-label">
             Create a new account
             <span>Register and join a conservation drive</span>
@@ -567,10 +567,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
           <div class="phone-row">
             <div class="code-wrap select-wrap">
               <select id="r-code">
-                <option value="+91">🇮🇳 +91</option>
-                <option value="+1">🇺🇸 +1</option>
-                <option value="+44">🇬🇧 +44</option>
-                <option value="+61">🇦🇺 +61</option>
+                <option value="+91">India +91</option>
+                <option value="+1">USA +1</option>
+                <option value="+44">UK +44</option>
+                <option value="+61">Australia +61</option>
               </select>
             </div>
             <div class="num-wrap">
@@ -587,9 +587,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
           <div class="select-wrap">
             <select id="r-drive">
               <option value="" disabled selected>Select a drive...</option>
-              <option value="corbett">🐯 Jim Corbett National Park — Tiger Conservation</option>
-              <option value="velas">🐢 Velas Beach — Turtle Conservation Drive</option>
-              <option value="gir">🦁 Gir National Park — Lion Conservation</option>
+              <option value="corbett">Jim Corbett National Park — Tiger Conservation</option>
+              <option value="velas">Velas Beach — Turtle Conservation Drive</option>
+              <option value="gir">Gir National Park — Lion Conservation</option>
             </select>
           </div>
           <span class="err">Please select a drive.</span>
@@ -722,7 +722,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             } else {
                 var title = 'Login Error';
                 var msg = data.message || 'Login failed';
-                
+
                 if (data.message === 'User not found') {
                     title = 'Account Not Found';
                     msg = 'No account exists with this email. Create a new account to get started.';
@@ -730,7 +730,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     title = 'Invalid Password';
                     msg = 'The password you entered is incorrect. Please try again.';
                 }
-                
+
                 showErrorModal(title, msg);
             }
         })
