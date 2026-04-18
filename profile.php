@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
   exit;
 }
 
-// ── Handle Login ──
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'login') {
   $email = mysqli_real_escape_string($con, $_POST['email']);
   $password = $_POST['password'];
@@ -57,20 +57,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
   exit;
 }
 
-// ── Handle Logout ──
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['logout'])) {
   session_destroy();
   header('Location: index.html');
   exit;
 }
 
-// ── Guard: must be logged in to see profile ──
+
 if (!isset($_SESSION['user_id'])) {
   header('Location: login.php');
   exit;
 }
 
-// ── Fetch fresh user data ──
+
 header_remove('Content-Type');
 header('Content-Type: text/html; charset=UTF-8');
 
