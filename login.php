@@ -344,7 +344,7 @@ if (isset($_SESSION['user_id'])) {
 </head>
 <body>
 
-  <!-- NAV -->
+
   <nav>
     <a class="nav-logo" href="index.html">
       <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -362,7 +362,7 @@ if (isset($_SESSION['user_id'])) {
     </div>
   </nav>
 
-  <!-- ERROR MODAL -->
+
   <div class="modal-overlay" id="errorModal">
     <div class="modal-box">
       <div class="modal-icon">⚠️</div>
@@ -375,7 +375,7 @@ if (isset($_SESSION['user_id'])) {
     </div>
   </div>
 
-  <!-- PAGE -->
+
   <div class="page-wrap">
     <div class="card">
 
@@ -387,7 +387,7 @@ if (isset($_SESSION['user_id'])) {
 
       <div class="divider"></div>
 
-      <!-- SUCCESS -->
+
       <div class="success-box" id="successBox">
         <div class="success-icon">🌿</div>
         <h3>Signed in!</h3>
@@ -396,7 +396,6 @@ if (isset($_SESSION['user_id'])) {
         <span class="redirect-note">Redirecting...</span>
       </div>
 
-      <!-- FORM -->
       <div class="form-wrap" id="formWrap">
         <form onsubmit="return false;">
 

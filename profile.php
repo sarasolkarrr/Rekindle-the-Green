@@ -337,7 +337,6 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
 </head>
 <body>
 
-  <!-- NAV -->
   <nav>
     <a class="nav-logo" href="index.html">
       <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -361,10 +360,10 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
     </div>
   </nav>
 
-  <!-- PAGE -->
+
   <div class="page-wrap">
 
-    <!-- PROFILE CARD -->
+
     <div class="profile-card">
       <div class="profile-banner">
         <div class="avatar"><?= htmlspecialchars($initials) ?></div>
@@ -374,7 +373,7 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
         <div class="profile-name"><?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) ?></div>
         <div class="profile-email"><?= htmlspecialchars($user['email']) ?></div>
 
-        <!-- Drive badge -->
+  
         <a class="drive-badge" href="<?= htmlspecialchars($driveInfo['page']) ?>">
           <span class="d-emoji"><?= $driveInfo['emoji'] ?></span>
           <div class="d-text">
@@ -384,7 +383,6 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
           <span class="d-arrow">›</span>
         </a>
 
-        <!-- Info rows -->
         <div class="info-row">
           <span class="info-icon">📞</span>
           <div>
@@ -400,7 +398,7 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
           </div>
         </div>
 
-        <!-- Actions -->
+
         <div class="profile-actions" style="margin-top:1.2rem;">
           <a href="index.html" class="action-btn action-primary">🗺️ View Map</a>
           <a href="profile.php?logout=1" class="action-btn action-danger">Sign Out</a>
@@ -408,7 +406,7 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
       </div>
     </div>
 
-    <!-- STATS / QUICK LINKS CARD -->
+
     <div class="stats-card">
       <div class="stats-title">Your Conservation Hub</div>
 

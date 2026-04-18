@@ -272,7 +272,7 @@ if (isset($_SESSION['user_id'])) {
 </head>
 <body>
 
-  <!-- NAV -->
+
   <nav>
     <a class="nav-logo" href="index.html">
       <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -286,11 +286,11 @@ if (isset($_SESSION['user_id'])) {
     <span class="nav-center">Wildlife Conservation India</span>
     <div class="nav-actions">
       <a href="index.html" class="btn-nav btn-ghost">← Map</a>
-      <a href="login.php" class="btn-nav btn-outlinse">Sign In</a>
+      <a href="login.php" class="btn-nav btn-outline">Sign In</a>
     </div>
   </nav>
 
-  <!-- PAGE -->
+
   <div class="page-wrap">
     <div class="card">
 
@@ -300,7 +300,6 @@ if (isset($_SESSION['user_id'])) {
         <p>Register and help protect India's wild spaces.</p>
       </div>
 
-      <!-- SUCCESS -->
       <div class="success-box" id="successBox">
         <div class="success-icon">🌿</div>
         <h3 id="successTitle">You're in!</h3>
@@ -309,7 +308,7 @@ if (isset($_SESSION['user_id'])) {
         <span class="redirect-note">Redirecting...</span>
       </div>
 
-      <!-- FORM -->
+
       <div id="formWrap">
         <form onsubmit="return false;">
 
