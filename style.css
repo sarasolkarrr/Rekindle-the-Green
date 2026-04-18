@@ -2,10 +2,21 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: "Inter", sans-serif;
+    font-family: "Inter", "Segoe UI", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
     overflow: hidden;
+    color: #1f2a22;
+}
+
+:root {
+    --rtg-surface: rgba(255, 255, 255, 0.82);
+    --rtg-surface-strong: rgba(255, 255, 255, 0.92);
+    --rtg-border: rgba(111, 143, 102, 0.25);
+    --rtg-shadow: 0 14px 30px rgba(34, 53, 39, 0.18);
+    --rtg-text: #1f2a22;
+    --rtg-btn: #eef4ea;
+    --rtg-btn-hover: #dce9d8;
 }
 .tiger
 {
@@ -22,26 +33,38 @@ html, body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    background: rgb(139, 69, 19);
-    color: white;
+    width: min(92%, 720px);
+    margin: 0 auto;
+    right: 0;
+    background: var(--rtg-surface);
+    border: 1px solid var(--rtg-border);
+    color: var(--rtg-text);
     text-align: center;
-    padding: 0.095px ;
-    font-size: 20px;
+    padding: 0.4rem 0.8rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    box-shadow: var(--rtg-shadow);
     z-index: 1000;
 }
 .rainbtn {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: rgb(194, 209, 199);
+    background-color: var(--rtg-btn);
+    color: var(--rtg-text);
     padding: 12px 18px;
-    border: none;
+    border: 1px solid var(--rtg-border);
     border-radius: 30px;
     font-size: 16px;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: var(--rtg-shadow);
     z-index: 1000;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.rainbtn:hover {
+    background-color: var(--rtg-btn-hover);
+    transform: translateY(-1px);
 }
 
 
@@ -92,27 +115,38 @@ html, body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    background: rgba(201, 151, 116, 0.95);
-    color: white;
+    width: min(92%, 720px);
+    margin: 0 auto;
+    right: 0;
+    background: var(--rtg-surface-strong);
+    color: var(--rtg-text);
+    border: 1px solid var(--rtg-border);
     text-align: center;
-    padding: 10px;
-    font-size: 20px;
+    padding: 0.65rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    box-shadow: var(--rtg-shadow);
     z-index: 1000;
 }
 
 .seedbtn {
     position: fixed;
     bottom: 20px;
-    background-color: white;
-    color: black;
+    background-color: var(--rtg-btn);
+    color: var(--rtg-text);
     padding: 12px 18px;
-    border: none;
+    border: 1px solid var(--rtg-border);
     border-radius: 30px;
     font-size: 18px;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    box-shadow: var(--rtg-shadow);
     z-index: 9999;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.seedbtn:hover {
+    background-color: var(--rtg-btn-hover);
+    transform: translateY(-1px);
 }
 
 .seed-container,
@@ -153,5 +187,18 @@ html, body {
 @keyframes dropFall {
     to {
         transform: translateY(100vh);
+    }
+}
+
+@media (max-width: 720px) {
+    .headert,
+    .headerl {
+        width: calc(100% - 14px);
+        font-size: 0.92rem;
+    }
+
+    .rainbtn,
+    .seedbtn {
+        padding: 10px 15px;
     }
 }
