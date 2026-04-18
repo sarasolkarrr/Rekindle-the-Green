@@ -14,7 +14,7 @@ if (isset($_SESSION['user_id'])) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
-  <title>Sign In — Rekindle the Green</title>
+  <title>Sign In-Rekindle the Green</title>
 
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }

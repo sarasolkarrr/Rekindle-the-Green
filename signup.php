@@ -13,7 +13,7 @@ if (isset($_SESSION['user_id'])) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
-  <title>Sign Up — Rekindle the Green</title>
+  <title>Sign Up-for Rekindle the Green</title>
 
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -329,8 +329,8 @@ if (isset($_SESSION['user_id'])) {
 
           <div class="field" id="fr-email">
             <label>Email address</label>
-            <input type="email" id="r-email" placeholder="you@example.com" autocomplete="email">
-            <span class="err">Please enter a valid email.</span>
+            <input type="email" id="r-email" placeholder="janedoe@gmail.com" autocomplete="email">
+            <span class="err">Please enter a valid email</span>
           </div>
 
           <div class="field" id="fr-phone">
