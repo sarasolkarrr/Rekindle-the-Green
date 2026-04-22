@@ -5,8 +5,9 @@
 <link rel="stylesheet" href="nav.css">
 <script src="nav.js" defer></script>
 <title>Plant the Seeds 🌱</title>
+
 <style>
-    body {
+body {
     font-family: 'Segoe UI', sans-serif;
     text-align: center;
     background: #0b2f26;
@@ -35,7 +36,6 @@ h1 {
     gap: 18px;
 }
 
-/* tiles */
 .tile {
     width: 100px;
     height: 100px;
@@ -59,32 +59,30 @@ h1 {
         0 10px 18px rgba(0,0,0,0.4);
 }
 
-/* filled tiles */
-.filled {
-    background: #2e7d32 !important;
-}
 
-/* seed */
+
 .seed {
     position: absolute;
-    bottom: -80px;
+    bottom: -70px;
     width: 100%;
     text-align: center;
-    font-size: 42px;
     transition: bottom 0.25s ease;
+}
+
+.seed img {
+    display: block;
+    margin: 0 auto;
 }
 
 .show {
     bottom: 22px;
 }
 
-/* info page */
 #infoPage {
     display: none;
     padding: 40px;
 }
 
-/* banner */
 .success-banner {
     background: rgba(0, 255, 100, 0.08);
     border: 1px solid #4caf50;
@@ -93,7 +91,6 @@ h1 {
     margin-bottom: 25px;
 }
 
-/* stats */
 .stats {
     display: flex;
     justify-content: space-around;
@@ -109,14 +106,12 @@ h1 {
     font-size: 32px;
 }
 
-/* sections */
 .section-title {
     margin-top: 25px;
     border-bottom: 1px solid #d4af37;
     padding-bottom: 6px;
 }
 
-/* list */
 .timeline {
     list-style: none;
     padding: 0;
@@ -129,7 +124,6 @@ h1 {
     margin: 18px 0;
 }
 
-/* CTA */
 .cta-box {
     background: rgba(0,0,0,0.4);
     padding: 25px;
@@ -146,22 +140,20 @@ h1 {
     font-weight: bold;
     cursor: pointer;
 }
-
 </style>
-
 </head>
 
 <body>
 
 <h1>Whack a Seed</h1>
-<h4><em>click to plant seeds:)</em></h4>
+<h4><em>click to plant seeds :)</em></h4>
 <h2 id="score">Score: 0</h2>
 
 <div id="board"></div>
 
 <div id="infoPage">
     <div class="success-banner">
-        ✅ Quest Complete! You've unlocked Gir's conservation story.
+        You've unlocked Gir's conservation story.
     </div>
 
     <div class="stats">
@@ -195,7 +187,6 @@ h1 {
         <p>Support conservation efforts and protect wildlife.</p>
         <button>Register for an Event</button>
     </div>
-    
 </div>
 
 <script>
@@ -216,8 +207,12 @@ for (let i = 0; i < 9; i++) {
 
     let seed = document.createElement("div");
     seed.classList.add("seed");
-    seed.innerHTML = '<img src="seed.png" style="width:49px; height:auto;">';
 
+    let img = document.createElement("img");
+    img.src = "seed.png";
+    img.style.width = "49px";
+
+    seed.appendChild(img);
     tile.appendChild(seed);
     board.appendChild(tile);
 
@@ -226,20 +221,33 @@ for (let i = 0; i < 9; i++) {
     tile.addEventListener("click", () => {
         if (gameOver) return;
 
+        let seedDiv = tile.querySelector(".seed");
+
         if (
             tile === currentTile &&
-            seed.classList.contains("show") &&
+            seedDiv.classList.contains("show") &&
             tile.dataset.filled === "false"
         ) {
             tile.dataset.filled = "true";
             tile.classList.add("filled");
 
+            seedDiv.style.display = "none";
+
+            let plant = document.createElement("img");
+            plant.src = "plant.png";
+            plant.style.width = "65px";
+            plant.style.position = "absolute";
+            plant.style.bottom = "20px";
+            plant.style.left = "50%";
+            plant.style.transform = "translateX(-50%)";
+            plant.style.zIndex = "10";
+            tile.appendChild(plant);
+
+            seedDiv.style.display = "none";
             score += 10;
             plantedCount++;
 
             scoreText.innerText = `Score: ${score}`;
-
-            seed.classList.remove("show");
 
             if (plantedCount === 9) {
                 gameOver = true;
@@ -257,7 +265,8 @@ function spawnSeed() {
     if (gameOver) return;
 
     tiles.forEach(tile => {
-        tile.querySelector(".seed").classList.remove("show");
+        let s = tile.querySelector(".seed");
+        if (s) s.classList.remove("show");
     });
 
     let available = tiles.filter(tile => tile.dataset.filled === "false");
