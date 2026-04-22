@@ -2,7 +2,7 @@
 include 'connection.php';
 session_start();
 
-header('Content-Type: application');
+header('Content-Type: application/json');
 
 // Handle Registration
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'register') {

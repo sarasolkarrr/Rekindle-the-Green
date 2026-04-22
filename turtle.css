@@ -90,10 +90,15 @@ body::before {
     justify-content: center;
     align-items: center;
     text-align: center;
+    z-index: 1000;
+    padding: 16px;
 }
 
+/* FIX: was 60rem which blew out on mobile — now responsive */
 .overlay-image {
-    width: 60rem;
+    width: 100%;
+    max-height: 280px;
+    object-fit: cover;
     margin: 0 auto 20px;
     display: block;
     border-radius: 10px;
@@ -105,10 +110,12 @@ body::before {
     border-radius: 14px;
     text-align: left;
     position: relative;
-    max-width: 70rem;
+    max-width: 680px;
     width: 100%;
     border: 1px solid var(--rtg-border);
     box-shadow: 0 18px 38px rgba(20, 32, 24, 0.28);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .overlay-content h2,
@@ -156,17 +163,17 @@ body::before {
     }
 
     .overlay-content {
-        width: 92%;
+        width: 100%;
         padding: 16px;
     }
 
     .overlay-image {
-        width: 100%;
+        max-height: 180px;
     }
 
     #closeOverlay {
         position: static;
-        margin-left: auto;
+        margin: 16px auto 0;
         display: block;
     }
 }

@@ -81,6 +81,7 @@ $driveLabels = [
   'corbett' => ['name' => 'Jim Corbett National Park', 'sub' => 'Tiger Conservation — Uttarakhand', 'page' => 'tiger.html', 'color' => '#c0392b'],
   'velas' => ['name' => 'Velas Beach', 'sub' => 'Turtle Conservation — Maharashtra', 'page' => 'turtle.html', 'color' => '#27ae60'],
   'gir' => ['name' => 'Gir National Park', 'sub' => 'Lion Conservation — Gujarat', 'page' => 'lion.html', 'color' => '#e67e22'],
+  'keoladeo' => ['name' => 'Keoladeo National Park', 'sub' => 'Bird Conservation — Rajasthan', 'page' => 'bird.html', 'color' => '#2a8ae0'],
 ];
 
 $driveKey = $user['conservation_drive'] ?? '';
@@ -483,6 +484,10 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
         </a>
         <a href="turtle.html" class="quick-link">
           Velas Beach — Turtles
+          <span class="ql-arrow">›</span>
+        </a>
+        <a href="bird.html" class="quick-link">
+          Keoladeo — Birds
           <span class="ql-arrow">›</span>
         </a>
       </div>
