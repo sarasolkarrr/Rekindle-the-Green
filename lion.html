@@ -39,7 +39,7 @@ h1 {
 .tile {
     width: 100px;
     height: 100px;
-    background: #8d6e63;
+    background: #96766b;
     border-radius: 18px;
     position: relative;
     cursor: pointer;
@@ -153,7 +153,8 @@ h1 {
 
 <body>
 
-<h1>🌱 Plant the Seeds</h1>
+<h1>Whack a Seed</h1>
+<h4><em>click to plant seeds:)</em></h4>
 <h2 id="score">Score: 0</h2>
 
 <div id="board"></div>
@@ -194,6 +195,7 @@ h1 {
         <p>Support conservation efforts and protect wildlife.</p>
         <button>Register for an Event</button>
     </div>
+    
 </div>
 
 <script>
@@ -214,7 +216,7 @@ for (let i = 0; i < 9; i++) {
 
     let seed = document.createElement("div");
     seed.classList.add("seed");
-    seed.innerText = "🌱";
+    seed.innerHTML = '<img src="seed.png" style="width:49px; height:auto;">';
 
     tile.appendChild(seed);
     board.appendChild(tile);

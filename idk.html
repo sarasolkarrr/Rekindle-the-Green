@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Whack a Seed 🌱</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #0b2f26;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 { margin-top: 20px; }
+
+#score {
+  font-size: 22px;
+  margin: 10px;
+}
+
+#board {
+  display: grid;
+  grid-template-columns: repeat(3, 120px);
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.tile {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  cursor: pointer;
+}
+
+/* HOLE */
+.hole {
+  width: 100%;
+  height: 100%;
+}
+
+/* SEED */
+.seed {
+  position: absolute;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  transition: bottom 0.25s ease;
+}
+
+.seed.show { bottom: 25px; }
+
+/* PLANT */
+.plant {
+  position: absolute;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  transition: bottom 0.35s ease;
+}
+
+.plant.show { bottom: 15px; }
+</style>
+
+</head>
+
+<body>
+
+<h1>🌱 Plant the Seeds</h1>
+<div id="score">Score: 0</div>
+<div id="board"></div>
+
+<script>
+const board = document.getElementById("board");
+const scoreEl = document.getElementById("score");
+
+let score = 0;
+let planted = 0;
+const tiles = [];
+
+/* SVGs (no background issues) */
+function holeSVG() {
+  return `
+  <svg viewBox="0 0 100 100" class="hole">
+    <ellipse cx="50" cy="60" rx="40" ry="25" fill="#5d2e0f"/>
+    <ellipse cx="50" cy="55" rx="35" ry="20" fill="#3b1d08"/>
+  </svg>`;
+}
+
+function seedSVG() {
+  return `
+  <svg viewBox="0 0 100 100">
+    <ellipse cx="50" cy="60" rx="20" ry="28" fill="#a05a2c"/>
+  </svg>`;
+}
+
+function plantSVG() {
+  return `
+  <svg viewBox="0 0 100 100">
+    <rect x="48" y="40" width="4" height="30" fill="green"/>
+    <ellipse cx="40" cy="40" rx="10" ry="15" fill="#4caf50"/>
+    <ellipse cx="60" cy="40" rx="10" ry="15" fill="#4caf50"/>
+    <ellipse cx="50" cy="25" rx="10" ry="15" fill="#66bb6a"/>
+  </svg>`;
+}
+
+/* CREATE TILE */
+function createTile() {
+  const tile = document.createElement("div");
+  tile.classList.add("tile");
+
+  const hole = document.createElement("div");
+  hole.innerHTML = holeSVG();
+
+  const seed = document.createElement("div");
+  seed.classList.add("seed");
+  seed.innerHTML = seedSVG();
+
+  const plant = document.createElement("div");
+  plant.classList.add("plant");
+  plant.innerHTML = plantSVG();
+
+  tile.appendChild(hole);
+  tile.appendChild(seed);
+  tile.appendChild(plant);
+
+  tile.addEventListener("click", () => {
+    if (!tile.classList.contains("active") || tile.classList.contains("filled")) return;
+
+    tile.classList.add("filled");
+
+    seed.classList.remove("show");
+    plant.classList.add("show");
+
+    score++;
+    planted++;
+    scoreEl.textContent = "Score: " + score;
+
+    if (planted === 9) {
+      setTimeout(() => alert("All seeds planted 🌱"), 300);
+    }
+  });
+
+  return { tile, seed };
+}
+
+/* INIT */
+for (let i = 0; i < 9; i++) {
+  const t = createTile();
+  board.appendChild(t.tile);
+  tiles.push(t);
+}
+
+/* RANDOM SEED */
+function spawnSeed() {
+  tiles.forEach(t => {
+    t.tile.classList.remove("active");
+    t.seed.classList.remove("show");
+  });
+
+  const idx = Math.floor(Math.random() * tiles.length);
+  const t = tiles[idx];
+
+  if (!t.tile.classList.contains("filled")) {
+    t.tile.classList.add("active");
+    t.seed.classList.add("show");
+  }
+}
+
+setInterval(spawnSeed, 800);
+</script>
+
+</body>
+</html>
