@@ -36,7 +36,7 @@
     let pipes = [];
 
     // ── Physics ───────────────────────────────────────────────────────────────
-    const GRAVITY = 0.38;
+    const GRAVITY = 0.28;
     const FLAP_V = -6.5;
     let vy = 0;
 
@@ -46,6 +46,7 @@
     let started = false;
     let over = false;
     let pipeTimer = null;
+    const targetScore = 2;
 
     // ── Draw helpers ──────────────────────────────────────────────────────────
     function imgReady(img) { return img.complete && img.naturalWidth > 0; }
@@ -259,7 +260,7 @@
 
     // ── Game control ──────────────────────────────────────────────────────────
     function flap() {
-        if (over) { resetGame(); return; }
+        if (over) { restartGame(); return; }
         if (!started) {
             started = true;
             pipeTimer = setInterval(spawnPipes, 1600);
@@ -274,22 +275,39 @@
             best = Math.floor(score);
             try { localStorage.setItem("rtg_bird_best", best); } catch (_) { }
         }
-        // Show info overlay after short delay
-        setTimeout(() => {
-            const ov = document.getElementById("overlay");
-            if (ov) ov.style.display = "flex";
-        }, 900);
+
+        if (Math.floor(score) >= targetScore) {
+            setTimeout(() => {
+                const gamePage = document.getElementById("gamePage");
+                const infoPage = document.getElementById("infoPage");
+                if (gamePage && infoPage) {
+                    gamePage.style.display = "none";
+                    infoPage.style.display = "block";
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+            }, 900);
+        }
     }
 
-    function resetGame() {
+    function restartGame() {
         bird.y = START_Y;
         pipes = [];
         vy = 0;
         score = 0;
         over = false;
         started = false;
-        const ov = document.getElementById("overlay");
-        if (ov) ov.style.display = "none";
+
+        const scoreEl = document.getElementById("score");
+        if (scoreEl) scoreEl.textContent = "0";
+
+        const gamePage = document.getElementById("gamePage");
+        const infoPage = document.getElementById("infoPage");
+        if (gamePage && infoPage) {
+            infoPage.style.display = "none";
+            gamePage.style.display = "block";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
         requestAnimationFrame(loop);
     }
 
@@ -306,11 +324,7 @@
         if (el) el.textContent = e.detail;
     });
 
-    // Overlay close
-    document.addEventListener("DOMContentLoaded", () => {
-        const btn = document.getElementById("closeOverlay");
-        if (btn) btn.addEventListener("click", resetGame);
-    });
+    window.restartGame = restartGame;
 
     // ── Kick off ──────────────────────────────────────────────────────────────
     requestAnimationFrame(loop);

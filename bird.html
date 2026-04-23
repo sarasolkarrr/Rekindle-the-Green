@@ -9,39 +9,45 @@
     <title>Keoladeo National Park — Rekindle the Green</title>
     <style>
         :root {
-            --rtg-text: #1f2a22;
-            --rtg-surface: rgba(255, 255, 255, 0.76);
-            --rtg-surface-strong: rgba(255, 255, 255, 0.92);
-            --rtg-border: rgba(111, 143, 102, 0.25);
-            --rtg-soft-blue: #d8ecf8;
-            --rtg-shadow: 0 12px 28px rgba(34, 53, 39, 0.14);
-            --rtg-btn: #eef4ea;
-            --rtg-btn-hover: #dce9d8;
+            --jungle-dark: #0b2f26;
+            --jungle-mid: #163222;
+            --jungle-light: #1f4a32;
+            --moss: #2d6e47;
+            --leaf: #4a9e6a;
+            --pale-leaf: #7dc896;
+            --gold: #d4af37;
+            --gold-light: #e8c97a;
+            --cream: #f5e6c8;
+            --cream-dark: #d8ceb4;
+            --radius: 12px;
+            --radius-lg: 18px;
         }
 
         body {
             font-family: 'Inter', 'Segoe UI', sans-serif;
             text-align: center;
-            color: var(--rtg-text);
+            color: var(--cream);
             min-height: 100vh;
             position: relative;
+            margin: 0;
+            overflow-x: hidden;
+            background-color: var(--jungle-dark);
             background-image: url('keoladeo-bg.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            background-color: #a8d4e6;
-            /* sky-blue fallback */
+            padding-top: 74px;
         }
 
         body::before {
             content: '';
             position: fixed;
-            top: 78px;
+            top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(255, 255, 255, 0.15);
+            background-color: rgba(7, 20, 15, 0.75);
             pointer-events: none;
             z-index: 0;
         }
@@ -49,18 +55,29 @@
         .container {
             position: relative;
             z-index: 1;
-            padding: 12px 20px 20px;
+            width: min(100%, 1080px);
+            margin: 0 auto;
+            padding: 1.2rem 1rem 2.25rem;
         }
 
-        .container h1 {
-            margin: 0 auto 14px;
-            width: min(92%, 720px);
-            padding: 0.55rem 0.8rem;
-            border-radius: 12px;
-            background: var(--rtg-surface);
-            border: 1px solid var(--rtg-border);
-            box-shadow: var(--rtg-shadow);
-            font-size: 1.2rem;
+        #gamePage h1 {
+            margin: 0 auto 0.35rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--gold-light);
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            letter-spacing: 0.02em;
+            font-weight: 700;
+            background: none;
+            border: none;
+            box-shadow: none;
+            width: auto;
+            padding: 0;
+        }
+
+        .game-sub {
+            font-size: 1rem;
+            color: var(--pale-leaf);
+            margin: 0 0 1rem;
         }
 
         /* ── Game layout: canvas + sidebar ── */
@@ -70,7 +87,7 @@
             align-items: flex-start;
             gap: 18px;
             margin: 0 auto;
-            max-width: 740px;
+            max-width: 980px;
         }
 
         .game-panel {
@@ -82,32 +99,36 @@
 
         canvas#board {
             display: block;
-            border: 1px solid var(--rtg-border);
+            border: 1px solid rgba(212, 175, 55, 0.22);
             border-radius: 14px;
-            box-shadow: var(--rtg-shadow);
+            box-shadow: inset 0 10px 18px rgba(0, 0, 0, 0.24), 0 16px 34px rgba(0, 0, 0, 0.4);
             cursor: pointer;
-            /* Scale down on small screens via CSS; actual game coords stay 360×640 */
             max-width: min(360px, calc(100vw - 40px));
             height: auto;
         }
 
         .score-area {
-            border: 1px solid var(--rtg-border);
-            background: var(--rtg-surface-strong);
+            border: 1px solid rgba(212, 175, 55, 0.22);
+            background: rgba(8, 24, 17, 0.7);
             border-radius: 12px;
             padding: 6px 24px;
-            box-shadow: var(--rtg-shadow);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.34);
             font-size: 0.9rem;
+            color: var(--cream);
+        }
+
+        .score-area #score {
+            color: var(--gold-light);
         }
 
         /* Sidebar conservation facts */
         .sidebar {
             flex: 1;
             max-width: 260px;
-            background: var(--rtg-surface-strong);
-            border: 1px solid var(--rtg-border);
+            background: rgba(8, 24, 17, 0.72);
+            border: 1px solid rgba(212, 175, 55, 0.25);
             border-radius: 14px;
-            box-shadow: var(--rtg-shadow);
+            box-shadow: 0 16px 34px rgba(0, 0, 0, 0.4);
             padding: 18px 16px;
             text-align: left;
         }
@@ -115,8 +136,8 @@
         .sidebar h3 {
             font-size: 0.95rem;
             margin: 0 0 10px;
-            color: var(--rtg-text);
-            border-bottom: 1px solid var(--rtg-border);
+            color: var(--gold-light);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.25);
             padding-bottom: 8px;
         }
 
@@ -136,119 +157,375 @@
         .fact-text {
             font-size: 0.78rem;
             line-height: 1.5;
-            color: #3a4a3e;
+            color: var(--cream-dark);
         }
 
         .fact-text strong {
             display: block;
             font-size: 0.8rem;
-            color: var(--rtg-text);
+            color: var(--cream);
             margin-bottom: 2px;
         }
 
         .hint-bar {
-            background: var(--rtg-surface);
-            border: 1px solid var(--rtg-border);
+            background: rgba(8, 24, 17, 0.72);
+            border: 1px solid rgba(212, 175, 55, 0.25);
             border-radius: 10px;
             padding: 6px 14px;
             font-size: 0.75rem;
-            color: #5a6b5e;
-            box-shadow: var(--rtg-shadow);
+            color: var(--cream-dark);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.34);
         }
 
-        /* ── Overlay ── */
-        .overlay {
+        #infoPage {
             display: none;
-            position: fixed;
-            inset: 0;
-            background-color: rgba(20, 32, 24, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            padding: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem 6rem;
+            animation: fadeUp 0.6s ease forwards;
         }
 
-        .overlay-content {
-            background: var(--rtg-soft-blue);
-            padding: 22px 20px 20px;
-            border-radius: 16px;
-            position: relative;
-            max-width: 680px;
-            width: 100%;
-            border: 1px solid var(--rtg-border);
-            box-shadow: 0 18px 40px rgba(20, 32, 24, 0.3);
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .unlock-bar {
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 1rem 0;
+            margin-bottom: 3.5rem;
+            display: flex;
+            align-items: baseline;
+            gap: 1.25rem;
+        }
+
+        .unlock-kicker {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        .unlock-bar p {
+            font-size: 0.95rem;
+            font-style: italic;
+            color: var(--cream-dark);
+            line-height: 1.5;
             text-align: left;
-            max-height: 90vh;
-            overflow-y: auto;
         }
 
-        .overlay-image {
-            width: 100%;
-            max-height: 240px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 16px;
+        .info-hero {
+            margin-bottom: 3.5rem;
+            text-align: left;
+        }
+
+        .info-hero-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.65;
+            margin-bottom: 0.75rem;
             display: block;
         }
 
-        .overlay-title {
-            text-align: center;
-            font-size: 1.2rem;
+        .info-hero h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.6rem;
             font-weight: 700;
-            margin-bottom: 10px;
-            color: #293c2e;
+            color: var(--cream);
+            line-height: 1.12;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
         }
 
-        .overlay-info {
-            color: #393c43;
+        .info-hero p {
+            font-size: 1.12rem;
+            color: var(--cream-dark);
+            line-height: 1.75;
+            max-width: 600px;
+            font-weight: 300;
+            text-align: left;
+        }
+
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid rgba(212, 175, 55, 0.18);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+            margin-bottom: 3.5rem;
+            text-align: left;
+        }
+
+        .stat-item {
+            padding: 1.75rem 1.25rem;
+            border-right: 1px solid rgba(212, 175, 55, 0.18);
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-item .s-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-item .s-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--cream-dark);
+        }
+
+        .info-section {
+            margin-bottom: 3.5rem;
+            text-align: left;
+        }
+
+        .section-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.65;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .timeline {
+            list-style: none;
+            padding: 0;
+        }
+
+        .timeline li {
+            display: grid;
+            grid-template-columns: 60px 1px 1fr;
+            gap: 0 1.5rem;
+            padding-bottom: 2.25rem;
+        }
+
+        .timeline li:last-child {
+            padding-bottom: 0;
+        }
+
+        .tl-year {
+            font-family: 'Playfair Display', serif;
             font-size: 0.9rem;
-            line-height: 1.65;
-            margin-bottom: 20px;
+            color: var(--gold);
+            font-weight: 700;
+            text-align: right;
+            padding-top: 1px;
         }
 
-        .overlay-info strong {
-            color: #1f3a24;
+        .tl-line {
+            position: relative;
+            background: rgba(212, 175, 55, 0.18);
+            width: 1px;
         }
 
-        .overlay-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 18px;
-        }
-
-        .tag {
-            background: rgba(74, 138, 42, 0.12);
-            border: 1px solid rgba(74, 138, 42, 0.3);
-            color: #2e5a1e;
-            border-radius: 999px;
-            padding: 3px 10px;
-            font-size: 0.72rem;
-            font-weight: 600;
-        }
-
-        #closeOverlay {
-            padding: 10px 18px;
-            cursor: pointer;
-            background-color: var(--rtg-btn);
-            color: var(--rtg-text);
-            border: 1px solid var(--rtg-border);
-            border-radius: 999px;
+        .tl-line::before {
+            content: '';
             position: absolute;
-            bottom: 18px;
-            right: 18px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: transform 0.2s ease, background-color 0.2s ease;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold);
+            border: 1px solid var(--jungle-dark);
         }
 
-        #closeOverlay:hover {
-            background-color: var(--rtg-btn-hover);
-            transform: translateY(-1px);
+        .timeline li:last-child .tl-line {
+            background: transparent;
+        }
+
+        .tl-content strong {
+            display: block;
+            color: var(--cream);
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .tl-content p {
+            font-size: 0.95rem;
+            color: var(--cream-dark);
+            line-height: 1.65;
+            font-style: italic;
+            text-align: left;
+        }
+
+        .fact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .fact-cell {
+            background: var(--jungle-dark);
+            padding: 1.5rem;
+        }
+
+        .fact-cell .fc-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--pale-leaf);
+            margin-bottom: 0.55rem;
+            display: block;
+        }
+
+        .fact-cell p {
+            font-size: 0.95rem;
+            color: var(--cream-dark);
+            line-height: 1.65;
+            text-align: left;
+        }
+
+        .cta-section {
+            border-top: 1px solid rgba(212, 175, 55, 0.18);
+            padding-top: 3rem;
+            text-align: left;
+        }
+
+        .cta-eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            opacity: 0.65;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .cta-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--cream);
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .cta-section p {
+            font-size: 1.05rem;
+            color: var(--cream-dark);
+            line-height: 1.7;
+            max-width: 520px;
+            margin-bottom: 2rem;
+            font-style: italic;
+            text-align: left;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .cta-primary {
+            padding: 0.8rem 2rem;
+            background: var(--gold);
+            color: var(--jungle-dark);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+
+        .cta-primary:hover {
+            background: var(--gold-light);
+        }
+
+        .cta-secondary {
+            padding: 0.8rem 2rem;
+            background: transparent;
+            color: var(--cream);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: border-color 0.2s;
+        }
+
+        .cta-secondary:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .info-play-again {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-play-again button {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: var(--cream-dark);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            padding: 0.6rem 1.8rem;
+            border-radius: 999px;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .info-play-again button:hover {
+            border-color: var(--leaf);
+            color: var(--cream);
         }
 
         /* ── Responsive ── */
         @media (max-width: 640px) {
+            body {
+                padding-top: 68px;
+            }
+
             .game-layout {
                 flex-direction: column;
                 align-items: center;
@@ -258,6 +535,31 @@
                 max-width: 100%;
                 width: min(92%, 380px);
             }
+
+            .stat-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-item {
+                border-right: none;
+                border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+            }
+
+            .stat-item:last-child {
+                border-bottom: none;
+            }
+
+            .fact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-hero h2 {
+                font-size: 1.9rem;
+            }
+
+            #infoPage {
+                padding: 2.5rem 1.25rem 4rem;
+            }
         }
     </style>
 </head>
@@ -265,8 +567,9 @@
 <body>
     <!-- nav injected by nav.js -->
 
-    <div class="container">
+    <div id="gamePage" class="container">
         <h1>Keoladeo National Park</h1>
+        <p class="game-sub">Guide the bird through the wetland and unlock the sanctuary story.</p>
 
         <div class="game-layout">
 
@@ -276,91 +579,75 @@
                 <div class="score-area">
                     Score: <strong id="score">0</strong>
                 </div>
-                <div class="hint-bar">⌨️ Space / ↑ &nbsp;|&nbsp; 🖱️ Click &nbsp;|&nbsp; 📱 Tap &nbsp;— to flap</div>
+                <div class="hint-bar">Space / ↑ &nbsp;|&nbsp; Click &nbsp;|&nbsp; Tap &nbsp;- to flap</div>
             </div>
-
-            <!-- Right: conservation sidebar -->
-            <aside class="sidebar">
-                <h3>🦢 Did You Know?</h3>
-
-                <div class="fact-item">
-                    <span class="fact-icon">🌍</span>
-                    <div class="fact-text">
-                        <strong>UNESCO World Heritage</strong>
-                        Keoladeo (Bharatpur) has been a UNESCO World Heritage Site since 1985 — one of Asia's most
-                        important bird sanctuaries.
-                    </div>
-                </div>
-
-                <div class="fact-item">
-                    <span class="fact-icon">🐦</span>
-                    <div class="fact-text">
-                        <strong>350+ Species</strong>
-                        Over 350 bird species visit the park, including the endangered Siberian Crane that migrates over
-                        6,400 km from Siberia.
-                    </div>
-                </div>
-
-                <div class="fact-item">
-                    <span class="fact-icon">🦩</span>
-                    <div class="fact-text">
-                        <strong>Sarus Crane</strong>
-                        The Sarus Crane — the world's tallest flying bird — nests here. It is a symbol of love and
-                        loyalty in Indian culture.
-                    </div>
-                </div>
-
-                <div class="fact-item">
-                    <span class="fact-icon">💧</span>
-                    <div class="fact-text">
-                        <strong>Wetland Crisis</strong>
-                        The park's wetlands face severe water shortage due to reduced monsoon inflow and diversion by
-                        farmers, threatening nesting grounds.
-                    </div>
-                </div>
-
-                <div class="fact-item">
-                    <span class="fact-icon">🚫</span>
-                    <div class="fact-text">
-                        <strong>Cattle Grazing Ban</strong>
-                        A 2004 ban on cattle grazing reduced habitat quality — native grasses recovered but wading bird
-                        populations declined.
-                    </div>
-                </div>
-            </aside>
         </div>
     </div>
 
-    <!-- Conservation overlay (shown after game over) -->
-    <div id="overlay" class="overlay">
-        <div class="overlay-content">
-            <img src="keoladeo-overlay.jpg" alt="Keoladeo National Park" class="overlay-image" />
-            <h2 class="overlay-title">Bird Conservation at Keoladeo National Park</h2>
-            <div class="overlay-tags">
-                <span class="tag">UNESCO World Heritage</span>
-                <span class="tag">Rajasthan, India</span>
-                <span class="tag">Wetland Ecosystem</span>
-                <span class="tag">350+ Bird Species</span>
-            </div>
-            <p class="overlay-info">
-                Keoladeo Ghana National Park in Bharatpur, Rajasthan is one of the world's most important bird
-                sanctuaries. Originally a duck-hunting ground of the Maharajas of Bharatpur, it was declared a
-                wildlife sanctuary in 1971 and a <strong>UNESCO World Heritage Site</strong> in 1985.
-                <br><br>
-                The park is a crucial wintering ground for the <strong>critically endangered Siberian Crane</strong>,
-                which migrates over 6,400 km from western Siberia. Although the species has not been reliably
-                sighted since 2002, conservation efforts continue to protect their potential habitat. Year-round
-                residents include the <strong>Sarus Crane</strong> — the world's tallest flying bird at up to 1.8 m —
-                along with painted storks, open-bill storks, spoonbills, darters, and over 350 other species.
-                <br><br>
-                The park's <strong>biggest threat is water scarcity</strong>. The Ajan Bund reservoir that feeds the
-                wetlands receives diminishing monsoon runoff due to upstream diversions by farmers, causing the
-                marshes to dry out earlier each year. Forest department managers now pump groundwater to
-                maintain minimum water levels during nesting season. Community-based ecotourism, where local
-                cycle-rickshaw guides earn livelihoods, has created strong local champions for the park's protection.
-            </p>
-            <button id="closeOverlay">Play Again ↩</button>
+    <div id="infoPage" class="container">
+        <div class="unlock-bar">
+            <span class="unlock-kicker">Story Unlocked</span>
+            <p>Keoladeo is a living wetland classroom where migration, habitat, and community conservation meet.</p>
         </div>
+
+        <div class="info-hero">
+            <span class="info-hero-label">Conservation Feature</span>
+            <h2>Keoladeo National Park, Bharatpur</h2>
+            <p>From royal hunting reserve to UNESCO World Heritage Site, Keoladeo has evolved into one of Asia's most significant bird habitats, sheltering migratory and resident species across delicate wetland mosaics.</p>
+        </div>
+
+        <div class="stat-row">
+            <div class="stat-item"><span class="s-num">350+</span><span class="s-label">Bird Species Recorded</span></div>
+            <div class="stat-item"><span class="s-num">1985</span><span class="s-label">UNESCO Status Granted</span></div>
+            <div class="stat-item"><span class="s-num">6.4k</span><span class="s-label">Km Historic Migration Route</span></div>
+        </div>
+
+        <div class="info-section">
+            <span class="section-label">Conservation Timeline</span>
+            <ul class="timeline">
+                <li>
+                    <div class="tl-year">Pre 1900s</div><div class="tl-line"></div>
+                    <div class="tl-content"><strong>Royal Wetland Reserve</strong><p>The marshes were managed as a seasonal water body, attracting vast bird populations long before formal conservation labels existed.</p></div>
+                </li>
+                <li>
+                    <div class="tl-year">1971</div><div class="tl-line"></div>
+                    <div class="tl-content"><strong>Sanctuary Declaration</strong><p>Keoladeo was officially designated as a bird sanctuary, shifting focus from hunting tradition to long-term ecological protection.</p></div>
+                </li>
+                <li>
+                    <div class="tl-year">1981</div><div class="tl-line"></div>
+                    <div class="tl-content"><strong>National Park Status</strong><p>Legal status strengthened habitat safeguards and enabled more structured management of nesting zones and water cycles.</p></div>
+                </li>
+                <li>
+                    <div class="tl-year">1985</div><div class="tl-line"></div>
+                    <div class="tl-content"><strong>UNESCO Recognition</strong><p>The park earned World Heritage status, acknowledging its global role in avian biodiversity and migratory bird conservation.</p></div>
+                </li>
+                <li>
+                    <div class="tl-year">Today</div><div class="tl-line"></div>
+                    <div class="tl-content"><strong>Wetland Under Pressure</strong><p>Conservation now focuses on water security, adaptive habitat restoration, and balancing tourism with fragile ecological rhythms.</p></div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <span class="section-label">Why Keoladeo Matters</span>
+            <div class="fact-grid">
+                <div class="fact-cell"><span class="fc-label">Migration Hub</span><p>The park is a critical winter refuge for migratory birds traveling vast transcontinental routes, making each season globally significant.</p></div>
+                <div class="fact-cell"><span class="fc-label">Wetland Engineering</span><p>Its ecology depends on carefully managed water inflows; without seasonal water, feeding, breeding, and nesting cycles break down quickly.</p></div>
+                <div class="fact-cell"><span class="fc-label">Local Livelihoods</span><p>Eco-guides and community services connect conservation with livelihoods, creating local incentives to protect habitat quality year-round.</p></div>
+                <div class="fact-cell"><span class="fc-label">Biodiversity Indicator</span><p>Bird abundance here reflects broader environmental health, making Keoladeo a vital indicator for wetland resilience in north India.</p></div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <span class="cta-eyebrow">Get Involved</span>
+            <h3>Support Wetland Guardians</h3>
+            <p>Responsible visits, habitat volunteering, and awareness on water conservation can directly strengthen the future of Keoladeo's bird life.</p>
+            <div class="cta-buttons">
+                <a href="#" class="cta-primary">Join a Bird Walk</a>
+            </div>
+        </div>
+
+        <div class="info-play-again"><button onclick="restartGame()">&#8635; Play Again</button></div>
     </div>
 
     <script src="flappybird.js"></script>

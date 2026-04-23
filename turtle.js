@@ -6,7 +6,7 @@ const turtle = document.getElementById('turtle');
 const scoreDisplay = document.getElementById('scoreNum');
 const gamePage = document.getElementById('gamePage');
 const infoPage = document.getElementById('infoPage');
-const targetScore = 8;
+const targetScore = 4;
 
 function moveTurtle() {
     if (gameOver) return;
