@@ -1,12 +1,15 @@
 let score = 0;
 let isAnimating = false;
+let gameOver = false;
 
 const turtle = document.getElementById('turtle');
-const scoreDisplay = document.getElementById('score');
-const overlay = document.getElementById('overlay');
-const closeOverlayBtn = document.getElementById('closeOverlay');
+const scoreDisplay = document.getElementById('scoreNum');
+const gamePage = document.getElementById('gamePage');
+const infoPage = document.getElementById('infoPage');
+const targetScore = 8;
 
 function moveTurtle() {
+    if (gameOver) return;
     const gameArea = document.querySelector('.game-area');
     const x = Math.random() * (gameArea.clientWidth - 100);
     const y = Math.random() * (gameArea.clientHeight - 100);
@@ -15,7 +18,7 @@ function moveTurtle() {
 }
 
 function animateTurtle() {
-    if (isAnimating) return;
+    if (isAnimating || gameOver) return;
     isAnimating = true;
 
     turtle.style.transform = 'translateY(300px)';
@@ -27,27 +30,39 @@ function animateTurtle() {
     }, 500);
 }
 
-function resetGame() {
+function showInfoPage() {
+    gamePage.style.display = 'none';
+    infoPage.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartGame() {
     score = 0;
     scoreDisplay.textContent = '0';
-    overlay.style.display = 'none';
     isAnimating = false;
+    gameOver = false;
     turtle.style.transform = 'translateY(0)';
+    gamePage.style.display = 'block';
+    infoPage.style.display = 'none';
     moveTurtle();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 turtle.addEventListener('click', () => {
+    if (gameOver) return;
+
     score++;
     scoreDisplay.textContent = score;
 
-    if (score >= 5) {
-        overlay.style.display = 'flex';
+    if (score >= targetScore) {
+        gameOver = true;
+        setTimeout(showInfoPage, 500);
     } else {
         animateTurtle();
     }
 });
 
-closeOverlayBtn.addEventListener('click', resetGame);
+window.restartGame = restartGame;
 
 // Position turtle on first load
 moveTurtle();

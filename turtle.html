@@ -9,25 +9,82 @@
     <script src="navbar-loader.js" defer></script>
 </head>
 <body>
-    <div class="container">
+    <div id="gamePage" class="container">
         <h1>Velas Beach</h1>
         <p class="game-sub">Tap the turtle before it dives back into the tide.</p>
+        <div class="score-area">
+            <p>Score: <span id="scoreNum">0</span></p>
+        </div>
         <div class="game-area">
             <img id="turtle" src="turtle-icon.png" alt="Turtle" />
         </div>
-        <div class="score-area">
-            <p>Score: <span id="score">0</span></p>
+    </div>
+
+    <div id="infoPage" class="container">
+        <div class="unlock-bar">
+            <span class="unlock-kicker">Story Unlocked</span>
+            <p>Velas Beach proves that community-led conservation can bring sea turtle hatchlings safely back to the sea.</p>
         </div>
-        <div id="overlay" class="overlay">
-            <div class="overlay-content">
-              <img src="velas-turtle-fest.jpg" alt="Velas Turtle Festival" class="overlay-image" />
-                <h2 class="overlay-title">Turtle Conservation Efforts at Velas Beach</h2>
-                <p class="overlay-info">Velas Beach is known for its conservation efforts for Olive Ridley turtles. Local communities engage in
-                nesting site protection, awareness programs, and beach patrols to ensure the safety of hatchlings.
-                Your support can help continue these efforts!</p>
-                <button id="closeOverlay">Close</button>
+
+        <div class="info-hero">
+            <span class="info-hero-label">Conservation Feature</span>
+            <h2>Velas Beach Turtle Conservation Reserve</h2>
+            <p>Located along the Konkan coast of Maharashtra, Velas has become a model for protecting Olive Ridley turtles through citizen participation, habitat safeguards, and hatchling release monitoring.</p>
+        </div>
+
+        <div class="stat-row">
+            <div class="stat-item"><span class="s-num">200+</span><span class="s-label">Nests protected each season</span></div>
+            <div class="stat-item"><span class="s-num">10k+</span><span class="s-label">Hatchlings released over years</span></div>
+            <div class="stat-item"><span class="s-num">1</span><span class="s-label">Community-led mission</span></div>
+        </div>
+
+        <div class="info-section">
+            <span class="section-label">Conservation Timeline</span>
+            <ul class="timeline">
+                <li>
+                    <div class="tl-year">2002</div><div class="tl-line"></div>
+                    <div class="tl-content"><strong>Grassroots Action Begins</strong><p>Local residents and conservation volunteers begin organized efforts to protect turtle nesting sites from predators, lights, and human disturbance.</p></div>
+                </li>
+                <li>
+                    <div class="tl-year">2008</div><div class="tl-line"></div>
+                    <div class="tl-content"><strong>Structured Nest Monitoring</strong><p>Systematic beach patrols and hatchery practices are introduced, improving hatch success and reducing egg loss during vulnerable nesting months.</p></div>
+                </li>
+                <li>
+                    <div class="tl-year">2012</div><div class="tl-line"></div>
+                    <div class="tl-content"><strong>Festival with Purpose</strong><p>The Velas Turtle Festival grows as an eco-awareness platform, promoting responsible tourism while funding and supporting local conservation work.</p></div>
+                </li>
+                <li>
+                    <div class="tl-year">2018</div><div class="tl-line"></div>
+                    <div class="tl-content"><strong>Wider Coastal Awareness</strong><p>Educational programs and partnerships inspire nearby villages to adopt nest-safe lighting and beach behavior practices for turtle-friendly coastlines.</p></div>
+                </li>
+                <li>
+                    <div class="tl-year">Today</div><div class="tl-line"></div>
+                    <div class="tl-content"><strong>Hope in Every Release</strong><p>Each hatchling release reflects a successful chain of protection powered by local communities, forest staff, and conservation partners.</p></div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <span class="section-label">Why Velas Matters</span>
+            <div class="fact-grid">
+                <div class="fact-cell"><span class="fc-label">Nesting Habitat</span><p>Velas is one of India's meaningful nesting stretches for Olive Ridley turtles, and preserving its beaches supports species continuity in the Arabian Sea.</p></div>
+                <div class="fact-cell"><span class="fc-label">Community Stewardship</span><p>Villagers play a central role in protection, proving that conservation can succeed when local livelihoods and wildlife goals are aligned.</p></div>
+                <div class="fact-cell"><span class="fc-label">Eco Tourism Model</span><p>The turtle festival promotes low-impact tourism where visitors learn conservation ethics, helping fund protective action instead of harming habitats.</p></div>
+                <div class="fact-cell"><span class="fc-label">Future Generations</span><p>Awareness programs for students and families build long-term guardianship so coastal ecosystems remain resilient for both people and marine life.</p></div>
             </div>
         </div>
+
+        <div class="cta-section">
+            <span class="cta-eyebrow">Get Involved</span>
+            <h3>Protect Every Hatchling</h3>
+            <p>Join cleanup drives, support responsible tourism, and spread awareness on turtle-safe beaches. Small actions on shore can decide survival at sea.</p>
+            <div class="cta-buttons">
+                <a href="#" class="cta-primary">Volunteer Locally</a>
+                <a href="#" class="cta-secondary">Learn More</a>
+            </div>
+        </div>
+
+        <div class="info-play-again"><button onclick="restartGame()">&#8635; Play Again</button></div>
     </div>
     <script src="turtle.js"></script>
 </body>
