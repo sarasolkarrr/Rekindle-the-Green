@@ -2,6 +2,60 @@
 include 'connection.php';
 session_start();
 
+function tableExists($con, $tableName) {
+  $safeName = mysqli_real_escape_string($con, $tableName);
+  $result = mysqli_query($con, "SHOW TABLES LIKE '$safeName'");
+  return $result && mysqli_num_rows($result) > 0;
+}
+
+function firstExistingTable($con, $candidates) {
+  foreach ($candidates as $tableName) {
+    if (tableExists($con, $tableName)) {
+      return $tableName;
+    }
+  }
+  return null;
+}
+
+function normalizeDriveKey($value) {
+  $value = strtolower(trim((string) $value));
+
+  if ($value === '') {
+    return '';
+  }
+
+  $map = [
+    'corbett' => 'corbett',
+    'jim corbett' => 'corbett',
+    'jim corbett national park' => 'corbett',
+    'velas' => 'velas',
+    'velas beach' => 'velas',
+    'gir' => 'gir',
+    'gir forest' => 'gir',
+    'gir national park' => 'gir',
+    'keoladeo' => 'bird',
+    'keoladeo national park' => 'bird',
+    'bird' => 'bird',
+  ];
+
+  foreach ($map as $needle => $key) {
+    if (strpos($value, $needle) !== false) {
+      return $key;
+    }
+  }
+
+  return $value;
+}
+
+function jsonResponse($payload) {
+  header('Content-Type: application/json; charset=UTF-8');
+  echo json_encode($payload);
+  exit;
+}
+
+$adminTable = firstExistingTable($con, ['admin', 'admins']);
+$driveTable = firstExistingTable($con, ['drives', 'drive']);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'register') {
   $fname = mysqli_real_escape_string($con, $_POST['fname']);
   $lname = mysqli_real_escape_string($con, $_POST['lname']);
@@ -25,17 +79,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $_SESSION['user_email'] = $email;
     $_SESSION['user_name'] = $fname;
     $_SESSION['user_drive'] = $drive;
-    echo json_encode(['success' => true, 'message' => 'Registration successful', 'drive' => $drive, 'name' => $fname, 'id' => $newId]);
+    $_SESSION['user_role'] = 'user';
+    jsonResponse(['success' => true, 'message' => 'Registration successful', 'drive' => $drive, 'name' => $fname, 'id' => $newId, 'role' => 'user', 'redirect' => 'profile.php']);
   } else {
-    echo json_encode(['success' => false, 'message' => 'Registration failed: ' . mysqli_error($con)]);
+    jsonResponse(['success' => false, 'message' => 'Registration failed: ' . mysqli_error($con)]);
   }
-  exit;
 }
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'login') {
   $email = mysqli_real_escape_string($con, $_POST['email']);
   $password = $_POST['password'];
+  $role = isset($_POST['role']) ? strtolower(trim($_POST['role'])) : 'user';
+
+  if ($role === 'admin') {
+    if (!$adminTable) {
+      jsonResponse(['success' => false, 'message' => 'Admin account table not found']);
+    }
+
+    $query = "SELECT * FROM `$adminTable` WHERE email='$email' LIMIT 1";
+    $result = mysqli_query($con, $query);
+
+    if ($result && mysqli_num_rows($result) === 1) {
+      $admin = mysqli_fetch_assoc($result);
+      if (password_verify($password, $admin['password'])) {
+        $adminId = (int) ($admin['id'] ?? 0);
+        $adminName = trim((string) ($admin['name'] ?? ''));
+
+        if ($adminName === '') {
+          $adminName = trim((string) (($admin['first_name'] ?? '') . ' ' . ($admin['last_name'] ?? '')));
+        }
+
+        if ($adminName === '') {
+          $adminName = 'Admin';
+        }
+
+        $driveId = (int) ($admin['drive_id'] ?? ($admin['drive'] ?? 0));
+        $driveRow = null;
+
+        if ($driveTable && $driveId > 0) {
+          $driveResult = mysqli_query($con, "SELECT * FROM `$driveTable` WHERE id=$driveId LIMIT 1");
+          if ($driveResult && mysqli_num_rows($driveResult) === 1) {
+            $driveRow = mysqli_fetch_assoc($driveResult);
+          }
+        }
+
+        $driveLabel = $driveRow['location'] ?? ($driveRow['name'] ?? '');
+        $_SESSION['admin_id'] = $adminId;
+        $_SESSION['admin_name'] = $adminName;
+        $_SESSION['admin_email'] = $email;
+        $_SESSION['admin_drive_id'] = $driveId;
+        $_SESSION['admin_drive_name'] = $driveLabel;
+        $_SESSION['admin_drive_key'] = normalizeDriveKey($driveLabel);
+        $_SESSION['user_role'] = 'admin';
+
+        jsonResponse([
+          'success' => true,
+          'message' => 'Admin login successful',
+          'role' => 'admin',
+          'name' => $adminName,
+          'id' => $adminId,
+          'drive_id' => $driveId,
+          'redirect' => 'admin-dashboard.php'
+        ]);
+      }
+
+      jsonResponse(['success' => false, 'message' => 'Invalid password']);
+    }
+
+    jsonResponse(['success' => false, 'message' => 'Admin not found']);
+  }
 
   $query = "SELECT id, first_name, last_name, password, conservation_drive FROM users WHERE email='$email'";
   $result = mysqli_query($con, $query);
@@ -48,19 +161,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
       $_SESSION['user_name'] = $user['first_name'];
       $_SESSION['user_lname'] = $user['last_name'];
       $_SESSION['user_drive'] = $user['conservation_drive'];
-      echo json_encode(['success' => true, 'message' => 'Login successful', 'name' => $user['first_name'], 'id' => $user['id']]);
+      $_SESSION['user_role'] = 'user';
+      jsonResponse(['success' => true, 'message' => 'Login successful', 'role' => 'user', 'name' => $user['first_name'], 'id' => $user['id'], 'redirect' => 'profile.php']);
     } else {
-      echo json_encode(['success' => false, 'message' => 'Invalid password']);
+      jsonResponse(['success' => false, 'message' => 'Invalid password']);
     }
   } else {
-    echo json_encode(['success' => false, 'message' => 'User not found']);
+    jsonResponse(['success' => false, 'message' => 'User not found']);
   }
-  exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['logout'])) {
   session_destroy();
   header('Location: index.html');
+  exit;
+}
+
+if (isset($_SESSION['admin_id'])) {
+  header('Location: admin-dashboard.php');
   exit;
 }
 
@@ -472,7 +590,7 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
 
         <div class="profile-actions" style="margin-top:1.2rem;">
           <a href="index.html" class="action-btn action-primary">View Map</a>
-          <a href="profile.php?logout=1" class="action-btn action-danger" onclick="localStorage.removeItem('rtg_user_name'); localStorage.removeItem('rtg_user_id');">Sign Out</a>
+          <a href="logout.php" class="action-btn action-danger" onclick="localStorage.removeItem('rtg_user_name'); localStorage.removeItem('rtg_user_id'); localStorage.removeItem('rtg_admin_name'); localStorage.removeItem('rtg_admin_id');">Sign Out</a>
         </div>
       </div>
     </div>

@@ -1,5 +1,13 @@
 <?php
 session_start();
+if (isset($_SESSION['admin_id'])) {
+  header('Location: admin-dashboard.php');
+  exit;
+}
+if (isset($_SESSION['user_id'])) {
+  header('Location: profile.php');
+  exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -109,6 +117,43 @@ session_start();
       height: 1px;
       background: #eee;
       margin: 0 0 1.5rem;
+    }
+
+    .role-switch {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 0.3rem;
+      border-radius: 12px;
+      background: #f3f5f1;
+    }
+
+    .role-btn {
+      flex: 1;
+      border: 1px solid transparent;
+      background: transparent;
+      color: #667;
+      padding: 0.7rem 0.8rem;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, border-color 0.18s, box-shadow 0.18s;
+    }
+
+    .role-btn.active {
+      background: #fff;
+      color: #1a2e1a;
+      border-color: rgba(61, 107, 42, 0.16);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .login-note {
+      font-size: 0.74rem;
+      color: #789;
+      margin-bottom: 1rem;
+      line-height: 1.45;
     }
 
     .field { margin-bottom: 1rem; }
@@ -316,6 +361,13 @@ session_start();
 
       <div class="divider"></div>
 
+      <div class="role-switch" role="tablist" aria-label="Login type">
+        <button class="role-btn active" type="button" id="userRoleBtn" onclick="setLoginRole('user')">User Login</button>
+        <button class="role-btn" type="button" id="adminRoleBtn" onclick="setLoginRole('admin')">Admin Login</button>
+      </div>
+
+      <div class="login-note" id="loginNote">Use the user login for members. Admin login is for the drive owner who manages registrations.</div>
+
       <div class="success-box" id="successBox">
         <h3>Signed in!</h3>
         <p>Welcome back. Taking you to the map...</p>
@@ -325,6 +377,7 @@ session_start();
 
       <div class="form-wrap" id="formWrap">
         <form onsubmit="return false;">
+          <input type="hidden" id="loginRole" value="user">
 
           <div class="field" id="fl-email">
             <label>Email address</label>
@@ -376,6 +429,15 @@ session_start();
     document.querySelectorAll('.field.has-error').forEach(function(f){ f.classList.remove('has-error'); });
   }
 
+  function setLoginRole(role) {
+    document.getElementById('loginRole').value = role;
+    document.getElementById('userRoleBtn').classList.toggle('active', role === 'user');
+    document.getElementById('adminRoleBtn').classList.toggle('active', role === 'admin');
+    document.getElementById('loginNote').textContent = role === 'admin'
+      ? 'Admin login opens the dashboard for the drive assigned to that account.'
+      : 'Use the user login for members. Admin login is for the drive owner who manages registrations.';
+  }
+
   function closeModal() {
     document.getElementById('errorModal').classList.remove('show');
   }
@@ -398,30 +460,41 @@ session_start();
 
     var btn = document.getElementById('loginBtn');
     btn.classList.add('loading');
+    var role = document.getElementById('loginRole').value || 'user';
 
     var fd = new FormData();
     fd.append('action', 'login');
     fd.append('email', email);
     fd.append('password', password);
+    fd.append('role', role);
 
     fetch('profile.php', { method: 'POST', body: fd })
       .then(function(r){ return r.json(); })
       .then(function(data) {
         btn.classList.remove('loading');
         if (data.success) {
-          // Save to localStorage so navbar-loader shows avatar immediately
-          localStorage.setItem('rtg_user_name', data.name);
-          localStorage.setItem('rtg_user_id', data.id);
+          if (data.role === 'admin') {
+            localStorage.removeItem('rtg_user_name');
+            localStorage.removeItem('rtg_user_id');
+            localStorage.setItem('rtg_admin_name', data.name);
+            localStorage.setItem('rtg_admin_id', data.id);
+          } else {
+            localStorage.removeItem('rtg_admin_name');
+            localStorage.removeItem('rtg_admin_id');
+            localStorage.setItem('rtg_user_name', data.name);
+            localStorage.setItem('rtg_user_id', data.id);
+          }
 
           document.getElementById('formWrap').style.display = 'none';
           var sb = document.getElementById('successBox');
           sb.classList.add('show');
           setTimeout(function(){ document.getElementById('progressFill').style.width = '100%'; }, 50);
-          setTimeout(function(){ window.location.href = 'profile.php'; }, 2600);
+          setTimeout(function(){ window.location.href = data.redirect || (data.role === 'admin' ? 'admin-dashboard.php' : 'profile.php'); }, 2600);
         } else {
           var title = 'Sign In Failed';
           var msg   = data.message || 'Login failed. Please try again.';
           if (data.message === 'User not found')   { title = 'Account Not Found'; msg = 'No account exists with this email address.'; }
+          if (data.message === 'Admin not found')  { title = 'Admin Account Not Found'; msg = 'No admin account exists with this email address.'; }
           if (data.message === 'Invalid password') { title = 'Wrong Password'; msg = 'The password you entered is incorrect. Please try again.'; }
           showModal(title, msg);
         }
@@ -435,6 +508,8 @@ session_start();
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') doLogin();
   });
+
+  setLoginRole('user');
 </script>
 </body>
 </html>

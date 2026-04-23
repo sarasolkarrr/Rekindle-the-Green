@@ -1,20 +1,32 @@
 function handleLogout() {
   localStorage.removeItem('rtg_user_name');
   localStorage.removeItem('rtg_user_id');
+  localStorage.removeItem('rtg_admin_name');
+  localStorage.removeItem('rtg_admin_id');
   window.location.href = 'logout.php';
 }
 
 function loadNavbar() {
   const userName = localStorage.getItem('rtg_user_name');
-  const userInitials = userName ? userName.charAt(0).toUpperCase() : '';
+  const adminName = localStorage.getItem('rtg_admin_name');
+  const activeName = adminName || userName;
+  const userInitials = activeName ? activeName.charAt(0).toUpperCase() : '';
   const isLoggedIn = !!userName;
+  const isAdminLoggedIn = !!adminName;
 
-  const isIndexPage = window.location.pathname.includes('index.html') || 
+  const isIndexPage = window.location.pathname.includes('index.html') ||
                       window.location.pathname.endsWith('/');
 
   let navActionsHTML = '';
 
-  if (isLoggedIn) {
+  if (isAdminLoggedIn) {
+    navActionsHTML += `
+      <a href="admin-dashboard.php" class="nav-user">
+        <div class="nav-avatar" style="background:#c9a84c;color:#1a2e1a;">${userInitials}</div>
+      </a>
+      <a href="javascript:void(0)" onclick="handleLogout()" class="btn-nav btn-logout">Log Out</a>
+    `;
+  } else if (isLoggedIn) {
     navActionsHTML += `
       <a href="profile.php" class="nav-user">
         <div class="nav-avatar">${userInitials}</div>
