@@ -513,19 +513,19 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
           <span class="ql-arrow">›</span>
         </a>
         <a href="tiger.html" class="quick-link">
-          Jim Corbett — Tigers
+          Jim Corbett - Tigers
           <span class="ql-arrow">›</span>
         </a>
         <a href="lion.html" class="quick-link">
-          Gir Forest — Lions
+          Gir Forest - Lions
           <span class="ql-arrow">›</span>
         </a>
         <a href="turtle.html" class="quick-link">
-          Velas Beach — Turtles
+          Velas Beach - Turtles
           <span class="ql-arrow">›</span>
         </a>
         <a href="bird.html" class="quick-link">
-          Keoladeo — Birds
+          Keoladeo - Birds
           <span class="ql-arrow">›</span>
         </a>
       </div>
