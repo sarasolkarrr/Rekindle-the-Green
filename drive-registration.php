@@ -33,6 +33,65 @@ function driveThemeByKey($key) {
   return $themes[$key] ?? 'Conservation Drive';
 }
 
+function ensureDriveRegistrationSchema($con) {
+  $createTableSql = "CREATE TABLE IF NOT EXISTS drive_event_registrations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    drive_key VARCHAR(50) NOT NULL,
+    drive_date DATE NOT NULL,
+    reminder_sent TINYINT(1) NOT NULL DEFAULT 0,
+    reminder_sent_at DATETIME NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uniq_user_drive_date (user_id, drive_key, drive_date),
+    INDEX idx_drive_date_reminder (drive_date, reminder_sent)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+
+  if (!mysqli_query($con, $createTableSql)) {
+    return false;
+  }
+
+  $hasReminderSent = false;
+  $hasReminderSentAt = false;
+
+  $columnsResult = mysqli_query($con, "SHOW COLUMNS FROM drive_event_registrations");
+  if ($columnsResult) {
+    while ($column = mysqli_fetch_assoc($columnsResult)) {
+      if (($column['Field'] ?? '') === 'reminder_sent') {
+        $hasReminderSent = true;
+      }
+      if (($column['Field'] ?? '') === 'reminder_sent_at') {
+        $hasReminderSentAt = true;
+      }
+    }
+  }
+
+  if (!$hasReminderSent && !mysqli_query($con, "ALTER TABLE drive_event_registrations ADD COLUMN reminder_sent TINYINT(1) NOT NULL DEFAULT 0 AFTER drive_date")) {
+    return false;
+  }
+
+  if (!$hasReminderSentAt && !mysqli_query($con, "ALTER TABLE drive_event_registrations ADD COLUMN reminder_sent_at DATETIME NULL AFTER reminder_sent")) {
+    return false;
+  }
+
+  $indexExists = false;
+  $indexResult = mysqli_query($con, "SHOW INDEX FROM drive_event_registrations WHERE Key_name = 'idx_drive_date_reminder'");
+  if ($indexResult && mysqli_num_rows($indexResult) > 0) {
+    $indexExists = true;
+  }
+
+  if (!$indexExists) {
+    try {
+      mysqli_query($con, "CREATE INDEX idx_drive_date_reminder ON drive_event_registrations (drive_date, reminder_sent)");
+    } catch (\Throwable $e) {
+      if ((int) mysqli_errno($con) !== 1061) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 $driveOptions = [];
 $driveDates = [];
 
@@ -107,16 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $flashTitle = 'Invalid date';
     $flashMessage = 'Please choose one of the marked drive dates for the selected drive.';
   } else {
-    $createTableSql = "CREATE TABLE IF NOT EXISTS drive_event_registrations (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      user_id INT NOT NULL,
-      drive_key VARCHAR(50) NOT NULL,
-      drive_date DATE NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      UNIQUE KEY uniq_user_drive_date (user_id, drive_key, drive_date)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-
-    if (!mysqli_query($con, $createTableSql)) {
+    if (!ensureDriveRegistrationSchema($con)) {
       $flashType = 'error';
       $flashTitle = 'Database error';
       $flashMessage = 'Could not prepare registration table. Please try again.';

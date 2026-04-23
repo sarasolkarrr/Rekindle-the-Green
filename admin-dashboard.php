@@ -168,6 +168,31 @@ $totalUsers = count($users);
       font-weight: 600;
     }
 
+    .quick-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      text-decoration: none;
+      color: #1f2d1f;
+      background: #e4c67a;
+      border: 1px solid rgba(228, 198, 122, 0.7);
+      padding: 0.72rem 1.05rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
+    }
+
     .hero {
       display: grid;
       grid-template-columns: 1.35fr 0.9fr;
@@ -354,7 +379,10 @@ $totalUsers = count($users);
           <p>Drive admin dashboard</p>
         </div>
       </a>
-      <a class="logout" href="logout.php">Log Out</a>
+      <div class="quick-actions">
+        <a class="action-btn" href="admin-reminder-test.php">Reminder Dry Run</a>
+        <a class="logout" href="logout.php">Log Out</a>
+      </div>
     </div>
 
     <div class="hero">

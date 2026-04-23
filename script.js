@@ -1,7 +1,7 @@
-// script.js — Rekindle the Green
-// Used by: lion.html (seed & water drop animations)
-// Note: rain() was removed — Jim Corbett (tiger.html) now has its own
-//       self-contained canvas rain animation and no longer uses this file.
+
+
+
+
 
 let seedcontainer;
 let watercontainer;
@@ -68,3 +68,4 @@ function water() {
         document.body.style.backgroundPosition = "center";
     }, 2000);
 }
+

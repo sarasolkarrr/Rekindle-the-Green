@@ -44,7 +44,7 @@
             padding: 90px 1rem 2rem;
         }
 
-        /* CARD */
+        
         .card {
             background: rgba(255, 255, 255, 0.94);
             border-radius: 12px;
@@ -93,11 +93,11 @@
             margin-top: 0.3rem;
         }
 
-        /* SCREENS */
+        
         .screen { display: none; }
         .screen.active { display: block; }
 
-        /* LANDING BUTTONS */
+        
         .choice-btns {
             display: flex;
             flex-direction: column;
@@ -152,7 +152,7 @@
         }
         .choice-btn .arrow { font-size: 0.9rem; opacity: 0.45; }
 
-        /* BACK */
+        
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -169,7 +169,7 @@
         }
         .back-link:hover { color: #3d6b2a; }
 
-        /* SECTION LABEL */
+        
         .section-label {
             font-size: 0.67rem;
             font-weight: 700;
@@ -181,7 +181,7 @@
             border-bottom: 1px solid #eee;
         }
 
-        /* FIELDS */
+        
         .field { margin-bottom: 0.9rem; }
 
         .field label {
@@ -226,7 +226,7 @@
         }
         .field.has-error .err { display: block; }
 
-        /* select arrow */
+        
         .select-wrap { position: relative; }
         .select-wrap::after {
             content: '▾';
@@ -239,16 +239,16 @@
         }
         .field select { padding-right: 2.2rem; cursor: pointer; }
 
-        /* name row */
+        
         .field-row { display: flex; gap: 0.7rem; }
         .field-row .field { flex: 1; }
 
-        /* phone */
+        
         .phone-row { display: flex; gap: 0.5rem; }
         .phone-row .code-wrap { width: 92px; flex-shrink: 0; }
         .phone-row .num-wrap { flex: 1; }
 
-        /* password */
+        
         .pwd-wrap { position: relative; }
         .pwd-wrap input { padding-right: 3rem; }
         .show-pwd {
@@ -263,18 +263,18 @@
         }
         .show-pwd:hover { color: #3d6b2a; }
 
-        /* strength */
+        
         .strength { display: none; margin-top: 0.4rem; }
         .s-bars { display: flex; gap: 3px; margin-bottom: 3px; }
         .sbar { flex: 1; height: 3px; border-radius: 2px; background: #e0e0e0; transition: background 0.25s; }
         .s-label { font-size: 0.7rem; color: #999; }
 
-        /* forgot */
+        
         .forgot-row { text-align: right; margin-top: -0.35rem; margin-bottom: 0.9rem; }
         .forgot-row a { font-size: 0.74rem; color: #888; text-decoration: none; }
         .forgot-row a:hover { color: #3d6b2a; text-decoration: underline; }
 
-        /* submit */
+        
         .btn-submit {
             width: 100%;
             padding: 0.75rem;
@@ -315,7 +315,7 @@
         .terms-text { text-align: center; font-size: 0.7rem; color: #bbb; margin-top: 0.7rem; line-height: 1.5; }
         .terms-text a { color: #999; text-decoration: underline; }
 
-        /* SUCCESS */
+        
         .success-box { display: none; text-align: center; padding: 0.8rem 0; }
         .success-box.show { display: block; }
         .success-icon { font-size: 2.4rem; margin-bottom: 0.7rem; }
@@ -337,7 +337,7 @@
       <p id="cardSub">Help us protect India\'s wild spaces.</p>
     </div>
 
-    <!-- SUCCESS -->
+    
     <div class="success-box" id="successBox">
       <div class="success-icon">🌿</div>
       <h3 id="successTitle">You\'re registered!</h3>
@@ -346,7 +346,7 @@
       <span class="redirect-note" id="redirectNote">Redirecting in 3s...</span>
     </div>
 
-    <!-- SCREEN 1: CHOICE -->
+    
     <div class="screen active" id="screenChoice">
       <div class="choice-btns">
 
@@ -371,7 +371,7 @@
       </div>
     </div>
 
-    <!-- SCREEN 2: LOGIN -->
+    
     <div class="screen" id="screenLogin">
       <button class="back-link" onclick="goTo('screenChoice')">← Back</button>
 
@@ -402,7 +402,7 @@
       </p>
     </div>
 
-    <!-- SCREEN 3: REGISTER -->
+    
     <div class="screen" id="screenRegister">
       <button class="back-link" onclick="goTo('screenChoice')">← Back</button>
 
@@ -584,7 +584,6 @@
         setTimeout(function() { btn.classList.remove('loading'); cb(); }, 1500);
     }
 
-    // Drive → page mapping for redirect after register
     var drivePages = {
         corbett: 'tiger.html',
         velas:   'turtle.html',
@@ -638,3 +637,4 @@
 </script>
 </body>
 </html>
+

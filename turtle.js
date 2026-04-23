@@ -64,5 +64,5 @@ turtle.addEventListener('click', () => {
 
 window.restartGame = restartGame;
 
-// Position turtle on first load
 moveTurtle();
+

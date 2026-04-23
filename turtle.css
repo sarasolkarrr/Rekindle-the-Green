@@ -29,7 +29,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    /* navbar-loader.js injects a fixed 54px navbar */
+    
     padding-top: 74px;
 }
 

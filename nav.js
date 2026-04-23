@@ -1,4 +1,4 @@
-// Shared navigation bar injection script based on index.html navbar
+
 (function () {
     const navTemplate = `
     <nav class="rtg-navbar" data-rtg-nav="true">

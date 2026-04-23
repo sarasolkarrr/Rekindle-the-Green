@@ -1,18 +1,16 @@
-// flappybird.js — Rekindle the Green: Keoladeo Bird Sanctuary
-// Drop-in compatible with ImKennyYip/flappy-bird image assets:
-//   flappybird.png, toppipe.png, bottompipe.png
+
+
+
 
 (function () {
     const board = document.getElementById("board");
     if (!board) return;
     const ctx = board.getContext("2d");
 
-    // ── Dimensions ──────────────────────────────────────────────────────────
     const W = 360, H = 640;
     board.width = W;
     board.height = H;
 
-    // ── Asset loading ────────────────────────────────────────────────────────
     function tryImg(src) {
         const img = new Image();
         img.src = src;
@@ -23,24 +21,20 @@
     const bottomImg = tryImg("bottompipe.png");
     const bgImg = tryImg("keoladeo-bg.jpg"); // optional; falls back to drawn bg
 
-    // ── Bird ─────────────────────────────────────────────────────────────────
     const BIRD_W = 34, BIRD_H = 24;
     const START_X = W / 8, START_Y = H / 2;
     let bird = { x: START_X, y: START_Y, w: BIRD_W, h: BIRD_H };
 
-    // ── Pipes ─────────────────────────────────────────────────────────────────
     const PIPE_W = 64;
     const PIPE_H = 512;
     const GAP = 160;
     const PIPE_VX = -2.4;
     let pipes = [];
 
-    // ── Physics ───────────────────────────────────────────────────────────────
     const GRAVITY = 0.28;
     const FLAP_V = -6.5;
     let vy = 0;
 
-    // ── State ─────────────────────────────────────────────────────────────────
     let score = 0;
     let best = parseInt(localStorage.getItem("rtg_bird_best") || "0", 10);
     let started = false;
@@ -48,21 +42,20 @@
     let pipeTimer = null;
     const targetScore = 2;
 
-    // ── Draw helpers ──────────────────────────────────────────────────────────
     function imgReady(img) { return img.complete && img.naturalWidth > 0; }
 
     function drawBg() {
         if (imgReady(bgImg)) {
             ctx.drawImage(bgImg, 0, 0, W, H);
         } else {
-            // Sky gradient
+
             const sky = ctx.createLinearGradient(0, 0, 0, H);
             sky.addColorStop(0, "#87CEEB");
             sky.addColorStop(0.65, "#b8e4f0");
             sky.addColorStop(1, "#7bbf62");
             ctx.fillStyle = sky;
             ctx.fillRect(0, 0, W, H);
-            // Ground stripe
+
             ctx.fillStyle = "#5a8a3a";
             ctx.fillRect(0, H - 30, W, 30);
         }
@@ -70,33 +63,33 @@
 
     function drawBird() {
         ctx.save();
-        // Tilt bird body with velocity
+
         const angle = Math.min(Math.max(vy * 0.04, -0.4), 1.2);
         ctx.translate(bird.x + bird.w / 2, bird.y + bird.h / 2);
         ctx.rotate(angle);
         if (imgReady(birdImg)) {
             ctx.drawImage(birdImg, -bird.w / 2, -bird.h / 2, bird.w, bird.h);
         } else {
-            // Painted stork / crane silhouette drawn with canvas
-            // Body
+
+
             ctx.fillStyle = "#f5f5f0";
             ctx.beginPath();
             ctx.ellipse(0, 0, bird.w / 2, bird.h / 2, 0, 0, Math.PI * 2);
             ctx.fill();
-            // Wing flash (blue-grey)
+
             ctx.fillStyle = "#8aaec0";
             ctx.beginPath();
             ctx.ellipse(-2, 2, bird.w / 2.5, bird.h / 3.5, 0.3, 0, Math.PI * 2);
             ctx.fill();
-            // Red crown
+
             ctx.fillStyle = "#e03030";
             ctx.beginPath();
             ctx.ellipse(bird.w / 2 - 4, -bird.h / 2 + 2, 5, 4, 0, 0, Math.PI * 2);
             ctx.fill();
-            // Beak
+
             ctx.fillStyle = "#c8a020";
             ctx.fillRect(bird.w / 2 - 2, -2, 10, 3);
-            // Eye
+
             ctx.fillStyle = "#1a1a1a";
             ctx.beginPath();
             ctx.arc(bird.w / 2 - 5, -3, 2, 0, Math.PI * 2);
@@ -108,7 +101,7 @@
     function drawPipe(pipe) {
         if (pipe.isTop) {
             if (imgReady(topImg)) {
-                // Top pipe: flip vertically so the opening faces down
+
                 ctx.save();
                 ctx.scale(1, -1);
                 ctx.drawImage(topImg, pipe.x, -(pipe.y + pipe.h), PIPE_W, PIPE_H);
@@ -116,7 +109,7 @@
             } else {
                 ctx.fillStyle = "#4a8a2a";
                 ctx.fillRect(pipe.x, pipe.y, PIPE_W, pipe.h);
-                // Cap
+
                 ctx.fillStyle = "#3a7a1a";
                 ctx.fillRect(pipe.x - 4, pipe.y + pipe.h - 20, PIPE_W + 8, 20);
             }
@@ -126,7 +119,7 @@
             } else {
                 ctx.fillStyle = "#4a8a2a";
                 ctx.fillRect(pipe.x, pipe.y, PIPE_W, pipe.h);
-                // Cap
+
                 ctx.fillStyle = "#3a7a1a";
                 ctx.fillRect(pipe.x - 4, pipe.y, PIPE_W + 8, 20);
             }
@@ -195,7 +188,6 @@
         ctx.fillText("Space / tap to play again", W / 2, by + 148);
     }
 
-    // ── Collision ─────────────────────────────────────────────────────────────
     function hits(a, p) {
         return (
             a.x + 4 < p.x + p.w &&
@@ -205,7 +197,6 @@
         );
     }
 
-    // ── Pipe spawner ──────────────────────────────────────────────────────────
     function spawnPipes() {
         if (over || !started) return;
         const topH = Math.floor(Math.random() * (H / 2 - GAP / 2 - 60)) + 40;
@@ -214,7 +205,6 @@
         pipes.push({ x: W, y: botY, w: PIPE_W, h: H - botY, isTop: false, passed: false });
     }
 
-    // ── Main loop ─────────────────────────────────────────────────────────────
     function loop() {
         ctx.clearRect(0, 0, W, H);
 
@@ -222,24 +212,20 @@
 
         drawBg();
 
-        // Physics
         vy += GRAVITY;
         bird.y += vy;
 
-        // Floor / ceiling
         if (bird.y + bird.h >= H - 30 || bird.y <= 0) {
             endGame();
             drawGameOver();
             return;
         }
 
-        // Pipes
         for (let i = pipes.length - 1; i >= 0; i--) {
             const p = pipes[i];
             p.x += PIPE_VX;
             drawPipe(p);
 
-            // Score when bird passes pipe pair (only count top pipe)
             if (p.isTop && !p.passed && bird.x > p.x + PIPE_W) {
                 p.passed = true;
                 score += 1;
@@ -248,7 +234,6 @@
 
             if (hits(bird, p)) { endGame(); drawBird(); drawGameOver(); return; }
 
-            // Remove off-screen
             if (p.x + PIPE_W < 0) pipes.splice(i, 1);
         }
 
@@ -258,7 +243,6 @@
         requestAnimationFrame(loop);
     }
 
-    // ── Game control ──────────────────────────────────────────────────────────
     function flap() {
         if (over) { restartGame(); return; }
         if (!started) {
@@ -315,14 +299,12 @@
         requestAnimationFrame(loop);
     }
 
-    // ── Input ─────────────────────────────────────────────────────────────────
     document.addEventListener("keydown", (e) => {
         if (["Space", "ArrowUp", "KeyX"].includes(e.code)) { e.preventDefault(); flap(); }
     });
     board.addEventListener("click", () => flap());
     board.addEventListener("touchstart", (e) => { e.preventDefault(); flap(); }, { passive: false });
 
-    // Score display outside canvas (optional span)
     document.addEventListener("rtg:score", (e) => {
         const el = document.getElementById("score");
         if (el) el.textContent = e.detail;
@@ -331,6 +313,6 @@
     window.restartGame = restartGame;
     window.showInfoPage = showInfoPage;
 
-    // ── Kick off ──────────────────────────────────────────────────────────────
     requestAnimationFrame(loop);
 })();
+

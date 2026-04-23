@@ -276,7 +276,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
         .field.has-error .err { display: block; }
 
-        /* select arrow */
+        
         .select-wrap { position: relative; }
         .select-wrap::after {
             content: '▾';
@@ -359,7 +359,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         .terms-text { text-align: center; font-size: 0.7rem; color: #bbb; margin-top: 0.7rem; line-height: 1.5; }
         .terms-text a { color: #999; text-decoration: underline; }
 
-        /* SUCCESS */
+        
         .success-box { display: none; text-align: center; padding: 0.8rem 0; }
         .success-box.show { display: block; }
         .success-icon { font-size: 2.4rem; margin-bottom: 0.7rem; }
@@ -369,7 +369,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         .progress-fill { height: 100%; background: #3d6b2a; width: 0%; transition: width 2.8s linear; }
         .redirect-note { font-size: 0.71rem; color: #bbb; }
 
-        /* ERROR MODAL */
+        
         .modal-overlay {
             display: none;
             position: fixed;
@@ -433,7 +433,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 </head>
 
 <body>
-<!-- ERROR MODAL -->
+
 <div class="modal-overlay" id="errorModal">
   <div class="modal-content">
     <div class="modal-icon">Alert</div>
@@ -453,7 +453,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
       <p id="cardSub">Help us protect India\'s wild spaces.</p>
     </div>
 
-    <!-- SUCCESS -->
+    
     <div class="success-box" id="successBox">
       <div class="success-icon">OK</div>
       <h3 id="successTitle">You\'re registered!</h3>
@@ -462,7 +462,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
       <span class="redirect-note" id="redirectNote">Redirecting in 3s...</span>
     </div>
 
-    <!-- SCREEN 1: CHOICE -->
+    
     <div class="screen active" id="screenChoice">
       <div class="choice-btns">
 
@@ -487,7 +487,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
       </div>
     </div>
 
-    <!-- SCREEN 2: LOGIN -->
+    
     <div class="screen" id="screenLogin">
       <button class="back-link" onclick="goTo('screenChoice')">← Back</button>
 
@@ -520,7 +520,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
       </p>
     </div>
 
-    <!-- SCREEN 3: REGISTER -->
+    
     <div class="screen" id="screenRegister">
       <button class="back-link" onclick="goTo('screenChoice')">← Back</button>
 
@@ -792,7 +792,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         });
     }
 
-    // Drive → page mapping for redirect after register
     var drivePages = {
         corbett: 'tiger.html',
         velas:   'turtle.html',
@@ -846,3 +845,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 </script>
 </body>
 </html>
+

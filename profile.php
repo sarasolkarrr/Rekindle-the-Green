@@ -554,7 +554,7 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
   </nav>
 
   <script>
-    // Sync localStorage from PHP session so navbar shows avatar on direct profile visits
+
     localStorage.setItem('rtg_user_name', <?= json_encode($user['first_name']) ?>);
     localStorage.setItem('rtg_user_id', <?= json_encode((string)$user['id']) ?>);
   </script>
