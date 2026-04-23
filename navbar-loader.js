@@ -1,5 +1,3 @@
-
-
 function handleLogout() {
   localStorage.removeItem('rtg_user_name');
   localStorage.removeItem('rtg_user_id');
@@ -10,7 +8,6 @@ function loadNavbar() {
   const userName = localStorage.getItem('rtg_user_name');
   const userInitials = userName ? userName.charAt(0).toUpperCase() : '';
   const isLoggedIn = !!userName;
-  
 
   const isIndexPage = window.location.pathname.includes('index.html') || 
                       window.location.pathname.endsWith('/');
@@ -20,7 +17,6 @@ function loadNavbar() {
   if (isLoggedIn) {
     navActionsHTML += `
       <a href="profile.php" class="nav-user">
-        <span>${userName.substring(0, 12)}</span>
         <div class="nav-avatar">${userInitials}</div>
       </a>
       <a href="javascript:void(0)" onclick="handleLogout()" class="btn-nav btn-logout">Log Out</a>
@@ -91,16 +87,13 @@ function loadNavbar() {
       .nav-user {
         display: flex;
         align-items: center;
-        gap: 0.7rem;
         cursor: pointer;
         text-decoration: none;
-        color: rgba(255,255,255,0.8);
-        font-size: 0.78rem;
-        transition: color 0.18s;
+        transition: opacity 0.18s;
       }
 
       .nav-user:hover {
-        color: #c9a84c;
+        opacity: 0.85;
       }
 
       .nav-avatar {
@@ -184,18 +177,15 @@ function loadNavbar() {
     </nav>
   `;
 
-  // Find existing nav and replace it
   const existingNav = document.querySelector('nav');
   if (existingNav) {
     existingNav.insertAdjacentHTML('beforebegin', navHTML);
     existingNav.remove();
   } else {
-    // If no nav exists, insert at the beginning of body
     document.body.insertAdjacentHTML('afterbegin', navHTML);
   }
 }
 
-// Load navbar when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', loadNavbar);
 } else {

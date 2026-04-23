@@ -285,7 +285,6 @@ session_start();
 </head>
 <body>
 
-
    <nav>
     <a class="nav-logo" href="index.html"><span class="nav-logo-text">Rekindle the Green</span></a>
     <span class="nav-center">Wildlife Conservation India</span>
@@ -294,8 +293,6 @@ session_start();
       <a href="signup.php" class="btn-nav btn-signup">Sign Up</a>
     </div>
   </nav>
-
-
 
   <div class="modal-overlay" id="errorModal">
     <div class="modal-box">
@@ -308,7 +305,6 @@ session_start();
     </div>
   </div>
 
-
   <div class="page-wrap">
     <div class="card">
 
@@ -319,7 +315,6 @@ session_start();
       </div>
 
       <div class="divider"></div>
-
 
       <div class="success-box" id="successBox">
         <h3>Signed in!</h3>
@@ -414,6 +409,10 @@ session_start();
       .then(function(data) {
         btn.classList.remove('loading');
         if (data.success) {
+          // Save to localStorage so navbar-loader shows avatar immediately
+          localStorage.setItem('rtg_user_name', data.name);
+          localStorage.setItem('rtg_user_id', data.id);
+
           document.getElementById('formWrap').style.display = 'none';
           var sb = document.getElementById('successBox');
           sb.classList.add('show');

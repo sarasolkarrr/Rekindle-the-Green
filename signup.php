@@ -518,8 +518,6 @@ if (isset($_SESSION['user_id'])) {
     </div>
   </nav>
 
-  
-
   <div class="page-wrap">
     <div class="card">
 
@@ -733,6 +731,10 @@ if (isset($_SESSION['user_id'])) {
         .then(function (data) {
           btn.classList.remove('loading');
           if (data.success) {
+            // Save to localStorage so navbar-loader shows avatar immediately
+            localStorage.setItem('rtg_user_name', data.name);
+            localStorage.setItem('rtg_user_id', data.id);
+
             document.getElementById('formWrap').style.display = 'none';
             var sb = document.getElementById('successBox');
             sb.classList.add('show');
