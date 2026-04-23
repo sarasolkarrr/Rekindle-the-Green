@@ -1,30 +1,605 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="nav.css" />
-    <script src="nav.js" defer></script>
-    <title>Rekindle the Wild</title>
-    <link rel="stylesheet" href="style.css"/>
-    <script src="script.js" defer></script>
-</head>
-<body class="tiger">
-    <nav>
-      <a class="nav-logo" href="index.html">
-        <span class="nav-logo-text">Rekindle the Green</span>
-      </a>
-      <span class="nav-center">Wildlife Conservation India</span>
-      <div class="nav-actions">
-        <a href="profile.php" class="btn-nav btn-login">Log In</a>
-        <a href="profile.php" class="btn-nav btn-signup">Sign Up</a>
-      </div>
-    </nav>
-    <div class="headert" style="position: fixed; top:47px; left: 0;">
-  <h3>Jim Corbett National Park</h3>
-</div>
-    <div class="rain-container" id="raincontainer"></div>
-    <button class="rainbtn" onclick="rain()">💧</button>
-</body>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="nav.css">
+  <title>Wildlife Quiz Tic-Tac-Toe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="navbar-loader.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --jungle-dark: #0b2f26; --jungle-mid: #163222; --jungle-light: #1f4a32;
+      --moss: #2d6e47; --leaf: #4a9e6a; --pale-leaf: #7dc896;
+      --gold: #d4af37; --gold-light: #e8c97a;
+      --cream: #f5e6c8; --cream-dark: #d8ceb4;
+      --player-x: #e07a5f; --player-o: #5fa8d3;
+      --radius: 12px; --radius-lg: 18px;
+    }
+    body {
+      background: var(--jungle-dark); font-family: 'Inter', sans-serif;
+      color: var(--cream); min-height: 100vh; padding-top: 50px;
+      position: relative; overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background: radial-gradient(ellipse at 20% 80%, rgba(45,110,71,0.15) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 20%, rgba(212,175,55,0.07) 0%, transparent 50%);
+      pointer-events: none; z-index: 0;
+    }
 
+    /* NAV */
+        nav {
+      position: fixed; top: 0; left: 0; right: 0; height: 50px;
+      background: #1a2e1a; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 1.2rem;
+      z-index: 1000; border-bottom: 1px solid rgba(212,175,55,0.25);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .nav-logo-text { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem; color: #fff; white-space: nowrap; }
+    .nav-center {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: rgba(255,255,255,0.45);
+      pointer-events: none; white-space: nowrap; font-family: 'Inter', sans-serif;
+    }
+    .nav-actions { display: flex; gap: 0.5rem; }
+    .btn-nav {
+      padding: 0.38rem 1rem; border-radius: 5px; font-family: 'Inter', sans-serif;
+      font-size: 0.75rem; font-weight: 600; cursor: pointer; text-decoration: none;
+      transition: all 0.18s; display: inline-block; border: none;
+    }
+    .btn-login { background: transparent; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.2); }
+    .btn-login:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+    .btn-signup { background: var(--gold); color: #1a2e1a; }
+    .btn-signup:hover { background: var(--gold-light); }
+
+    /* GAME PAGE */
+    #gamePage {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 2rem 1rem 3rem; position: relative; z-index: 1;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700;
+      color: var(--gold-light); letter-spacing: 0.03em; text-align: center; margin-bottom: 0.2rem;
+    }
+    .subtitle {
+      font-size: 1rem; font-weight: 300; font-style: italic; color: var(--pale-leaf);
+      text-align: center; margin-bottom: 2rem; letter-spacing: 0.05em;
+    }
+    .scoreboard { display: flex; gap: 1.5rem; margin-bottom: 1.25rem; align-items: center; }
+    .score-card {
+      background: var(--jungle-mid); border: 1px solid var(--moss);
+      border-radius: var(--radius); padding: 0.75rem 1.5rem;
+      text-align: center; min-width: 90px; transition: border-color 0.3s, transform 0.2s;
+    }
+    .score-card.active { border-color: var(--gold); transform: scale(1.06); }
+    .score-card .pname { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.2rem; }
+    .score-card.px .pname { color: var(--player-x); }
+    .score-card.po .pname { color: var(--player-o); }
+    .score-card .pscore { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; line-height: 1; }
+    .score-card.px .pscore { color: var(--player-x); }
+    .score-card.po .pscore { color: var(--player-o); }
+    .score-vs { font-size: 1rem; color: var(--cream-dark); font-style: italic; }
+    .turn-banner {
+      background: var(--jungle-mid); border: 1px solid var(--moss);
+      border-radius: 999px; padding: 0.4rem 1.3rem; font-size: 0.95rem;
+      font-style: italic; color: var(--cream-dark); margin-bottom: 1.25rem;
+      min-width: 240px; text-align: center; transition: all 0.3s;
+    }
+    .turn-banner span { font-weight: 600; font-style: normal; }
+    .turn-banner .tx { color: var(--player-x); }
+    .turn-banner .to { color: var(--player-o); }
+    .streak-bar { display: flex; gap: 4px; justify-content: center; margin-bottom: 0.6rem; min-height: 12px; }
+    .streak-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--moss); transition: background 0.3s; }
+    .streak-dot.hit { background: var(--gold); }
+    .streak-dot.miss { background: var(--player-x); opacity: 0.5; }
+    .board {
+      display: grid; grid-template-columns: repeat(3, 116px);
+      grid-template-rows: repeat(3, 116px); gap: 8px; margin-bottom: 1.5rem;
+    }
+    .cell {
+      background: var(--jungle-mid); border: 1px solid var(--moss);
+      border-radius: var(--radius); display: flex; align-items: center;
+      justify-content: center; font-family: 'Playfair Display', serif;
+      font-size: 3.2rem; font-weight: 700; cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+      user-select: none; position: relative;
+    }
+    .cell:hover:not(.taken) { background: var(--jungle-light); border-color: var(--leaf); transform: scale(1.04); }
+    .cell.taken { cursor: default; }
+    .cell.x { color: var(--player-x); }
+    .cell.o { color: var(--player-o); }
+    .cell.win-cell { border-color: var(--gold); background: rgba(212,175,55,0.12); animation: winPulse 0.6s ease; }
+    @keyframes winPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+    .cell .mark { opacity: 0; transform: scale(0.3) rotate(-15deg); transition: opacity 0.3s, transform 0.3s; }
+    .cell.taken .mark { opacity: 1; transform: scale(1) rotate(0deg); }
+    .btn {
+      background: var(--jungle-light); border: 1px solid var(--leaf); color: var(--cream);
+      font-family: 'Crimson Pro', serif; font-size: 1rem; padding: 0.6rem 1.6rem;
+      border-radius: 999px; cursor: pointer; letter-spacing: 0.04em; transition: background 0.2s, transform 0.15s;
+    }
+    .btn:hover { background: var(--moss); transform: translateY(-1px); }
+    .btn:active { transform: scale(0.97); }
+    .btn-gold { background: var(--gold); border-color: var(--gold-light); color: var(--jungle-dark); font-weight: 600; }
+    .btn-gold:hover { background: var(--gold-light); }
+
+    /* QUIZ MODAL */
+    .overlay {
+      position: fixed; inset: 0; background: rgba(5,15,10,0.88);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 100; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .overlay.visible { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--jungle-mid); border: 1px solid rgba(212,175,55,0.18);
+      border-radius: var(--radius-lg); padding: 1.75rem 2rem; max-width: 460px;
+      width: 100%; transform: translateY(16px); transition: transform 0.25s;
+    }
+    .overlay.visible .modal { transform: translateY(0); }
+
+    .quiz-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .quiz-player-tag {
+      font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; padding: 0.22rem 0.75rem;
+      border-radius: 999px;
+    }
+    .quiz-player-tag.turn-x { background: rgba(224,122,95,0.12); color: var(--player-x); border: 1px solid rgba(224,122,95,0.35); }
+    .quiz-player-tag.turn-o { background: rgba(95,168,211,0.12); color: var(--player-o); border: 1px solid rgba(95,168,211,0.35); }
+    .quiz-cat {
+      font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); opacity: 0.55;
+    }
+
+    .quiz-q {
+      font-family: 'Playfair Display', serif; font-size: 1.18rem;
+      line-height: 1.6; color: var(--cream); margin-bottom: 1.25rem;
+    }
+    .quiz-options { display: flex; flex-direction: column; gap: 0.45rem; }
+    .quiz-opt {
+      background: transparent; border: 1px solid rgba(45,110,71,0.45);
+      border-radius: var(--radius); padding: 0.65rem 1rem; cursor: pointer;
+      font-family: 'Crimson Pro', serif; font-size: 1rem; color: var(--cream);
+      text-align: left; transition: background 0.15s, border-color 0.15s, transform 0.12s;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .quiz-opt:hover:not(.answered) { background: rgba(31,74,50,0.55); border-color: var(--leaf); transform: translateX(3px); }
+    .quiz-opt.correct { background: rgba(74,158,106,0.16); border-color: rgba(125,200,150,0.45); color: var(--pale-leaf); }
+    .quiz-opt.wrong { background: rgba(224,122,95,0.1); border-color: rgba(224,122,95,0.4); color: #f0a090; }
+    .quiz-opt.answered { cursor: default; }
+    .opt-key {
+      flex-shrink: 0; width: 22px; height: 22px; border-radius: 4px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+      font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; color: var(--cream-dark);
+    }
+    .quiz-opt.correct .opt-key { background: rgba(74,158,106,0.25); border-color: var(--leaf); color: var(--pale-leaf); }
+    .quiz-opt.wrong .opt-key { background: rgba(224,122,95,0.2); border-color: var(--player-x); color: #f0a090; }
+
+    .quiz-feedback {
+      margin-top: 1rem; padding: 0.85rem 1rem; border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.9rem; display: none; border-left: 2px solid transparent;
+    }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.ok { background: rgba(74,158,106,0.09); border-left-color: var(--leaf); }
+    .quiz-feedback.fail { background: rgba(224,122,95,0.07); border-left-color: var(--player-x); }
+    .fb-verdict {
+      font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.35rem;
+    }
+    .quiz-feedback.ok .fb-verdict { color: var(--pale-leaf); }
+    .quiz-feedback.fail .fb-verdict { color: #f0a090; }
+    .fb-fact { font-style: italic; color: var(--cream-dark); line-height: 1.55; }
+
+    .quiz-continue { margin-top: 1rem; display: none; width: 100%; }
+    .quiz-continue.show { display: block; }
+
+    /* RESULT MODAL */
+    .result-inner { text-align: center; }
+    .result-badge {
+      display: inline-block; font-family: 'Inter', sans-serif; font-size: 0.65rem;
+      font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 0.28rem 0.9rem; border-radius: 999px; margin-bottom: 1rem;
+      background: rgba(212,175,55,0.12); color: var(--gold); border: 1px solid rgba(212,175,55,0.28);
+    }
+    .result-title { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: var(--gold-light); margin-bottom: 0.4rem; }
+    .result-sub { font-style: italic; color: var(--cream-dark); margin-bottom: 1.75rem; font-size: 1.05rem; }
+    .result-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+    /* INFO PAGE — editorial style */
+    #infoPage {
+      display: none; max-width: 800px; margin: 0 auto;
+      padding: 4rem 2rem 6rem; position: relative; z-index: 1;
+      animation: fadeUp 0.6s ease forwards;
+    }
+    @keyframes fadeUp { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: translateY(0); } }
+
+    .unlock-bar {
+      border-top: 1px solid rgba(212,175,55,0.2);
+      border-bottom: 1px solid rgba(212,175,55,0.2);
+      padding: 1rem 0; margin-bottom: 3.5rem;
+      display: flex; align-items: baseline; gap: 1.25rem;
+    }
+    .unlock-kicker {
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); flex-shrink: 0;
+    }
+    .unlock-bar p { font-size: 0.95rem; font-style: italic; color: var(--cream-dark); line-height: 1.5; }
+
+    .info-hero { margin-bottom: 3.5rem; }
+    .info-hero-label {
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+      opacity: 0.65; margin-bottom: 0.75rem; display: block;
+    }
+    .info-hero h2 {
+      font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 700;
+      color: var(--cream); line-height: 1.12; margin-bottom: 1rem; letter-spacing: -0.01em;
+    }
+    .info-hero p { font-size: 1.12rem; color: var(--cream-dark); line-height: 1.75; max-width: 600px; font-weight: 300; }
+
+    .stat-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid rgba(212,175,55,0.18);
+      border-bottom: 1px solid rgba(212,175,55,0.18);
+      margin-bottom: 3.5rem;
+    }
+    .stat-item { padding: 1.75rem 1.25rem; border-right: 1px solid rgba(212,175,55,0.18); }
+    .stat-item:last-child { border-right: none; }
+    .stat-item .s-num {
+      font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700;
+      color: var(--gold); line-height: 1; display: block; margin-bottom: 0.3rem;
+    }
+    .stat-item .s-label {
+      font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--cream-dark);
+    }
+
+    .info-section { margin-bottom: 3.5rem; }
+    .section-label {
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+      opacity: 0.65; margin-bottom: 1.5rem; display: block;
+    }
+
+    .timeline { list-style: none; padding: 0; }
+    .timeline li {
+      display: grid; grid-template-columns: 60px 1px 1fr;
+      gap: 0 1.5rem; padding-bottom: 2.25rem;
+    }
+    .timeline li:last-child { padding-bottom: 0; }
+    .tl-year {
+      font-family: 'Playfair Display', serif; font-size: 0.9rem;
+      color: var(--gold); font-weight: 700; text-align: right; padding-top: 1px;
+    }
+    .tl-line { position: relative; background: rgba(212,175,55,0.18); width: 1px; }
+    .tl-line::before {
+      content: ''; position: absolute; top: 5px; left: 50%; transform: translateX(-50%);
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--gold); border: 1px solid var(--jungle-dark);
+    }
+    .timeline li:last-child .tl-line { background: transparent; }
+    .tl-content strong { display: block; color: var(--cream); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .tl-content p { font-size: 0.95rem; color: var(--cream-dark); line-height: 1.65; font-style: italic; }
+
+    .fact-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: rgba(212,175,55,0.1);
+      border: 1px solid rgba(212,175,55,0.1); border-radius: var(--radius); overflow: hidden;
+    }
+    .fact-cell { background: var(--jungle-dark); padding: 1.5rem 1.5rem; }
+    .fact-cell .fc-label {
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--pale-leaf);
+      margin-bottom: 0.55rem; display: block;
+    }
+    .fact-cell p { font-size: 0.95rem; color: var(--cream-dark); line-height: 1.65; }
+
+    .cta-section { border-top: 1px solid rgba(212,175,55,0.18); padding-top: 3rem; }
+    .cta-eyebrow {
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+      opacity: 0.65; margin-bottom: 1rem; display: block;
+    }
+    .cta-section h3 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--cream); margin-bottom: 0.75rem; line-height: 1.2; }
+    .cta-section p { font-size: 1.05rem; color: var(--cream-dark); line-height: 1.7; max-width: 520px; margin-bottom: 2rem; font-style: italic; }
+    .cta-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .cta-primary {
+      padding: 0.8rem 2rem; background: var(--gold); color: var(--jungle-dark);
+      font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase; border: none;
+      border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s;
+    }
+    .cta-primary:hover { background: var(--gold-light); }
+    .cta-secondary {
+      padding: 0.8rem 2rem; background: transparent; color: var(--cream);
+      font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.18); border-radius: 4px;
+      cursor: pointer; text-decoration: none; display: inline-block; transition: border-color 0.2s;
+    }
+    .cta-secondary:hover { border-color: rgba(255,255,255,0.4); }
+
+    .info-play-again { text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05); }
+    .info-play-again button {
+      background: transparent; border: 1px solid rgba(255,255,255,0.14); color: var(--cream-dark);
+      font-family: 'Crimson Pro', serif; font-size: 1rem; padding: 0.6rem 1.8rem;
+      border-radius: 999px; cursor: pointer; letter-spacing: 0.04em; transition: border-color 0.2s, color 0.2s;
+    }
+    .info-play-again button:hover { border-color: var(--leaf); color: var(--cream); }
+
+    @media (max-width: 560px) {
+      .board { grid-template-columns: repeat(3, 96px); grid-template-rows: repeat(3, 96px); }
+      .cell { font-size: 2.8rem; }
+      .stat-row { grid-template-columns: 1fr; }
+      .stat-item { border-right: none; border-bottom: 1px solid rgba(212,175,55,0.18); }
+      .stat-item:last-child { border-bottom: none; }
+      .fact-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 1.7rem; }
+      .info-hero h2 { font-size: 1.9rem; }
+      #infoPage { padding: 2.5rem 1.25rem 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+ <nav>
+    <a class="nav-logo" href="index.html"><span class="nav-logo-text">Rekindle the Green</span></a>
+    <span class="nav-center">Wildlife Conservation India</span>
+    <div class="nav-actions">
+      <a href="login.php" class="btn-nav btn-login">Log In</a>
+      <a href="signup.php" class="btn-nav btn-signup">Sign Up</a>
+    </div>
+  </nav>
+
+  <!-- GAME PAGE -->
+  <div id="gamePage">
+    <h1>Wildlife Quiz Duel</h1>
+    <p class="subtitle">Answer to earn your move — protect what you know</p>
+    <div class="scoreboard">
+      <div class="score-card px" id="cardX"><div class="pname">Player X</div><div class="pscore" id="scoreX">0</div></div>
+      <div class="score-vs">vs</div>
+      <div class="score-card po" id="cardO"><div class="pname">Player O</div><div class="pscore" id="scoreO">0</div></div>
+    </div>
+    <div class="turn-banner" id="turnBanner"><span class="tx">Player X</span>'s turn — answer to move</div>
+    <div class="streak-bar" id="streakBar"></div>
+    <div class="board" id="board">
+      <div class="cell" data-i="0"><span class="mark"></span></div>
+      <div class="cell" data-i="1"><span class="mark"></span></div>
+      <div class="cell" data-i="2"><span class="mark"></span></div>
+      <div class="cell" data-i="3"><span class="mark"></span></div>
+      <div class="cell" data-i="4"><span class="mark"></span></div>
+      <div class="cell" data-i="5"><span class="mark"></span></div>
+      <div class="cell" data-i="6"><span class="mark"></span></div>
+      <div class="cell" data-i="7"><span class="mark"></span></div>
+      <div class="cell" data-i="8"><span class="mark"></span></div>
+    </div>
+    <button class="btn" onclick="resetGame()">&#8635; New Game</button>
+  </div>
+
+  <!-- QUIZ MODAL -->
+  <div class="overlay" id="quizOverlay">
+    <div class="modal">
+      <div class="quiz-meta">
+        <div class="quiz-player-tag" id="quizTag">Player X's Turn</div>
+        <div class="quiz-cat" id="quizCategory">Big Cats</div>
+      </div>
+      <div class="quiz-q" id="quizQuestion"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback">
+        <div class="fb-verdict" id="fbVerdict"></div>
+        <div class="fb-fact" id="fbFact"></div>
+      </div>
+      <button class="btn btn-gold quiz-continue" id="continueBtn" onclick="handleContinue()">Continue</button>
+    </div>
+  </div>
+
+  <!-- RESULT MODAL -->
+  <div class="overlay" id="resultOverlay">
+    <div class="modal result-inner">
+      <div class="result-badge" id="resultBadge">Result</div>
+      <div class="result-title" id="resultTitle">Wins the Round</div>
+      <div class="result-sub" id="resultSub">A true wildlife champion.</div>
+      <div class="result-actions">
+        <button class="btn btn-gold" onclick="showInfoPage()">Conservation Story</button>
+        <button class="btn" onclick="resetGame()">&#8635; Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFO PAGE -->
+  <div id="infoPage">
+    <div class="unlock-bar">
+      <span class="unlock-kicker">Story Unlocked</span>
+      <p>India's oldest national park, where Project Tiger was born, and where the Bengal Tiger endures.</p>
+    </div>
+    <div class="info-hero">
+      <span class="info-hero-label">Conservation Feature</span>
+      <h2>Jim Corbett National Park</h2>
+      <p>Established in 1936 in the Himalayan foothills of Uttarakhand, Corbett was the first national park in Asia and the cradle of India's tiger conservation movement.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat-item"><span class="s-num">260+</span><span class="s-label">Bengal Tigers (2024)</span></div>
+      <div class="stat-item"><span class="s-num">1318</span><span class="s-label">Sq. km protected</span></div>
+      <div class="stat-item"><span class="s-num">1936</span><span class="s-label">Year established</span></div>
+    </div>
+    <div class="info-section">
+      <span class="section-label">Conservation Timeline</span>
+      <ul class="timeline">
+        <li>
+          <div class="tl-year">1936</div><div class="tl-line"></div>
+          <div class="tl-content"><strong>Hailey National Park Founded</strong><p>The first national park in Asia, named after the British governor, a landmark for continental wildlife protection.</p></div>
+        </li>
+        <li>
+          <div class="tl-year">1957</div><div class="tl-line"></div>
+          <div class="tl-content"><strong>Renamed Jim Corbett National Park</strong><p>Renamed in honour of the legendary hunter-turned-conservationist who championed the forests he once hunted in.</p></div>
+        </li>
+        <li>
+          <div class="tl-year">1973</div><div class="tl-line"></div>
+          <div class="tl-content"><strong>Project Tiger Launched Here</strong><p>Prime Minister Indira Gandhi chose Corbett to launch Project Tiger which was a turning point for Bengal Tiger conservation worldwide.</p></div>
+        </li>
+        <li>
+          <div class="tl-year">2000s</div><div class="tl-line"></div>
+          <div class="tl-content"><strong>Wildlife Corridors Established</strong><p>Corbett Tiger Reserve expanded to link with adjacent forests, enabling free tiger movement across hundreds of kilometres.</p></div>
+        </li>
+        <li>
+          <div class="tl-year">2024</div><div class="tl-line"></div>
+          <div class="tl-content"><strong>Population Milestone</strong><p>Over 260 tigers, one of the highest densities in the world, a testament to decades of sustained conservation effort.</p></div>
+        </li>
+      </ul>
+    </div>
+    <div class="info-section">
+      <span class="section-label">Why Corbett Matters</span>
+      <div class="fact-grid">
+        <div class="fact-cell"><span class="fc-label">Biodiversity</span><p>Over 600 bird species, 50 mammals, and 25 reptile species make Corbett one of India's richest wildlife ecosystems.</p></div>
+        <div class="fact-cell"><span class="fc-label">Tiger Density</span><p>Roughly 14 tigers per 100 sq. km of optimal habitat , among the highest densities recorded anywhere on Earth.</p></div>
+        <div class="fact-cell"><span class="fc-label">River Ecosystem</span><p>The Ramganga river sustains mahseer fish, gharials, and over 7,000 elephants in the surrounding forest network.</p></div>
+        <div class="fact-cell"><span class="fc-label">Protection</span><p>Over 700 frontline guards patrol the reserve 24/7, supported by camera-trap networks and drone surveillance.</p></div>
+      </div>
+    </div>
+    <div class="cta-section">
+      <span class="cta-eyebrow">Get Involved</span>
+      <h3>Become a Tiger Guardian</h3>
+      <p>Support the rangers who protect these forests every night. Volunteer, donate, or spread the word, every action counts for the Bengal Tiger's future.</p>
+      <div class="cta-buttons">
+        <a href="#" class="cta-primary">Register for an Event</a>
+        <a href="#" class="cta-secondary">Learn More</a>
+      </div>
+    </div>
+    <div class="info-play-again"><button onclick="resetGame()">&#8635; Play Again</button></div>
+  </div>
+
+  <script>
+  const QUESTIONS = [
+    { cat:"Big Cats", q:"What is the national animal of India?", opts:["Lion","Tiger","Leopard","Snow Leopard"], a:1, fact:"The Bengal Tiger was declared India's national animal in 1973 under Project Tiger." },
+    { cat:"Habitats", q:"Jim Corbett National Park is primarily located in which Indian state?", opts:["Madhya Pradesh","Rajasthan","Uttarakhand","Himachal Pradesh"], a:2, fact:"Jim Corbett is India's oldest national park, established in 1936 in Uttarakhand." },
+    { cat:"Birds", q:"Which bird is the national bird of India?", opts:["Flamingo","Peacock","Indian Crane","Hornbill"], a:1, fact:"The Indian Peafowl was adopted as India's national bird in 1963." },
+    { cat:"Megafauna", q:"Which is the largest land animal on Earth?", opts:["Hippo","White Rhino","African Elephant","Giraffe"], a:2, fact:"African bush elephants can weigh up to 13,000 kg — the heaviest land animals alive." },
+    { cat:"Big Cats", q:"Which big cat can run the fastest on Earth?", opts:["Lion","Leopard","Cheetah","Jaguar"], a:2, fact:"Cheetahs can sprint at 112 km/h but can only sustain that speed for about 30 seconds." },
+    { cat:"Marine Life", q:"Which marine mammal is known as the 'canary of the sea'?", opts:["Dolphin","Beluga Whale","Blue Whale","Manatee"], a:1, fact:"Beluga whales produce rich chirps and clicks that are audible through ship hulls." },
+    { cat:"Reptiles", q:"Which is the world's longest venomous snake?", opts:["Anaconda","King Cobra","Black Mamba","Taipan"], a:1, fact:"King Cobras reach up to 5.5 metres and are the only snakes that build nests." },
+    { cat:"Conservation", q:"What does IUCN stand for?", opts:["International Union for Conservation of Nature","Indian Union of Conservation Networks","International Union for Climate Neutrality","Indian Union for Coastal Norms"], a:0, fact:"The IUCN Red List is the world's most comprehensive inventory of threatened species." },
+    { cat:"Asiatic Lions", q:"What is the only place in the world where Asiatic Lions live in the wild?", opts:["Ranthambore, India","Gir Forest, India","Masai Mara, Kenya","Kruger, South Africa"], a:1, fact:"Gir National Park in Gujarat is the last refuge of the Asiatic Lion, with around 700 individuals." },
+    { cat:"Birds", q:"Which is the world's tallest flying bird?", opts:["Ostrich","Flamingo","Sarus Crane","Whooping Crane"], a:2, fact:"The Sarus Crane stands up to 1.8 m tall and is a symbol of fidelity in Indian culture." },
+    { cat:"Forests", q:"What percentage of Earth's land is covered by tropical rainforests?", opts:["Around 7%","Around 20%","Around 35%","Around 50%"], a:0, fact:"Tropical rainforests cover roughly 7% of land but host more than 50% of all known species." },
+    { cat:"Project Tiger", q:"In which year was Project Tiger launched in India?", opts:["1960","1965","1973","1980"], a:2, fact:"Project Tiger launched on April 1, 1973 with 9 reserves. India now has over 50." },
+    { cat:"Megafauna", q:"Where is the largest population of Indian One-Horned Rhinoceros found?", opts:["Sundarbans","Kaziranga National Park","Corbett National Park","Nagarhole"], a:1, fact:"Kaziranga holds over 2,600 Indian rhinos — about 70% of the world's population." },
+    { cat:"Ecology", q:"Which animal is the most important pollinator globally?", opts:["Butterfly","Bee","Bat","Hummingbird"], a:1, fact:"Bees pollinate about one-third of all food crops consumed by humans worldwide." },
+    { cat:"Marine Life", q:"Which is the largest animal ever to have lived on Earth?", opts:["Megalodon","Blue Whale","African Elephant","Brachiosaurus"], a:1, fact:"Blue Whales reach 33 metres and 200 tonnes — larger than any known dinosaur." },
+    { cat:"Endangered Species", q:"Which large bird of prey is critically endangered and known as 'nature's cleaner'?", opts:["Eagle","Vulture","Condor","Harrier"], a:1, fact:"Vultures prevent disease spread; their population collapse has caused major ecological disruption." },
+    { cat:"Flora", q:"Which tree is the national tree of India?", opts:["Peepal","Neem","Mango","Banyan"], a:3, fact:"The Banyan is India's national tree. A single tree can spread over several acres." },
+    { cat:"Marine Life", q:"What is the largest coral reef system in the world?", opts:["Florida Reef","Mesoamerican Reef","Great Barrier Reef","Red Sea Reef"], a:2, fact:"Australia's Great Barrier Reef stretches over 2,300 km and is visible from outer space." },
+    { cat:"Big Cats", q:"Which is the only big cat that cannot roar?", opts:["Snow Leopard","Cheetah","Clouded Leopard","Both Snow Leopard and Cheetah"], a:3, fact:"Neither snow leopards nor cheetahs can roar — they lack the modified larynx required." },
+    { cat:"Biodiversity", q:"Which country has the highest biodiversity in the world?", opts:["India","Australia","Brazil","Indonesia"], a:2, fact:"Brazil hosts the Amazon Rainforest and more species than any other nation on Earth." },
+  ];
+
+  const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  let board = Array(9).fill(null), current = 'X', scores = {X:0,O:0};
+  let pending = null, quizAnswered = false, correctAnswer = false;
+  let usedQ = new Set(), streak = {X:[],O:[]};
+
+  function getQuestion() {
+    if (usedQ.size >= QUESTIONS.length) usedQ.clear();
+    let idx; do { idx = Math.floor(Math.random()*QUESTIONS.length); } while (usedQ.has(idx));
+    usedQ.add(idx); return QUESTIONS[idx];
+  }
+  function renderBoard() {
+    document.querySelectorAll('.cell').forEach((cell,i) => {
+      const mark = cell.querySelector('.mark');
+      if (board[i]) { mark.textContent = board[i]; cell.classList.add('taken',board[i].toLowerCase()); }
+      else { mark.textContent=''; cell.classList.remove('taken','x','o','win-cell'); }
+    });
+  }
+  function updateUI() {
+    const cls = current==='X'?'tx':'to';
+    document.getElementById('turnBanner').innerHTML = `<span class="${cls}">Player ${current}</span>'s turn — answer to move`;
+    document.getElementById('cardX').classList.toggle('active', current==='X');
+    document.getElementById('cardO').classList.toggle('active', current==='O');
+    document.getElementById('streakBar').innerHTML = streak[current].slice(-9).map(r=>`<div class="streak-dot ${r?'hit':'miss'}"></div>`).join('');
+  }
+  function cellClick(i) { if (board[i]||pending!==null) return; pending=i; showQuiz(); }
+  function showQuiz() {
+    const q = getQuestion(); quizAnswered=false; correctAnswer=false;
+    document.getElementById('quizCategory').textContent = q.cat;
+    document.getElementById('quizTag').textContent = `Player ${current}'s Turn`;
+    document.getElementById('quizTag').className = `quiz-player-tag turn-${current.toLowerCase()}`;
+    document.getElementById('quizQuestion').textContent = q.q;
+    document.getElementById('quizFeedback').className = 'quiz-feedback';
+    document.getElementById('continueBtn').className = 'btn btn-gold quiz-continue';
+    const optsEl = document.getElementById('quizOptions');
+    const labels = ['A','B','C','D'];
+    const shuffled = q.opts.map((o,i)=>({text:o,orig:i})).sort(()=>Math.random()-0.5);
+    const newCorrect = shuffled.findIndex(s=>s.orig===q.a);
+    optsEl.innerHTML='';
+    shuffled.forEach((opt,idx) => {
+      const btn = document.createElement('button'); btn.className='quiz-opt';
+      btn.innerHTML=`<span class="opt-key">${labels[idx]}</span>${opt.text}`;
+      btn.onclick=()=>handleAnswer(idx===newCorrect,q.fact,btn,optsEl,newCorrect);
+      optsEl.appendChild(btn);
+    });
+    document.getElementById('quizOverlay').classList.add('visible');
+  }
+  function handleAnswer(isCorrect,fact,chosenBtn,optsEl,correctIdx) {
+    if (quizAnswered) return; quizAnswered=true; correctAnswer=isCorrect;
+    optsEl.querySelectorAll('.quiz-opt').forEach((b,i)=>{ b.classList.add('answered'); if(i===correctIdx) b.classList.add('correct'); });
+    if (!isCorrect) chosenBtn.classList.add('wrong');
+    document.getElementById('fbVerdict').textContent = isCorrect ? 'Correct — you earn your move.' : `Incorrect — turn passes to Player ${current==='X'?'O':'X'}.`;
+    document.getElementById('fbFact').textContent = fact;
+    document.getElementById('quizFeedback').className = `quiz-feedback show ${isCorrect?'ok':'fail'}`;
+    document.getElementById('continueBtn').className = 'btn btn-gold quiz-continue show';
+    streak[current].push(isCorrect);
+  }
+  function handleContinue() {
+    document.getElementById('quizOverlay').classList.remove('visible');
+    if (correctAnswer) { placeMove(pending); }
+    else { current=current==='X'?'O':'X'; pending=null; updateUI(); }
+  }
+  function placeMove(i) {
+    board[i]=current; renderBoard(); const win=checkWin();
+    if (win) {
+      setTimeout(()=>{
+        win.forEach(idx=>document.querySelectorAll('.cell')[idx].classList.add('win-cell'));
+        scores[current]++;
+        document.getElementById('scoreX').textContent=scores.X;
+        document.getElementById('scoreO').textContent=scores.O;
+        setTimeout(()=>{
+          document.getElementById('resultBadge').textContent=`Player ${current}`;
+          showResult('Wins the Round', current==='X'?'A fierce claim on the forest.':'The jungle breathes in victory.');
+        },500);
+      },100);
+    } else if (board.every(Boolean)) {
+      document.getElementById('resultBadge').textContent='Draw';
+      setTimeout(()=>showResult('No winner this round.','Both guardians stand equal.'),300);
+    } else { current=current==='X'?'O':'X'; pending=null; updateUI(); }
+  }
+  function checkWin() {
+    for (const[a,b,c] of WINS) if(board[a]&&board[a]===board[b]&&board[b]===board[c]) return[a,b,c];
+    return null;
+  }
+  function showResult(title,sub) {
+    document.getElementById('resultTitle').textContent=title;
+    document.getElementById('resultSub').textContent=sub;
+    document.getElementById('resultOverlay').classList.add('visible');
+  }
+  function showInfoPage() {
+    document.getElementById('resultOverlay').classList.remove('visible');
+    document.getElementById('gamePage').style.display='none';
+    document.getElementById('infoPage').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function resetGame() {
+    board=Array(9).fill(null); current='X'; pending=null; quizAnswered=false; streak={X:[],O:[]};
+    document.getElementById('resultOverlay').classList.remove('visible');
+    document.getElementById('quizOverlay').classList.remove('visible');
+    document.getElementById('infoPage').style.display='none';
+    document.getElementById('gamePage').style.display='flex';
+    renderBoard(); updateUI();
+  }
+  document.querySelectorAll('.cell').forEach(cell=>cell.addEventListener('click',()=>cellClick(+cell.dataset.i)));
+  updateUI();
+  </script>
+</body>
 </html>

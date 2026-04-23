@@ -335,22 +335,7 @@ session_start();
 <body>
 
 
-  <nav>
-    <a class="nav-logo" href="index.html">
-      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 28 C10 28 14 18 26 10 C26 10 28 22 18 28 C18 28 15 30 10 28Z" fill="#4a8a2a"/>
-        <path d="M18 28 C16 22 14 16 10 28Z" fill="#2d5a1a"/>
-        <path d="M26 10 C24 16 20 22 18 28" stroke="#2d5a1a" stroke-width="1.5" fill="none"/>
-        <path d="M16 32 C16 28 17 25 18 28" stroke="#4a8a2a" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-      <span class="nav-logo-text">Rekindle the Green</span>
-    </a>
-    <span class="nav-center">Wildlife Conservation India</span>
-    <div class="nav-actions">
-      <a href="index.html" class="btn-nav btn-ghost">← Map</a>
-      <a href="signup.php" class="btn-nav btn-gold">Sign Up</a>
-    </div>
-  </nav>
+  <?php include 'navbar.php'; ?>
 
 
   <div class="modal-overlay" id="errorModal">

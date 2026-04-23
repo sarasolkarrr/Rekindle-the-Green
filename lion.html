@@ -1,286 +1,341 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="nav.css">
-<script src="nav.js" defer></script>
-<title>Plant the Seeds 🌱</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="nav.css">
+  <title>Plant the Seeds</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="navbar-loader.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --jungle-dark: #0b2f26; --jungle-mid: #163222; --jungle-light: #1f4a32;
+      --moss: #2d6e47; --leaf: #4a9e6a; --pale-leaf: #7dc896;
+      --gold: #d4af37; --gold-light: #e8c97a;
+      --cream: #f5e6c8; --cream-dark: #d8ceb4;
+      --soil: #96766b; --radius: 12px; --radius-lg: 18px;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--jungle-dark); color: var(--cream);
+      margin: 0; padding-top: 50px; overflow-x: hidden;
+    }
 
-<style>
-body {
-    font-family: 'Segoe UI', sans-serif;
-    text-align: center;
-    background: #0b2f26;
-    color: #f5e6c8;
-    margin: 0;
-    padding-top: 50px;
-}
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; height: 50px;
+      background: #1a2e1a; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 1.2rem;
+      z-index: 1000; border-bottom: 1px solid rgba(212,175,55,0.25);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .nav-logo-text { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem; color: #fff; white-space: nowrap; }
+    .nav-center {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: rgba(255,255,255,0.45);
+      pointer-events: none; white-space: nowrap; font-family: 'Inter', sans-serif;
+    }
+    .nav-actions { display: flex; gap: 0.5rem; }
+    .btn-nav {
+      padding: 0.38rem 1rem; border-radius: 5px; font-family: 'Inter', sans-serif;
+      font-size: 0.75rem; font-weight: 600; cursor: pointer; text-decoration: none;
+      transition: all 0.18s; display: inline-block; border: none;
+    }
+    .btn-login { background: transparent; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.2); }
+    .btn-login:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+    .btn-signup { background: var(--gold); color: #1a2e1a; }
+    .btn-signup:hover { background: var(--gold-light); }
 
-h1 {
-    color: #d4af37;
-    margin-top: 30px;
-    font-size: 42px;
-}
+    /* GAME PAGE */
+    #gamePage { text-align: center; padding: 2rem 1rem 3rem; }
+    h1 {
+      font-family: 'Playfair Display', serif; color: var(--gold-light);
+      margin-top: 1rem; font-size: 2.8rem; letter-spacing: 0.02em;
+    }
+    .game-sub { font-size: 1rem; font-style: italic; color: var(--pale-leaf); margin: 0.3rem 0 0.4rem; }
+    #score {
+      font-family: 'Playfair Display', serif; font-size: 1.4rem;
+      margin: 0.6rem 0 1.5rem; color: var(--cream);
+    }
+    #score span { color: var(--gold); }
+    #board { width: 360px; margin: auto; display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .tile {
+      width: 100px; height: 100px; background: var(--soil);
+      border-radius: var(--radius-lg); position: relative; cursor: pointer; overflow: hidden;
+      box-shadow: inset 0 4px 8px rgba(0,0,0,0.4), 0 6px 12px rgba(0,0,0,0.3);
+      transition: transform 0.15s, box-shadow 0.15s; border: 1px solid rgba(0,0,0,0.2);
+    }
+    .tile:hover { transform: translateY(-4px); box-shadow: inset 0 4px 8px rgba(0,0,0,0.4), 0 12px 20px rgba(0,0,0,0.4); }
+    .tile.filled { cursor: default; }
+    .seed { position: absolute; bottom: -70px; width: 100%; text-align: center; transition: bottom 0.25s ease; }
+    .seed img { display: block; margin: 0 auto; }
+    .show { bottom: 22px; }
 
-#score {
-    font-size: 22px;
-    margin: 15px 0 25px;
-    font-weight: 500;
-}
+    /* INFO PAGE — editorial style, same as quiz page */
+    #infoPage {
+      display: none; max-width: 800px; margin: 0 auto;
+      padding: 4rem 2rem 6rem; animation: fadeUp 0.6s ease forwards;
+    }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
 
-#board {
-    width: 360px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-}
+    .unlock-bar {
+      border-top: 1px solid rgba(212,175,55,0.2);
+      border-bottom: 1px solid rgba(212,175,55,0.2);
+      padding: 1rem 0; margin-bottom: 3.5rem;
+      display: flex; align-items: baseline; gap: 1.25rem;
+    }
+    .unlock-kicker {
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); flex-shrink: 0;
+    }
+    .unlock-bar p { font-size: 0.95rem; font-style: italic; color: var(--cream-dark); line-height: 1.5; }
 
-.tile {
-    width: 100px;
-    height: 100px;
-    background: #96766b;
-    border-radius: 18px;
-    position: relative;
-    cursor: pointer;
-    overflow: hidden;
+    .info-hero { margin-bottom: 3.5rem; }
+    .info-hero-label {
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+      opacity: 0.65; margin-bottom: 0.75rem; display: block;
+    }
+    .info-hero h2 {
+      font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 700;
+      color: var(--cream); line-height: 1.12; margin-bottom: 1rem; letter-spacing: -0.01em;
+    }
+    .info-hero p { font-size: 1.12rem; color: var(--cream-dark); line-height: 1.75; max-width: 600px; font-weight: 300; }
 
-    box-shadow: 
-        inset 0 4px 8px rgba(0,0,0,0.4),
-        0 6px 12px rgba(0,0,0,0.3);
+    .stat-row {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      border-top: 1px solid rgba(212,175,55,0.18);
+      border-bottom: 1px solid rgba(212,175,55,0.18);
+      margin-bottom: 3.5rem;
+    }
+    .stat-item { padding: 1.75rem 1.25rem; border-right: 1px solid rgba(212,175,55,0.18); }
+    .stat-item:last-child { border-right: none; }
+    .stat-item .s-num {
+      font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700;
+      color: var(--gold); line-height: 1; display: block; margin-bottom: 0.3rem;
+    }
+    .stat-item .s-label {
+      font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--cream-dark);
+    }
 
-    transition: transform 0.15s ease, box-shadow 0.15s;
-}
+    .info-section { margin-bottom: 3.5rem; }
+    .section-label {
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+      opacity: 0.65; margin-bottom: 1.5rem; display: block;
+    }
 
-.tile:hover {
-    transform: translateY(-3px);
-    box-shadow: 
-        inset 0 4px 8px rgba(0,0,0,0.4),
-        0 10px 18px rgba(0,0,0,0.4);
-}
+    .timeline { list-style: none; padding: 0; }
+    .timeline li { display: grid; grid-template-columns: 60px 1px 1fr; gap: 0 1.5rem; padding-bottom: 2.25rem; }
+    .timeline li:last-child { padding-bottom: 0; }
+    .tl-year { font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--gold); font-weight: 700; text-align: right; padding-top: 1px; }
+    .tl-line { position: relative; background: rgba(212,175,55,0.18); width: 1px; }
+    .tl-line::before {
+      content: ''; position: absolute; top: 5px; left: 50%; transform: translateX(-50%);
+      width: 7px; height: 7px; border-radius: 50%; background: var(--gold); border: 1px solid var(--jungle-dark);
+    }
+    .timeline li:last-child .tl-line { background: transparent; }
+    .tl-content strong { display: block; color: var(--cream); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .tl-content p { font-size: 0.95rem; color: var(--cream-dark); line-height: 1.65; font-style: italic; }
 
+    .fact-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: rgba(212,175,55,0.1);
+      border: 1px solid rgba(212,175,55,0.1); border-radius: var(--radius); overflow: hidden;
+    }
+    .fact-cell { background: var(--jungle-dark); padding: 1.5rem 1.5rem; }
+    .fact-cell .fc-label {
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--pale-leaf);
+      margin-bottom: 0.55rem; display: block;
+    }
+    .fact-cell p { font-size: 0.95rem; color: var(--cream-dark); line-height: 1.65; }
 
+    .cta-section { border-top: 1px solid rgba(212,175,55,0.18); padding-top: 3rem; }
+    .cta-eyebrow {
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold);
+      opacity: 0.65; margin-bottom: 1rem; display: block;
+    }
+    .cta-section h3 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--cream); margin-bottom: 0.75rem; line-height: 1.2; }
+    .cta-section p { font-size: 1.05rem; color: var(--cream-dark); line-height: 1.7; max-width: 520px; margin-bottom: 2rem; font-style: italic; }
+    .cta-buttons { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .cta-primary {
+      padding: 0.8rem 2rem; background: var(--gold); color: var(--jungle-dark);
+      font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase; border: none;
+      border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s;
+    }
+    .cta-primary:hover { background: var(--gold-light); }
+    .cta-secondary {
+      padding: 0.8rem 2rem; background: transparent; color: var(--cream);
+      font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.18); border-radius: 4px;
+      cursor: pointer; text-decoration: none; display: inline-block; transition: border-color 0.2s;
+    }
+    .cta-secondary:hover { border-color: rgba(255,255,255,0.4); }
 
-.seed {
-    position: absolute;
-    bottom: -70px;
-    width: 100%;
-    text-align: center;
-    transition: bottom 0.25s ease;
-}
+    .info-play-again { text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05); }
+    .info-play-again button {
+      background: transparent; border: 1px solid rgba(255,255,255,0.14); color: var(--cream-dark);
+      font-family: 'Inter', sans-serif; font-size: 1rem; padding: 0.6rem 1.8rem;
+      border-radius: 999px; cursor: pointer; letter-spacing: 0.04em; transition: border-color 0.2s, color 0.2s;
+    }
+    .info-play-again button:hover { border-color: var(--leaf); color: var(--cream); }
 
-.seed img {
-    display: block;
-    margin: 0 auto;
-}
-
-.show {
-    bottom: 22px;
-}
-
-#infoPage {
-    display: none;
-    padding: 40px;
-}
-
-.success-banner {
-    background: rgba(0, 255, 100, 0.08);
-    border: 1px solid #4caf50;
-    padding: 14px;
-    border-radius: 10px;
-    margin-bottom: 25px;
-}
-
-.stats {
-    display: flex;
-    justify-content: space-around;
-    background: rgba(0,0,0,0.35);
-    padding: 25px;
-    border-radius: 12px;
-    margin-bottom: 35px;
-}
-
-.stats h2 {
-    color: #d4af37;
-    margin: 0;
-    font-size: 32px;
-}
-
-.section-title {
-    margin-top: 25px;
-    border-bottom: 1px solid #d4af37;
-    padding-bottom: 6px;
-}
-
-.timeline {
-    list-style: none;
-    padding: 0;
-    text-align: left;
-    max-width: 700px;
-    margin: auto;
-}
-
-.timeline li {
-    margin: 18px 0;
-}
-
-.cta-box {
-    background: rgba(0,0,0,0.4);
-    padding: 25px;
-    border-radius: 12px;
-    margin-top: 25px;
-}
-
-.cta-box button {
-    margin-top: 12px;
-    padding: 12px 24px;
-    background: #d4af37;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-}
-</style>
+    @media (max-width: 560px) {
+      .stat-row { grid-template-columns: 1fr; }
+      .stat-item { border-right: none; border-bottom: 1px solid rgba(212,175,55,0.18); }
+      .stat-item:last-child { border-bottom: none; }
+      .fact-grid { grid-template-columns: 1fr; }
+      #board { width: 300px; }
+      .tile { width: 84px; height: 84px; }
+      h1 { font-size: 2rem; }
+      .info-hero h2 { font-size: 1.9rem; }
+      #infoPage { padding: 2.5rem 1.25rem 4rem; }
+    }
+  </style>
 </head>
-
 <body>
 
-<h1>Whack a Seed</h1>
-<h4><em>click to plant seeds :)</em></h4>
-<h2 id="score">Score: 0</h2>
-
-<div id="board"></div>
-
-<div id="infoPage">
-    <div class="success-banner">
-        You've unlocked Gir's conservation story.
+  <nav>
+    <a class="nav-logo" href="index.html"><span class="nav-logo-text">Rekindle the Green</span></a>
+    <span class="nav-center">Wildlife Conservation India</span>
+    <div class="nav-actions">
+      <a href="login.php" class="btn-nav btn-login">Log In</a>
+      <a href="signup.php" class="btn-nav btn-signup">Sign Up</a>
     </div>
+  </nav>
 
-    <div class="stats">
-        <div>
-            <h2>674</h2>
-            <p>Lions (2023 Census)</p>
-        </div>
-        <div>
-            <h2>1412</h2>
-            <p>Sq. Km Protected</p>
-        </div>
-        <div>
-            <h2>50+</h2>
-            <p>Years of Protection</p>
-        </div>
+
+  <div id="gamePage">
+    <h1>Whack a Seed</h1>
+    <p class="game-sub">click to plant seeds</p>
+    <p id="score">Score: <span id="scoreNum">0</span></p>
+    <div id="board"></div>
+  </div>
+
+
+  <div id="infoPage">
+    <div class="unlock-bar">
+      <span class="unlock-kicker">Story Unlocked</span>
+      <p>The last wild home of the Asiatic Lion — a story of recovery against all odds.</p>
     </div>
-
-    <h2 class="section-title">Past Conservation Efforts</h2>
-
-    <ul class="timeline">
-        <li><strong>Project Lion — 2020</strong><br>Govt initiative to protect Asiatic lions and improve habitats.</li>
-        <li><strong>Population Monitoring</strong><br>Growth from 177 lions (1968) to 674 (2023).</li>
-        <li><strong>Sanctuary Expansion</strong><br>Expanded protected zones and wildlife corridors.</li>
-        <li><strong>Anti-Poaching Units</strong><br>24/7 monitoring with near-zero incidents.</li>
-    </ul>
-
-    <h2 class="section-title">Get Involved</h2>
-
-    <div class="cta-box">
-        <h3>Be a Lion Guardian 🦁</h3>
-        <p>Support conservation efforts and protect wildlife.</p>
-        <button>Register for an Event</button>
+    <div class="info-hero">
+      <span class="info-hero-label">Conservation Feature</span>
+      <h2>Gir National Park &amp; Wildlife Sanctuary</h2>
+      <p>Nestled in Gujarat's semi-arid landscape, Gir is the sole refuge of the Asiatic Lion — a living testament to what focused conservation can achieve over decades.</p>
     </div>
-</div>
+    <div class="stat-row">
+      <div class="stat-item"><span class="s-num">674</span><span class="s-label">Asiatic Lions (2023)</span></div>
+      <div class="stat-item"><span class="s-num">1412</span><span class="s-label">Sq. km protected</span></div>
+      <div class="stat-item"><span class="s-num">50+</span><span class="s-label">Years of protection</span></div>
+    </div>
+    <div class="info-section">
+      <span class="section-label">Conservation Timeline</span>
+      <ul class="timeline">
+        <li>
+          <div class="tl-year">1900s</div><div class="tl-line"></div>
+          <div class="tl-content"><strong>Edge of Extinction</strong><p>Overhunting reduced the Asiatic Lion population to just 20 individuals. The species stood on the brink of complete extinction on the subcontinent.</p></div>
+        </li>
+        <li>
+          <div class="tl-year">1965</div><div class="tl-line"></div>
+          <div class="tl-content"><strong>Gir Declared a Sanctuary</strong><p>India formally declared Gir a wildlife sanctuary, providing legal protection to both the lions and their forest habitat.</p></div>
+        </li>
+        <li>
+          <div class="tl-year">1968</div><div class="tl-line"></div>
+          <div class="tl-content"><strong>177 Lions Remain</strong><p>A census counted just 177 lions in the wild — a fragile population, but enough to signal that recovery was possible with sustained effort.</p></div>
+        </li>
+        <li>
+          <div class="tl-year">2020</div><div class="tl-line"></div>
+          <div class="tl-content"><strong>Project Lion Launched</strong><p>India's government launched Project Lion to further protect Asiatic lions, improve habitat quality, and address human-wildlife conflict around Gir.</p></div>
+        </li>
+        <li>
+          <div class="tl-year">2023</div><div class="tl-line"></div>
+          <div class="tl-content"><strong>674 Lions — A Triumph</strong><p>The most recent census recorded 674 Asiatic Lions — a near 30x recovery from the early 1900s and one of conservation's greatest success stories.</p></div>
+        </li>
+      </ul>
+    </div>
+    <div class="info-section">
+      <span class="section-label">Why Gir Matters</span>
+      <div class="fact-grid">
+        <div class="fact-cell"><span class="fc-label">Last Wild Population</span><p>Gir is the only place on Earth where Asiatic Lions exist in the wild, making its protection a global conservation priority.</p></div>
+        <div class="fact-cell"><span class="fc-label">Ecosystem Diversity</span><p>Beyond lions, Gir shelters leopards, hyenas, jackals, 300+ bird species, and the rare Indian star tortoise across scrub forest and grasslands.</p></div>
+        <div class="fact-cell"><span class="fc-label">Anti-Poaching</span><p>24/7 monitoring by frontline rangers and camera-trap networks have driven poaching incidents in Gir to near zero over the past decade.</p></div>
+        <div class="fact-cell"><span class="fc-label">Community</span><p>Maldhari pastoralists, who have lived alongside lions for centuries, are now active partners in conservation — their knowledge proving invaluable.</p></div>
+      </div>
+    </div>
+    <div class="cta-section">
+      <span class="cta-eyebrow">Get Involved</span>
+      <h3>Be a Lion Guardian</h3>
+      <p>The Asiatic Lion's recovery is remarkable — but the work is far from over. Support the rangers, researchers, and communities who protect Gir every single day.</p>
+      <div class="cta-buttons">
+        <a href="#" class="cta-primary">Register for an Event</a>
+        <a href="#" class="cta-secondary">Learn More</a>
+      </div>
+    </div>
+    <div class="info-play-again"><button onclick="restartGame()">&#8635; Play Again</button></div>
+  </div>
 
-<script>
-let score = 0;
-let plantedCount = 0;
-let currentTile = null;
-let gameOver = false;
+  <script>
+  let score=0, plantedCount=0, currentTile=null, gameOver=false, intervalId=null;
+  const boardEl = document.getElementById('board');
+  let tiles = [];
 
-const board = document.getElementById("board");
-const scoreText = document.getElementById("score");
-
-let tiles = [];
-
-for (let i = 0; i < 9; i++) {
-    let tile = document.createElement("div");
-    tile.classList.add("tile");
-    tile.dataset.filled = "false";
-
-    let seed = document.createElement("div");
-    seed.classList.add("seed");
-
-    let img = document.createElement("img");
-    img.src = "seed.png";
-    img.style.width = "49px";
-
-    seed.appendChild(img);
-    tile.appendChild(seed);
-    board.appendChild(tile);
-
-    tiles.push(tile);
-
-    tile.addEventListener("click", () => {
-        if (gameOver) return;
-
-        let seedDiv = tile.querySelector(".seed");
-
-        if (
-            tile === currentTile &&
-            seedDiv.classList.contains("show") &&
-            tile.dataset.filled === "false"
-        ) {
-            tile.dataset.filled = "true";
-            tile.classList.add("filled");
-
-            seedDiv.style.display = "none";
-
-            let plant = document.createElement("img");
-            plant.src = "plant.png";
-            plant.style.width = "65px";
-            plant.style.position = "absolute";
-            plant.style.bottom = "20px";
-            plant.style.left = "50%";
-            plant.style.transform = "translateX(-50%)";
-            plant.style.zIndex = "10";
-            tile.appendChild(plant);
-
-            seedDiv.style.display = "none";
-            score += 10;
-            plantedCount++;
-
-            scoreText.innerText = `Score: ${score}`;
-
-            if (plantedCount === 9) {
-                gameOver = true;
-                setTimeout(() => {
-                    board.style.display = "none";
-                    scoreText.style.display = "none";
-                    document.getElementById("infoPage").style.display = "block";
-                }, 500);
-            }
+  for (let i=0; i<9; i++) {
+    let tile = document.createElement('div'); tile.classList.add('tile'); tile.dataset.filled='false';
+    let seed = document.createElement('div'); seed.classList.add('seed');
+    let img = document.createElement('img'); img.src='seed.png'; img.style.width='49px';
+    seed.appendChild(img); tile.appendChild(seed); boardEl.appendChild(tile); tiles.push(tile);
+    tile.addEventListener('click',()=>{
+      if (gameOver) return;
+      let seedDiv = tile.querySelector('.seed');
+      if (tile===currentTile && seedDiv.classList.contains('show') && tile.dataset.filled==='false') {
+        tile.dataset.filled='true'; tile.classList.add('filled'); seedDiv.style.display='none';
+        let plant=document.createElement('img'); plant.src='plant.png'; plant.style.cssText='width:65px;position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:10;';
+        tile.appendChild(plant); score+=10; plantedCount++;
+        document.getElementById('scoreNum').textContent=score;
+        if (plantedCount===9) {
+          gameOver=true; clearInterval(intervalId);
+          setTimeout(()=>{
+            document.getElementById('gamePage').style.display='none';
+            document.getElementById('infoPage').style.display='block';
+            window.scrollTo({top:0,behavior:'smooth'});
+          },600);
         }
+      }
     });
-}
+  }
 
-function spawnSeed() {
+  function spawnSeed() {
     if (gameOver) return;
+    tiles.forEach(t=>{ let s=t.querySelector('.seed'); if(s) s.classList.remove('show'); });
+    let available=tiles.filter(t=>t.dataset.filled==='false');
+    if (!available.length) return;
+    currentTile=available[Math.floor(Math.random()*available.length)];
+    currentTile.querySelector('.seed').classList.add('show');
+  }
+  intervalId=setInterval(spawnSeed,800);
 
-    tiles.forEach(tile => {
-        let s = tile.querySelector(".seed");
-        if (s) s.classList.remove("show");
+  function restartGame() {
+    score=0; plantedCount=0; currentTile=null; gameOver=false;
+    document.getElementById('scoreNum').textContent=0;
+    tiles.forEach(t=>{
+      t.dataset.filled='false'; t.classList.remove('filled');
+      const s=t.querySelector('.seed'); if(s){s.style.display='';s.classList.remove('show');}
+      const imgs=t.querySelectorAll('img'); imgs.forEach((img,i)=>{ if(i>0) img.remove(); });
     });
-
-    let available = tiles.filter(tile => tile.dataset.filled === "false");
-
-    if (available.length === 0) return;
-
-    let randomTile = available[Math.floor(Math.random() * available.length)];
-    currentTile = randomTile;
-
-    randomTile.querySelector(".seed").classList.add("show");
-}
-
-setInterval(spawnSeed, 800);
-</script>
-
+    document.getElementById('infoPage').style.display='none';
+    document.getElementById('gamePage').style.display='block';
+    clearInterval(intervalId); intervalId=setInterval(spawnSeed,800);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  </script>
 </body>
 </html>

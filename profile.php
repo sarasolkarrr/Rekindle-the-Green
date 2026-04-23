@@ -515,28 +515,7 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
 
 <body>
 
-  <nav>
-    <a class="nav-logo" href="index.html">
-      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 28 C10 28 14 18 26 10 C26 10 28 22 18 28 C18 28 15 30 10 28Z" fill="#4a8a2a" />
-        <path d="M18 28 C16 22 14 16 10 28Z" fill="#2d5a1a" />
-        <path d="M26 10 C24 16 20 22 18 28" stroke="#2d5a1a" stroke-width="1.5" fill="none" />
-        <path d="M16 32 C16 28 17 25 18 28" stroke="#4a8a2a" stroke-width="1.5" stroke-linecap="round" />
-      </svg>
-      <span class="nav-logo-text">Rekindle the Green</span>
-    </a>
-
-    <span class="nav-center">Wildlife Conservation India</span>
-
-    <div class="nav-actions">
-      <div class="nav-user">
-        <div class="nav-avatar"><?= htmlspecialchars($initials) ?></div>
-        <span><?= htmlspecialchars($user['first_name']) ?></span>
-      </div>
-      <a href="index.html" class="btn-nav btn-map">← Map</a>
-      <a href="profile.php?logout=1" class="btn-nav btn-logout">Sign Out</a>
-    </div>
-  </nav>
+  <?php include 'navbar.php'; ?>
 
 
   <div class="page-wrap">

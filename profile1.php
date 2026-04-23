@@ -4,7 +4,6 @@ session_start();
 
 header('Content-Type: application');
 
-// Handle Registration
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'register') {
     $fname = mysqli_real_escape_string($con, $_POST['fname']);
     $lname = mysqli_real_escape_string($con, $_POST['lname']);
@@ -13,14 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $drive = mysqli_real_escape_string($con, $_POST['drive']);
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    // Check if email already exists
     $checkEmail = mysqli_query($con, "SELECT id FROM users WHERE email='$email'");
     if (mysqli_num_rows($checkEmail) > 0) {
         echo json_encode(['success' => false, 'message' => 'Email already registered']);
         exit;
     }
 
-    // Insert user
     $query = "INSERT INTO users (first_name, last_name, email, phone, password, conservation_drive, registration_date)
               VALUES ('$fname', '$lname', '$email', '$phone', '$password', '$drive', NOW())";
 
@@ -34,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     exit;
 }
 
-// Handle Login
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'login') {
     $email = mysqli_real_escape_string($con, $_POST['email']);
     $password = $_POST['password'];
@@ -104,7 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             padding: 90px 1rem 2rem;
         }
 
-        /* CARD */
         .card {
             background: rgba(255, 255, 255, 0.94);
             border-radius: 12px;
@@ -153,11 +148,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             margin-top: 0.3rem;
         }
 
-        /* SCREENS */
         .screen { display: none; }
         .screen.active { display: block; }
 
-        /* LANDING BUTTONS */
         .choice-btns {
             display: flex;
             flex-direction: column;
@@ -212,7 +205,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
         .choice-btn .arrow { font-size: 0.9rem; opacity: 0.45; }
 
-        /* BACK */
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -229,7 +221,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
         .back-link:hover { color: #3d6b2a; }
 
-        /* SECTION LABEL */
         .section-label {
             font-size: 0.67rem;
             font-weight: 700;
@@ -241,7 +232,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             border-bottom: 1px solid #eee;
         }
 
-        /* FIELDS */
         .field { margin-bottom: 0.9rem; }
 
         .field label {
@@ -299,16 +289,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
         .field select { padding-right: 2.2rem; cursor: pointer; }
 
-        /* name row */
         .field-row { display: flex; gap: 0.7rem; }
         .field-row .field { flex: 1; }
 
-        /* phone */
         .phone-row { display: flex; gap: 0.5rem; }
         .phone-row .code-wrap { width: 92px; flex-shrink: 0; }
         .phone-row .num-wrap { flex: 1; }
 
-        /* password */
         .pwd-wrap { position: relative; }
         .pwd-wrap input { padding-right: 3rem; }
         .show-pwd {
@@ -323,18 +310,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
         .show-pwd:hover { color: #3d6b2a; }
 
-        /* strength */
         .strength { display: none; margin-top: 0.4rem; }
         .s-bars { display: flex; gap: 3px; margin-bottom: 3px; }
         .sbar { flex: 1; height: 3px; border-radius: 2px; background: #e0e0e0; transition: background 0.25s; }
         .s-label { font-size: 0.7rem; color: #999; }
 
-        /* forgot */
         .forgot-row { text-align: right; margin-top: -0.35rem; margin-bottom: 0.9rem; }
         .forgot-row a { font-size: 0.74rem; color: #888; text-decoration: none; }
         .forgot-row a:hover { color: #3d6b2a; text-decoration: underline; }
 
-        /* submit */
         .btn-submit {
             width: 100%;
             padding: 0.75rem;
