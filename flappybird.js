@@ -277,15 +277,19 @@
         }
 
         if (Math.floor(score) >= targetScore) {
-            setTimeout(() => {
-                const gamePage = document.getElementById("gamePage");
-                const infoPage = document.getElementById("infoPage");
-                if (gamePage && infoPage) {
-                    gamePage.style.display = "none";
-                    infoPage.style.display = "block";
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                }
-            }, 900);
+            setTimeout(showInfoPage, 900);
+        }
+    }
+
+    function showInfoPage() {
+        over = true;
+        clearInterval(pipeTimer);
+        const gamePage = document.getElementById("gamePage");
+        const infoPage = document.getElementById("infoPage");
+        if (gamePage && infoPage) {
+            gamePage.style.display = "none";
+            infoPage.style.display = "block";
+            window.scrollTo({ top: 0, behavior: "smooth" });
         }
     }
 
@@ -325,6 +329,7 @@
     });
 
     window.restartGame = restartGame;
+    window.showInfoPage = showInfoPage;
 
     // ── Kick off ──────────────────────────────────────────────────────────────
     requestAnimationFrame(loop);

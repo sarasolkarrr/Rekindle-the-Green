@@ -62,6 +62,22 @@
       margin: 0.6rem 0 1.5rem; color: var(--cream);
     }
     #score span { color: var(--gold); }
+    .skip-btn {
+      margin: 0.2rem 0 1.2rem;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--cream-dark);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .skip-btn:hover { border-color: var(--leaf); color: var(--cream); }
     #board { width: 360px; margin: auto; display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
     .tile {
       width: 100px; height: 100px; background: var(--soil);
@@ -218,6 +234,7 @@
     <h1>Whack a Seed</h1>
     <p class="game-sub">click to plant seeds</p>
     <p id="score">Score: <span id="scoreNum">0</span></p>
+    <button class="skip-btn" onclick="showInfoPage()">Skip Game</button>
     <div id="board"></div>
   </div>
 
@@ -321,6 +338,14 @@
     currentTile.querySelector('.seed').classList.add('show');
   }
   intervalId=setInterval(spawnSeed,800);
+
+  function showInfoPage() {
+    gameOver=true;
+    clearInterval(intervalId);
+    document.getElementById('gamePage').style.display='none';
+    document.getElementById('infoPage').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
 
   function restartGame() {
     score=0; plantedCount=0; currentTile=null; gameOver=false;

@@ -177,6 +177,27 @@
             box-shadow: 0 10px 22px rgba(0, 0, 0, 0.34);
         }
 
+        .skip-btn {
+            margin-top: 2px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--cream-dark);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 0.45rem 1rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .skip-btn:hover {
+            border-color: var(--leaf);
+            color: var(--cream);
+        }
+
         #infoPage {
             display: none;
             max-width: 800px;
@@ -580,6 +601,7 @@
                     Score: <strong id="score">0</strong>
                 </div>
                 <div class="hint-bar">Space / ↑ &nbsp;|&nbsp; Click &nbsp;|&nbsp; Tap &nbsp;- to flap</div>
+                <button class="skip-btn" onclick="showInfoPage()">Skip Game</button>
             </div>
         </div>
     </div>

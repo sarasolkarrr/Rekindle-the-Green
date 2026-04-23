@@ -112,6 +112,27 @@ body {
     font-style: normal !important;
 }
 
+.skip-btn {
+    margin: 12px auto 0;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--cream-dark);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.skip-btn:hover {
+    border-color: var(--leaf);
+    color: var(--cream);
+}
+
 #infoPage {
     display: none;
     max-width: 800px;
@@ -497,6 +518,7 @@ body {
         <div class="score-area">
             <p>Score: <span id="scoreNum">0</span></p>
         </div>
+        <button class="skip-btn" onclick="showInfoPage()">Skip Game</button>
         <div class="game-area">
             <img id="turtle" src="turtle-icon.png" alt="Turtle" />
         </div>
@@ -602,6 +624,7 @@ function animateTurtle() {
 }
 
 function showInfoPage() {
+    gameOver = true;
     gamePage.style.display = 'none';
     infoPage.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
