@@ -567,7 +567,7 @@
         document.getElementById('scoreO').textContent=scores.O;
         setTimeout(()=>{
           document.getElementById('resultBadge').textContent=`Player ${current}`;
-          showResult('Wins the Round', current==='X'?'A fierce claim on the forest.':'The jungle breathes in victory.');
+          showResult('Wins the Round', current==='X'?'A fierce claim on the forest.':'Thank you for playing');
         },500);
       },100);
     } else if (board.every(Boolean)) {
