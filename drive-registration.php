@@ -2,27 +2,90 @@
 include 'connection.php';
 session_start();
 
-$driveOptions = [
-  'corbett' => 'Jim Corbett National Park - Tiger Conservation',
-  'gir' => 'Gir National Park - Lion Conservation',
-  'velas' => 'Velas Beach - Turtle Conservation',
-  'keoladeo' => 'Keoladeo National Park - Bird Conservation',
-];
+function driveKeyFromLocation($location) {
+  $normalized = strtolower(trim((string) $location));
+  $slug = preg_replace('/[^a-z0-9]+/', '-', $normalized);
+  $slug = trim($slug, '-');
 
-$driveDates = [
-  'corbett' => ['2026-05-03', '2026-05-14', '2026-05-27', '2026-06-08'],
-  'gir' => ['2026-05-05', '2026-05-18', '2026-05-29', '2026-06-12'],
-  'velas' => ['2026-05-07', '2026-05-19', '2026-06-01', '2026-06-10'],
-  'keoladeo' => ['2026-05-09', '2026-05-21', '2026-06-04', '2026-06-14'],
-];
+  $keyMap = [
+    'jim-corbett' => 'corbett',
+    'jim-corbett-national-park' => 'corbett',
+    'gir' => 'gir',
+    'gir-forest' => 'gir',
+    'gir-national-park' => 'gir',
+    'velas' => 'velas',
+    'velas-beach' => 'velas',
+    'keoladeo' => 'keoladeo',
+    'keoladeo-national-park' => 'keoladeo',
+  ];
+
+  return $keyMap[$slug] ?? $slug;
+}
+
+function driveThemeByKey($key) {
+  $themes = [
+    'corbett' => 'Tiger Conservation',
+    'gir' => 'Lion Conservation',
+    'velas' => 'Turtle Conservation',
+    'keoladeo' => 'Bird Conservation',
+  ];
+
+  return $themes[$key] ?? 'Conservation Drive';
+}
+
+$driveOptions = [];
+$driveDates = [];
+
+$driveResult = mysqli_query($con, "SELECT location, date FROM drives WHERE location IS NOT NULL AND date IS NOT NULL ORDER BY date ASC");
+if ($driveResult) {
+  while ($row = mysqli_fetch_assoc($driveResult)) {
+    $location = trim((string) ($row['location'] ?? ''));
+    $date = trim((string) ($row['date'] ?? ''));
+
+    if ($location === '' || $date === '') {
+      continue;
+    }
+
+    $key = driveKeyFromLocation($location);
+    if ($key === '') {
+      continue;
+    }
+
+    if (!isset($driveOptions[$key])) {
+      $driveOptions[$key] = $location . ' - ' . driveThemeByKey($key);
+      $driveDates[$key] = [];
+    }
+
+    if (!in_array($date, $driveDates[$key], true)) {
+      $driveDates[$key][] = $date;
+    }
+  }
+}
+
+if (empty($driveOptions)) {
+  $driveOptions = [
+    'corbett' => 'Jim Corbett - Tiger Conservation',
+    'gir' => 'Gir Forest - Lion Conservation',
+    'velas' => 'Velas Beach - Turtle Conservation',
+  ];
+
+  $driveDates = [
+    'corbett' => ['2026-04-26'],
+    'gir' => ['2026-04-25'],
+    'velas' => ['2026-04-27'],
+  ];
+}
 
 $flashType = '';
 $flashTitle = '';
 $flashMessage = '';
 
-$selectedDrive = isset($_GET['drive']) ? strtolower(trim($_GET['drive'])) : 'corbett';
+$availableDriveKeys = array_keys($driveOptions);
+$defaultDrive = !empty($availableDriveKeys) ? $availableDriveKeys[0] : 'corbett';
+
+$selectedDrive = isset($_GET['drive']) ? strtolower(trim($_GET['drive'])) : $defaultDrive;
 if (!array_key_exists($selectedDrive, $driveOptions)) {
-  $selectedDrive = 'corbett';
+  $selectedDrive = $defaultDrive;
 }
 
 $selectedDate = '';

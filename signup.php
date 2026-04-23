@@ -607,6 +607,14 @@ if (isset($_SESSION['user_id'])) {
                 </div>
                 <div class="d-check">✓</div>
               </div>
+              <div class="drive-card" onclick="selectDrive('keoladeo', this)">
+                <span class="d-emoji">🦢</span>
+                <div class="d-info">
+                  <div class="d-name">Keoladeo National Park</div>
+                  <div class="d-sub">Bird Conservation — Rajasthan</div>
+                </div>
+                <div class="d-check">✓</div>
+              </div>
             </div>
             <input type="hidden" id="r-drive" value="">
             <span class="err">Please select a conservation drive.</span>
@@ -692,7 +700,7 @@ if (isset($_SESSION['user_id'])) {
       lbl.style.color = score ? colors[score - 1] : '#aaa';
     }
 
-    var drivePages = { corbett: 'tiger.html', velas: 'turtle.html', gir: 'lion.html' };
+    var drivePages = { corbett: 'tiger.html', velas: 'turtle.html', gir: 'lion.html', keoladeo: 'bird.html' };
 
     function doRegister() {
       clearErrors();
@@ -738,7 +746,13 @@ if (isset($_SESSION['user_id'])) {
             document.getElementById('formWrap').style.display = 'none';
             var sb = document.getElementById('successBox');
             sb.classList.add('show');
-            var driveName = drive === 'corbett' ? 'Jim Corbett' : drive === 'velas' ? 'Velas Beach' : 'Gir Forest';
+            var driveName = drive === 'corbett'
+              ? 'Jim Corbett'
+              : drive === 'velas'
+                ? 'Velas Beach'
+                : drive === 'keoladeo'
+                  ? 'Keoladeo National Park'
+                  : 'Gir Forest';
             document.getElementById('successMsg').textContent = 'Welcome to ' + driveName + '. Taking you there...';
             setTimeout(function () { document.getElementById('progressFill').style.width = '100%'; }, 50);
             var dest = drivePages[drive] || 'index.html';
