@@ -20,11 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
               VALUES ('$fname', '$lname', '$email', '$phone', '$password', '$drive', NOW())";
 
   if (mysqli_query($con, $query)) {
-    $_SESSION['user_id'] = mysqli_insert_id($con);
+    $newId = mysqli_insert_id($con);
+    $_SESSION['user_id'] = $newId;
     $_SESSION['user_email'] = $email;
     $_SESSION['user_name'] = $fname;
     $_SESSION['user_drive'] = $drive;
-    echo json_encode(['success' => true, 'message' => 'Registration successful', 'drive' => $drive]);
+    echo json_encode(['success' => true, 'message' => 'Registration successful', 'drive' => $drive, 'name' => $fname, 'id' => $newId]);
   } else {
     echo json_encode(['success' => false, 'message' => 'Registration failed: ' . mysqli_error($con)]);
   }
@@ -47,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
       $_SESSION['user_name'] = $user['first_name'];
       $_SESSION['user_lname'] = $user['last_name'];
       $_SESSION['user_drive'] = $user['conservation_drive'];
-      echo json_encode(['success' => true, 'message' => 'Login successful']);
+      echo json_encode(['success' => true, 'message' => 'Login successful', 'name' => $user['first_name'], 'id' => $user['id']]);
     } else {
       echo json_encode(['success' => false, 'message' => 'Invalid password']);
     }
@@ -422,7 +423,7 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
 
 <body>
 
-   <nav>
+  <nav>
     <a class="nav-logo" href="index.html"><span class="nav-logo-text">Rekindle the Green</span></a>
     <span class="nav-center">Wildlife Conservation India</span>
     <div class="nav-actions">
@@ -431,8 +432,13 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
     </div>
   </nav>
 
-  <div class="page-wrap">
+  <script>
+    // Sync localStorage from PHP session so navbar shows avatar on direct profile visits
+    localStorage.setItem('rtg_user_name', <?= json_encode($user['first_name']) ?>);
+    localStorage.setItem('rtg_user_id', <?= json_encode((string)$user['id']) ?>);
+  </script>
 
+  <div class="page-wrap">
 
     <div class="profile-card">
       <div class="profile-banner">
@@ -442,7 +448,6 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
       <div class="profile-body">
         <div class="profile-name"><?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) ?></div>
         <div class="profile-email"><?= htmlspecialchars($user['email']) ?></div>
-
 
         <a class="drive-badge" href="<?= htmlspecialchars($driveInfo['page']) ?>">
           <div class="d-text">
@@ -465,14 +470,12 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
           </div>
         </div>
 
-
         <div class="profile-actions" style="margin-top:1.2rem;">
           <a href="index.html" class="action-btn action-primary">View Map</a>
-          <a href="profile.php?logout=1" class="action-btn action-danger">Sign Out</a>
+          <a href="profile.php?logout=1" class="action-btn action-danger" onclick="localStorage.removeItem('rtg_user_name'); localStorage.removeItem('rtg_user_id');">Sign Out</a>
         </div>
       </div>
     </div>
-
 
     <div class="stats-card">
       <div class="stats-title">Your Conservation Hub</div>

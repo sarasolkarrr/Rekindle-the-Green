@@ -19,12 +19,11 @@ function loadNavbar() {
 
   if (isLoggedIn) {
     navActionsHTML += `
-      <a href="profile.php" class="nav-user">
-        <span>${userName.substring(0, 12)}</span>
-        <div class="nav-avatar">${userInitials}</div>
-      </a>
-      <a href="javascript:void(0)" onclick="handleLogout()" class="btn-nav btn-logout">Log Out</a>
-    `;
+  <a href="profile.php" class="nav-user">
+    <div class="nav-avatar">${userInitials}</div>
+  </a>
+  <a href="javascript:void(0)" onclick="handleLogout()" class="btn-nav btn-logout">Log Out</a>
+`;
   } else {
     navActionsHTML += `
       <a href="login.php" class="btn-nav btn-login">Log In</a>

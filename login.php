@@ -414,12 +414,15 @@ session_start();
       .then(function(data) {
         btn.classList.remove('loading');
         if (data.success) {
-          document.getElementById('formWrap').style.display = 'none';
-          var sb = document.getElementById('successBox');
-          sb.classList.add('show');
-          setTimeout(function(){ document.getElementById('progressFill').style.width = '100%'; }, 50);
-          setTimeout(function(){ window.location.href = 'profile.php'; }, 2600);
-        } else {
+        localStorage.setItem('rtg_user_name', data.name);
+        localStorage.setItem('rtg_user_id', data.id);
+        document.getElementById('formWrap').style.display = 'none';
+        var sb = document.getElementById('successBox');
+        sb.classList.add('show');
+        setTimeout(function(){ document.getElementById('progressFill').style.width = '100%'; }, 50);
+        setTimeout(function(){ window.location.href = 'profile.php'; }, 2600);
+      }
+         else {
           var title = 'Sign In Failed';
           var msg   = data.message || 'Login failed. Please try again.';
           if (data.message === 'User not found')   { title = 'Account Not Found'; msg = 'No account exists with this email address.'; }
