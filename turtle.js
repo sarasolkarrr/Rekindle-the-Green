@@ -7,8 +7,9 @@ const overlay = document.getElementById('overlay');
 const closeOverlayBtn = document.getElementById('closeOverlay');
 
 function moveTurtle() {
-    const x = Math.random() * (document.querySelector('.game-area').clientWidth - 100);
-    const y = Math.random() * (document.querySelector('.game-area').clientHeight - 100);
+    const gameArea = document.querySelector('.game-area');
+    const x = Math.random() * (gameArea.clientWidth - 100);
+    const y = Math.random() * (gameArea.clientHeight - 100);
     turtle.style.left = `${x}px`;
     turtle.style.top = `${y}px`;
 }
@@ -26,21 +27,27 @@ function animateTurtle() {
     }, 500);
 }
 
+function resetGame() {
+    score = 0;
+    scoreDisplay.textContent = '0';
+    overlay.style.display = 'none';
+    isAnimating = false;
+    turtle.style.transform = 'translateY(0)';
+    moveTurtle();
+}
+
 turtle.addEventListener('click', () => {
     score++;
     scoreDisplay.textContent = score;
 
-    if (score === 5) {
-        overlay.style.display = 'flex'; // Show overlay when score is 5
+    if (score >= 5) {
+        overlay.style.display = 'flex';
     } else {
         animateTurtle();
     }
 });
 
-closeOverlayBtn.addEventListener('click', () => {
-    // Redirect to the project main index
-    window.location.href = './index.html';
-});
+closeOverlayBtn.addEventListener('click', resetGame);
 
-// Move turtle for the first time on page load without animation
+// Position turtle on first load
 moveTurtle();

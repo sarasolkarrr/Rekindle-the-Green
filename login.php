@@ -9,6 +9,8 @@ session_start();
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="nav.css">
+  <script src="nav.js" defer></script>
   <title>Sign In-Rekindle the Green</title>
 
   <style>
@@ -33,81 +35,6 @@ session_start();
       background: rgba(8, 18, 8, 0.68);
       z-index: 0;
     }
-
-
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 54px;
-      background: rgba(15, 28, 15, 0.95);
-      backdrop-filter: blur(12px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1.5rem;
-      z-index: 1000;
-      border-bottom: 1px solid rgba(201,168,76,0.2);
-      box-shadow: 0 2px 16px rgba(0,0,0,0.4);
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-    }
-    .nav-logo svg { width: 28px; height: 28px; flex-shrink: 0; }
-    .nav-logo-text {
-      font-family: 'Inter', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      color: #fff;
-      white-space: nowrap;
-    }
-    .nav-logo-text em {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      color: #c9a84c;
-    }
-
-    .nav-center {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.58rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.4);
-      pointer-events: none;
-      white-space: nowrap;
-    }
-
-    .nav-actions { display: flex; gap: 0.5rem; align-items: center; }
-
-    .btn-nav {
-      padding: 0.38rem 1rem;
-      border-radius: 5px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.18s;
-      display: inline-block;
-    }
-    .btn-ghost {
-      background: transparent;
-      color: rgba(255,255,255,0.6);
-      border: 1.5px solid rgba(255,255,255,0.2);
-    }
-    .btn-ghost:hover { background: rgba(255,255,255,0.08); color: #fff; border-color: rgba(255,255,255,0.4); }
-    .btn-gold {
-      background: #c9a84c;
-      color: #1a2e1a;
-      border: 1.5px solid #c9a84c;
-    }
-    .btn-gold:hover { background: #e8c96a; border-color: #e8c96a; }
 
 
     .page-wrap {

@@ -2,7 +2,7 @@
 include 'connection.php';
 session_start();
 
-header('Content-Type: application');
+header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'register') {
     $fname = mysqli_real_escape_string($con, $_POST['fname']);

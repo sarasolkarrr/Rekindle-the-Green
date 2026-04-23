@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!-- Sky background circle -->
+  <circle cx="60" cy="60" r="58" fill="#d8ecf8" stroke="#a8cce0" stroke-width="1.5"/>
+
+  <!-- Soft water/reed reflection at bottom -->
+  <ellipse cx="60" cy="95" rx="42" ry="14" fill="#b8d8ea" opacity="0.5"/>
+
+  <!-- Reed left -->
+  <line x1="22" y1="105" x2="26" y2="68" stroke="#6a9c4a" stroke-width="2.2" stroke-linecap="round"/>
+  <ellipse cx="26" cy="66" rx="3" ry="6" fill="#8ab84a" opacity="0.85"/>
+
+  <!-- Reed right -->
+  <line x1="96" y1="108" x2="92" y2="72" stroke="#6a9c4a" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="92" cy="70" rx="2.5" ry="5" fill="#8ab84a" opacity="0.75"/>
+
+  <!-- Body — long elegant oval -->
+  <ellipse cx="60" cy="72" rx="18" ry="11" fill="#f0ede6" stroke="#d8cfc0" stroke-width="0.8"/>
+
+  <!-- Wing fold detail -->
+  <path d="M44 70 Q52 65 70 68 Q65 74 44 74 Z" fill="#ddd8cc" opacity="0.7"/>
+
+  <!-- Tail feathers -->
+  <path d="M76 72 Q86 68 92 72 Q86 76 76 74 Z" fill="#e8e4dc"/>
+
+  <!-- Long neck -->
+  <path d="M54 66 Q50 55 51 44 Q53 36 57 33" stroke="#e8e4d8" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <!-- Neck shading -->
+  <path d="M54 66 Q49 55 50 44 Q52 36 56 33" stroke="#d4cfc4" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.6"/>
+
+  <!-- Head -->
+  <circle cx="58" cy="31" r="7" fill="#f0ede6" stroke="#d8cfc0" stroke-width="0.8"/>
+
+  <!-- Red crown patch — defining Sarus crane feature -->
+  <ellipse cx="58" cy="25" rx="5" ry="3.5" fill="#c0302a"/>
+  <ellipse cx="58" cy="24" rx="3.5" ry="2.5" fill="#d43e38"/>
+
+  <!-- Eye -->
+  <circle cx="61" cy="30" r="2.2" fill="#1a1a1a"/>
+  <circle cx="62" cy="29.3" r="0.7" fill="white"/>
+
+  <!-- Beak — long and straight, grey-green -->
+  <path d="M64 30 L78 27" stroke="#8aaa6a" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M64 31 L77 28.5" stroke="#7a9a5a" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+
+  <!-- Left leg -->
+  <line x1="56" y1="82" x2="52" y2="100" stroke="#b0aa96" stroke-width="2" stroke-linecap="round"/>
+  <!-- Left foot -->
+  <path d="M52 100 L46 103 M52 100 L50 105 M52 100 L56 104" stroke="#b0aa96" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Right leg -->
+  <line x1="63" y1="82" x2="66" y2="100" stroke="#b0aa96" stroke-width="2" stroke-linecap="round"/>
+  <!-- Right foot -->
+  <path d="M66 100 L60 103 M66 100 L64 105 M66 100 L70 104" stroke="#b0aa96" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Wing tip detail lines -->
+  <path d="M44 71 Q55 67 68 70" stroke="#ccc8bc" stroke-width="0.8" fill="none" opacity="0.8"/>
+  <path d="M46 73 Q56 70 67 72" stroke="#ccc8bc" stroke-width="0.6" fill="none" opacity="0.6"/>
+</svg>

@@ -81,6 +81,7 @@ $driveLabels = [
   'corbett' => ['name' => 'Jim Corbett National Park', 'sub' => 'Tiger Conservation — Uttarakhand', 'page' => 'tiger.html', 'color' => '#c0392b'],
   'velas' => ['name' => 'Velas Beach', 'sub' => 'Turtle Conservation — Maharashtra', 'page' => 'turtle.html', 'color' => '#27ae60'],
   'gir' => ['name' => 'Gir National Park', 'sub' => 'Lion Conservation — Gujarat', 'page' => 'lion.html', 'color' => '#e67e22'],
+  'keoladeo' => ['name' => 'Keoladeo National Park', 'sub' => 'Bird Conservation — Rajasthan', 'page' => 'bird.html', 'color' => '#2a8ae0'],
 ];
 
 $driveKey = $user['conservation_drive'] ?? '';
@@ -100,6 +101,8 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,700&display=swap"
     rel="stylesheet">
+  <link rel="stylesheet" href="nav.css">
+  <script src="nav.js" defer></script>
   <title><?= htmlspecialchars($user['first_name']) ?>'s Profile — Rekindle the Green</title>
 
   <style>
@@ -129,127 +132,6 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
       inset: 0;
       background: rgba(8, 18, 8, 0.72);
       z-index: 0;
-    }
-
-
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 54px;
-      background: rgba(15, 28, 15, 0.95);
-      backdrop-filter: blur(12px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1.5rem;
-      z-index: 1000;
-      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
-      box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-    }
-
-    .nav-logo svg {
-      width: 28px;
-      height: 28px;
-      flex-shrink: 0;
-    }
-
-    .nav-logo-text {
-      font-family: 'Inter', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      color: #fff;
-      white-space: nowrap;
-    }
-
-    .nav-logo-text em {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      color: #c9a84c;
-    }
-
-    .nav-center {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.58rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.4);
-      pointer-events: none;
-      white-space: nowrap;
-    }
-
-    .nav-actions {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .nav-user {
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-      font-size: 0.78rem;
-      color: rgba(255, 255, 255, 0.75);
-    }
-
-    .nav-avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: #3d6b2a;
-      border: 2px solid rgba(201, 168, 76, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #fff;
-      flex-shrink: 0;
-    }
-
-    .btn-nav {
-      padding: 0.38rem 0.9rem;
-      border-radius: 5px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.73rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.18s;
-      display: inline-block;
-    }
-
-    .btn-map {
-      background: transparent;
-      color: rgba(255, 255, 255, 0.6);
-      border: 1.5px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .btn-map:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-    }
-
-    .btn-logout {
-      background: transparent;
-      color: #e88;
-      border: 1.5px solid rgba(220, 100, 100, 0.35);
-    }
-
-    .btn-logout:hover {
-      background: rgba(220, 100, 100, 0.1);
-      color: #f99;
     }
 
 
@@ -606,6 +488,10 @@ $joinDate = date('F j, Y', strtotime($user['registration_date']));
         </a>
         <a href="turtle.html" class="quick-link">
           Velas Beach — Turtles
+          <span class="ql-arrow">›</span>
+        </a>
+        <a href="bird.html" class="quick-link">
+          Keoladeo — Birds
           <span class="ql-arrow">›</span>
         </a>
       </div>
