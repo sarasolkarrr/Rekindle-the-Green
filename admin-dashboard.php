@@ -360,7 +360,7 @@ $totalUsers = count($users);
     <div class="hero">
       <section class="panel hero-main">
         <div class="eyebrow">Admin access</div>
-        <h2><?= htmlspecialchars($adminName) ?>, here is your drive roster.</h2>
+        <h2>Hello, <?= htmlspecialchars($adminName) ?></h2>
         <p>
           This dashboard shows everyone who has registered for <?= htmlspecialchars($driveTitle) ?>.
           Use it to review sign-ups for your assigned conservation drive.

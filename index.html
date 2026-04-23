@@ -16,7 +16,7 @@
 
 
 html, body { background: #1a2e1a; height: 100%; }
-     
+
       nav {
         position: fixed;
         top: 0; left: 0; right: 0;
@@ -29,7 +29,7 @@ html, body { background: #1a2e1a; height: 100%; }
         z-index: 1000;
         border-bottom: 1px solid rgba(201,168,76,0.25);
         box-shadow: 0 2px 12px rgba(26, 26, 26, 0.4);
-        
+
       }
 
       .nav-logo {
@@ -195,7 +195,7 @@ html, body { background: #1a2e1a; height: 100%; }
         flex-shrink: 0;
       }
 
-      
+
       .map-tip {
         position: fixed;
         bottom: 2rem;
@@ -232,7 +232,7 @@ html, body { background: #1a2e1a; height: 100%; }
 
   <body>
 
-    
+
     <nav>
       <a class="nav-logo" href="#">
         <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -252,10 +252,10 @@ html, body { background: #1a2e1a; height: 100%; }
       </div>
     </nav>
 
-    
+
     <div id="map"></div>
 
-    
+
     <div class="legend">
       <div class="legend-title">Conservation Sites</div>
       <div class="legend-item" onclick="flyTo(21.08,70.79,'gir')">
@@ -268,11 +268,11 @@ html, body { background: #1a2e1a; height: 100%; }
         <div class="legend-dot">🐢</div>Velas Beach, Maharashtra
       </div>
       <div class="legend-item" onclick="flyTo(27.1592,77.5156,'keoladeo')">
-        <div class="legend-dot">🐦</div>Keoladeo, Rajasthan
+        <div class="legend-dot">🦢</div>Keoladeo, Rajasthan
       </div>
     </div>
 
-    
+
     <div class="map-tip" id="mapTip">
       <button class="tip-close" onclick="document.getElementById('mapTip').style.display='none'">✕</button>
       <strong>Tap an animal</strong> on the map to discover conservation stories and play a minigame! 🌏
@@ -283,7 +283,7 @@ html, body { background: #1a2e1a; height: 100%; }
     <script>
       var map = L.map("map").setView([23, 80], 5);
 
-      
+
       L.tileLayer(
         "https://api.maptiler.com/maps/hybrid-v4/{z}/{x}/{y}.jpg?key=hYPG3mJkV44SssjFGx1a",
         {
@@ -293,7 +293,7 @@ html, body { background: #1a2e1a; height: 100%; }
         }
       ).addTo(map);
 
-      
+
       function circleIcon(emoji) {
         return L.divIcon({
           html: '<div class="c-marker">' + emoji + '</div>',
@@ -304,7 +304,7 @@ html, body { background: #1a2e1a; height: 100%; }
         });
       }
 
-      
+
       function pulse(marker) {
         var el = marker.getElement();
         if (!el) return;
@@ -316,7 +316,7 @@ html, body { background: #1a2e1a; height: 100%; }
         dot.addEventListener('animationend', function(){ dot.classList.remove('pulse'); }, { once: true });
       }
 
-      
+
       var corbettM = L.marker([30, 79], { icon: circleIcon('🐯'), title: 'Jim Corbett National Park' })
         .addTo(map)
         .bindPopup('<b>🐯 Jim Corbett National Park</b><br>Tiger Conservation — Uttarakhand');
@@ -326,7 +326,7 @@ html, body { background: #1a2e1a; height: 100%; }
         setTimeout(function(){ window.location.href = 'tiger.html'; }, 550);
       });
 
-      
+
       var girM = L.marker([21.08, 70.79], { icon: circleIcon('🦁'), title: 'Gir National Park' })
         .addTo(map)
         .bindPopup('<b>🦁 Gir National Park</b><br>Lion Conservation — Gujarat');
@@ -336,7 +336,7 @@ html, body { background: #1a2e1a; height: 100%; }
         setTimeout(function(){ window.location.href = 'lion.html'; }, 550);
       });
 
-      
+
       var velasM = L.marker([17.5302, 73.4082], { icon: circleIcon('🐢'), title: 'Velas Beach' })
         .addTo(map)
         .bindPopup('<b>🐢 Velas Beach</b><br>Turtle Conservation — Maharashtra');
@@ -347,9 +347,9 @@ html, body { background: #1a2e1a; height: 100%; }
       });
 
 
-      var keoladeoM = L.marker([27.1592, 77.5156], { icon: circleIcon('🐦'), title: 'Keoladeo National Park' })
+      var keoladeoM = L.marker([27.1592, 77.5156], { icon: circleIcon('🦢'), title: 'Keoladeo National Park' })
         .addTo(map)
-        .bindPopup('<b>🐦 Keoladeo National Park</b><br>Bird Conservation — Rajasthan');
+        .bindPopup('<b>🦢 Keoladeo National Park</b><br>Bird Conservation — Rajasthan');
 
       keoladeoM.on('click', function () {
         pulse(keoladeoM);

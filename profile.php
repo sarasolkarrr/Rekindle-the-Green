@@ -102,7 +102,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
     if ($result && mysqli_num_rows($result) === 1) {
       $admin = mysqli_fetch_assoc($result);
-      if (password_verify($password, $admin['password'])) {
+      $storedPassword = (string) ($admin['password'] ?? '');
+      $passwordMatches = password_verify($password, $storedPassword) || hash_equals($storedPassword, $password);
+
+      if ($passwordMatches) {
         $adminId = (int) ($admin['id'] ?? 0);
         $adminName = trim((string) ($admin['name'] ?? ''));
 
