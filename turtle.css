@@ -1,81 +1,101 @@
 :root {
-    --rtg-text: #1f2a22;
-    --rtg-surface: rgba(255, 255, 255, 0.76);
-    --rtg-surface-strong: rgba(255, 255, 255, 0.9);
-    --rtg-border: rgba(111, 143, 102, 0.25);
-    --rtg-soft-blue: #d8ecf8;
-    --rtg-shadow: 0 12px 28px rgba(34, 53, 39, 0.14);
-    --rtg-btn: #eef4ea;
-    --rtg-btn-hover: #dce9d8;
+    --jungle-dark: #0b2f26;
+    --jungle-mid: #163222;
+    --jungle-light: #1f4a32;
+    --moss: #2d6e47;
+    --leaf: #4a9e6a;
+    --pale-leaf: #7dc896;
+    --gold: #d4af37;
+    --gold-light: #e8c97a;
+    --cream: #f5e6c8;
+    --cream-dark: #d8ceb4;
+    --radius: 12px;
+    --radius-lg: 18px;
 }
 
 body {
     font-family: 'Inter', 'Segoe UI', sans-serif;
     text-align: center;
-    color: var(--rtg-text);
+    color: var(--cream);
     min-height: 100vh;
     position: relative;
-    background-image: url('sand.jpg');
+    margin: 0;
+    overflow-x: hidden;
+    background-color: var(--jungle-dark);
+    background-image: linear-gradient(rgba(7, 20, 15, 0.78), rgba(7, 20, 15, 0.9)), url('sand.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    padding-top: 50px;
-}
-
-body::before {
-    content: '';
-    position: fixed;
-    top: 50px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(255, 255, 255, 0.2);
-    pointer-events: none;
-    z-index: -1;
+    /* navbar-loader.js injects a fixed 54px navbar */
+    padding-top: 74px;
 }
 
 .container {
-    padding: 12px 20px 20px;
+    width: min(100%, 1080px);
+    margin: 0 auto;
+    padding: 1.2rem 1rem 2.25rem;
 }
 
 .container h1 {
-    margin: 0 auto 14px;
-    width: min(92%, 720px);
-    padding: 0.55rem 0.8rem;
-    border-radius: 12px;
-    background: var(--rtg-surface);
-    border: 1px solid var(--rtg-border);
-    box-shadow: var(--rtg-shadow);
-    font-size: 1.2rem;
+    margin: 0 auto 0.35rem;
+    font-family: 'Playfair Display', serif;
+    color: var(--gold-light);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    letter-spacing: 0.02em;
+    font-weight: 700;
+}
+
+.game-sub {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--pale-leaf);
+    margin: 0 0 1rem;
 }
 
 .game-area {
     position: relative;
-    width: min(100%, 1000px);
+    width: min(100%, 980px);
     margin: 0 auto;
-    height: 400px;
-    border: 1px solid var(--rtg-border);
-    background-color: rgba(216, 236, 248, 0.9);
-    border-radius: 14px;
+    height: 430px;
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    background: linear-gradient(180deg, rgba(34, 77, 56, 0.68), rgba(16, 34, 25, 0.78));
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--rtg-shadow);
+    box-shadow: inset 0 10px 18px rgba(0, 0, 0, 0.24), 0 16px 34px rgba(0, 0, 0, 0.4);
 }
 
 #turtle {
     position: absolute;
     width: 100px;
     cursor: pointer;
-    transition: transform 0.5s ease;
+    transition: transform 0.25s ease;
+    filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.36));
+}
+
+#turtle:hover {
+    transform: scale(1.06);
 }
 
 .score-area {
-    border: 1px solid var(--rtg-border);
-    background-color: var(--rtg-surface-strong);
-    border-radius: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    background: rgba(8, 24, 17, 0.7);
+    border-radius: var(--radius);
     margin: 14px auto 0;
-    max-width: 220px;
-    box-shadow: var(--rtg-shadow);
+    max-width: 240px;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.34);
+}
+
+.score-area p {
+    margin: 0;
+    padding: 0.6rem 0.8rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--cream);
+}
+
+.score-area #score {
+    color: var(--gold-light);
 }
 
 .overlay {
@@ -85,16 +105,16 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(20, 32, 24, 0.45);
-    color: white;
+    background-color: rgba(6, 16, 12, 0.8);
+    color: var(--cream);
     justify-content: center;
     align-items: center;
     text-align: center;
-    z-index: 1000;
-    padding: 16px;
+    /* keep overlay above fixed navbar */
+    z-index: 1300;
+    padding: 18px;
 }
 
-/* FIX: was 60rem which blew out on mobile — now responsive */
 .overlay-image {
     width: 100%;
     max-height: 280px;
@@ -102,64 +122,72 @@ body::before {
     margin: 0 auto 20px;
     display: block;
     border-radius: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .overlay-content {
-    background: var(--rtg-soft-blue);
-    padding: 20px;
+    background: linear-gradient(180deg, rgba(14, 36, 27, 0.96), rgba(9, 24, 18, 0.96));
+    padding: 22px;
     border-radius: 14px;
     text-align: left;
     position: relative;
-    max-width: 680px;
+    max-width: 720px;
     width: 100%;
-    border: 1px solid var(--rtg-border);
-    box-shadow: 0 18px 38px rgba(20, 32, 24, 0.28);
-    max-height: 90vh;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.45);
+    max-height: min(86vh, 760px);
     overflow-y: auto;
 }
 
 .overlay-content h2,
 .overlay-title {
     text-align: center;
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #393c43;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.45rem, 2.6vw, 2rem);
+    margin-bottom: 12px;
+    color: var(--gold-light);
 }
 
 .overlay-info {
-    color: #393c43;
-    font-size: 16px;
+    color: var(--cream-dark);
+    font-size: 1rem;
     margin-bottom: 20px;
     text-align: left;
+    line-height: 1.65;
 }
 
 #closeOverlay {
-    padding: 10px 15px;
-    margin-top: 15px;
+    padding: 0.62rem 1.1rem;
+    margin-top: 12px;
     cursor: pointer;
-    background-color: var(--rtg-btn);
-    color: var(--rtg-text);
-    border: 1px solid var(--rtg-border);
+    background-color: transparent;
+    color: var(--cream);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 999px;
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 18px;
+    right: 18px;
     font-weight: 600;
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
 }
 
 #closeOverlay:hover {
-    background-color: var(--rtg-btn-hover);
-    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.45);
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 @media (max-width: 768px) {
+    body {
+        padding-top: 68px;
+    }
+
     .container {
-        padding: 10px 12px 16px;
+        padding: 0.9rem 0.75rem 1.2rem;
     }
 
     .game-area {
-        height: 320px;
+        height: 330px;
     }
 
     .overlay-content {
