@@ -9,8 +9,7 @@ session_start();
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="nav.css">
-  <script src="nav.js" defer></script>
+  <script src="navbar-loader.js" defer></script>
   <title>Sign In-Rekindle the Green</title>
 
   <style>
@@ -35,6 +34,31 @@ session_start();
       background: rgba(8, 18, 8, 0.68);
       z-index: 0;
     }
+        nav {
+      position: fixed; top: 0; left: 0; right: 0; height: 50px;
+      background: #1a2e1a; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 1.2rem;
+      z-index: 1000; border-bottom: 1px solid rgba(212,175,55,0.25);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .nav-logo-text { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem; color: #fff; white-space: nowrap; }
+    .nav-center {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: rgba(255,255,255,0.45);
+      pointer-events: none; white-space: nowrap; font-family: 'Inter', sans-serif;
+    }
+    .nav-actions { display: flex; gap: 0.5rem; }
+    .btn-nav {
+      padding: 0.38rem 1rem; border-radius: 5px; font-family: 'Inter', sans-serif;
+      font-size: 0.75rem; font-weight: 600; cursor: pointer; text-decoration: none;
+      transition: all 0.18s; display: inline-block; border: none;
+    }
+    .btn-login { background: transparent; color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.2); }
+    .btn-login:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+    .btn-signup { background: var(--gold); color: #1a2e1a; }
+    .btn-signup:hover { background: var(--gold-light); }
 
 
     .page-wrap {
@@ -262,7 +286,15 @@ session_start();
 <body>
 
 
-  <?php include 'navbar.php'; ?>
+   <nav>
+    <a class="nav-logo" href="index.html"><span class="nav-logo-text">Rekindle the Green</span></a>
+    <span class="nav-center">Wildlife Conservation India</span>
+    <div class="nav-actions">
+      <a href="login.php" class="btn-nav btn-login">Log In</a>
+      <a href="signup.php" class="btn-nav btn-signup">Sign Up</a>
+    </div>
+  </nav>
+
 
 
   <div class="modal-overlay" id="errorModal">
